@@ -1,6 +1,7 @@
 const scriptUrl = new URL(document.currentScript?.src || "./app.js", window.location.href);
 const deployedBase = scriptUrl.pathname.replace(/\/app\.js$/, "").replace(/\/$/, "");
 const BASE_PATH = window.location.protocol === "file:" ? "" : deployedBase;
+const THEME_KEY = "apexnix-theme";
 const A = window.location.protocol === "file:" ? "./assets/" : `${BASE_PATH}/assets/`;
 const basePattern = new RegExp(`^${BASE_PATH.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=/|$)`);
 const img = {
@@ -420,6 +421,46 @@ function toDeployedPath(route) {
   return `${BASE_PATH}${cleanPath || "/"}${hash ? `#${hash}` : ""}`;
 }
 
+function getStoredTheme() {
+  try {
+    const theme = localStorage.getItem(THEME_KEY);
+    return theme === "dark" || theme === "light" ? theme : "";
+  } catch {
+    return "";
+  }
+}
+
+function getSystemTheme() {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function applyTheme(theme, persist = true) {
+  const nextTheme = theme === "dark" ? "dark" : "light";
+  document.documentElement.dataset.theme = nextTheme;
+  document.documentElement.style.colorScheme = nextTheme;
+
+  document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+    const targetTheme = nextTheme === "dark" ? "light" : "dark";
+    button.setAttribute("aria-label", `Switch to ${targetTheme} mode`);
+    button.setAttribute("title", `Switch to ${targetTheme} mode`);
+    button.setAttribute("aria-pressed", String(nextTheme === "dark"));
+  });
+
+  if (!persist) return;
+  try {
+    localStorage.setItem(THEME_KEY, nextTheme);
+  } catch {}
+}
+
+function bindThemeToggle() {
+  document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+    button.onclick = () => {
+      const currentTheme = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+      applyTheme(currentTheme === "dark" ? "light" : "dark");
+    };
+  });
+}
+
 function render() {
   const { path, anchor } = getRouteFromLocation();
   document.querySelector("#app").innerHTML = (routes[path] || home)();
@@ -492,6 +533,11 @@ document.querySelector(".nav-toggle").onclick = (e) => {
   nav.classList.toggle("open");
   e.currentTarget.setAttribute("aria-expanded", nav.classList.contains("open"));
 };
+applyTheme(getStoredTheme() || document.documentElement.dataset.theme || getSystemTheme(), false);
+bindThemeToggle();
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+  if (!getStoredTheme()) applyTheme(event.matches ? "dark" : "light", false);
+});
 window.addEventListener("popstate", render);
 window.addEventListener("hashchange", () => {
   if (window.location.protocol === "file:" || window.location.hash.startsWith("#/")) render();
