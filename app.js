@@ -1,6 +1,9 @@
 const scriptUrl = new URL(document.currentScript?.src || "./app.js", window.location.href);
 const deployedBase = scriptUrl.pathname.replace(/\/app\.js$/, "").replace(/\/$/, "");
 const BASE_PATH = window.location.protocol === "file:" ? "" : deployedBase;
+const CONTACT_EMAIL = "sales@apextella.com";
+const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+const WEB3FORMS_ACCESS_KEY = "596ad054-05e1-4abb-b4c5-d12debc21725";
 const THEME_KEY = "apexnix-theme";
 const A = window.location.protocol === "file:" ? "./assets/" : `${BASE_PATH}/assets/`;
 const basePattern = new RegExp(`^${BASE_PATH.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=/|$)`);
@@ -355,15 +358,29 @@ function contact() {
     image: img.contactHero,
   })}
   <section class="section"><div class="container contact-layout">
-    <aside class="contact-card fade-in"><h2>Apexnix Co.,Ltd.</h2><p>Unit A, Room 504, No.88 Anling 2nd Road, Huli District, Xiamen, China</p><br><a href="mailto:sales@apextella.com">sales@apextella.com</a></aside>
+    <aside class="contact-card fade-in"><h2>Apexnix Co.,Ltd.</h2><p>Unit A, Room 504, No.88 Anling 2nd Road, Huli District, Xiamen, China</p><br><a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></aside>
     <div class="fade-in"><div class="section-head"><span class="kicker">Send Request</span><h2>Get In Touch About Your Needs</h2><p>To help us understand your needs better, please share your market, sales channel, target price, quantity, and product requirements. The more context you provide, the better we can recommend suitable bed frame solutions.</p></div>
-      <form>
-        ${["Name", "Country", "Company", "Your Website", "Email", "WhatsApp / Phone", "Estimated Quantity", "Target Price Range"].map(x => `<label>${x}<input type="${x === "Email" ? "email" : "text"}" name="${x}" /></label>`).join("")}
-        <label>Business Type<select><option>E-commerce / Online Retail</option><option>Furniture Retailer</option><option>Wholesaler / Importer</option><option>Accommodation / Project Contractor</option><option>OEM / Private Label Buyer</option><option>Other</option></select></label>
-        <label>Interested Products<select><option>Metal Bed Frames</option><option>Bamboo Bed Frames</option><option>Bunk Beds / Dormitory Beds</option><option>OEM / Custom Bed Frames</option><option>Not Sure Yet</option></select></label>
-        <label>Sales Channel<select><option>Online Retail</option><option>Offline Retail</option><option>Wholesale Distribution</option><option>Project Supply</option><option>Private Label / Brand</option><option>Other</option></select></label>
-        <label class="full">Message<textarea></textarea></label>
-        <button class="btn full" type="button">Send Request <span>→</span></button>
+      <form data-contact-form action="${WEB3FORMS_ENDPOINT}" method="post">
+        <input type="hidden" name="access_key" value="${WEB3FORMS_ACCESS_KEY}" />
+        <input type="hidden" name="subject" value="Apexnix Bed Frame Request" />
+        <input type="hidden" name="from_name" value="Apexnix Website" />
+        <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" />
+        ${[
+          ["Name", "name", "text"],
+          ["Country", "country", "text"],
+          ["Company", "company", "text"],
+          ["Your Website", "website", "text"],
+          ["Email", "email", "email"],
+          ["WhatsApp / Phone", "phone", "text"],
+          ["Estimated Quantity", "estimated_quantity", "text"],
+          ["Target Price Range", "target_price_range", "text"],
+        ].map(([label, name, type]) => `<label>${label}<input type="${type}" name="${name}" /></label>`).join("")}
+        <label>Business Type<select name="business_type"><option>E-commerce / Online Retail</option><option>Furniture Retailer</option><option>Wholesaler / Importer</option><option>Accommodation / Project Contractor</option><option>OEM / Private Label Buyer</option><option>Other</option></select></label>
+        <label>Interested Products<select name="interested_products"><option>Metal Bed Frames</option><option>Bamboo Bed Frames</option><option>Bunk Beds / Dormitory Beds</option><option>OEM / Custom Bed Frames</option><option>Not Sure Yet</option></select></label>
+        <label>Sales Channel<select name="sales_channel"><option>Online Retail</option><option>Offline Retail</option><option>Wholesale Distribution</option><option>Project Supply</option><option>Private Label / Brand</option><option>Other</option></select></label>
+        <label class="full">Message<textarea name="message"></textarea></label>
+        <p class="form-status full" data-contact-status hidden></p>
+        <button class="btn full" type="submit">Send Request <span>→</span></button>
       </form>
     </div>
   </div></section>`;
@@ -468,6 +485,7 @@ function render() {
   bindLinks();
   bindCarousel();
   bindTabs();
+  bindContactForm();
   observe();
   if (anchor) setTimeout(() => document.querySelector(anchor)?.scrollIntoView(), 50);
   else window.scrollTo({ top: 0 });
@@ -518,6 +536,58 @@ function bindTabs() {
   };
   buttons.forEach((b) => b.onclick = () => show(Number(b.dataset.tab)));
   show(0);
+}
+function bindContactForm() {
+  const form = document.querySelector("[data-contact-form]");
+  if (!form) return;
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const data = new FormData(form);
+    const name = String(data.get("name") || "").trim();
+    const company = String(data.get("company") || "").trim();
+    const subject = ["Bed Frame Request", company || name].filter(Boolean).join(" - ");
+    const status = form.querySelector("[data-contact-status]");
+    const button = form.querySelector("button[type='submit']");
+    const buttonLabel = button?.innerHTML;
+
+    data.set("access_key", WEB3FORMS_ACCESS_KEY);
+    data.set("subject", subject);
+    data.set("from_name", "Apexnix Website");
+
+    if (status) {
+      status.hidden = false;
+      status.classList.remove("error");
+      status.textContent = "Sending your request...";
+    }
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Sending...";
+    }
+
+    try {
+      const response = await fetch(WEB3FORMS_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: data,
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || result.success === false) throw new Error(result.message || "Form submission failed");
+      form.reset();
+      if (status) status.textContent = "Thank you. Your request has been sent successfully.";
+    } catch (error) {
+      if (status) {
+        status.classList.add("error");
+        status.textContent = `Sorry, your request could not be sent. Please email us at ${CONTACT_EMAIL}.`;
+      }
+    } finally {
+      if (button) {
+        button.disabled = false;
+        button.innerHTML = buttonLabel;
+      }
+    }
+  };
 }
 function observe() {
   const io = new IntersectionObserver((entries) => {
