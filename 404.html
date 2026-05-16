@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apexnix | Redirecting</title>
+    <script>
+      const repoBase = "/apexnix";
+      const base = location.pathname === repoBase || location.pathname.startsWith(`${repoBase}/`) ? repoBase : "";
+      const route = location.pathname.replace(base, "").replace(/\/$/, "") || "/";
+      location.replace(`${location.origin}${base}/#${route}${location.hash}`);
+    </script>
+  </head>
+  <body></body>
+</html>
