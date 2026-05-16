@@ -5,6 +5,7 @@
 node_modules
 node_modules/**
 .DS_Store
+.gitignore
+.nojekyll
 README.md
-_redirects
 wrangler.jsonc
