@@ -1,10 +1,15 @@
 .git
 .git/**
+.github
+.github/**
 .wrangler
 .wrangler/**
+.deploy
+.deploy/**
 node_modules
 node_modules/**
 .DS_Store
+.assetsignore
 .gitignore
 .nojekyll
 README.md
