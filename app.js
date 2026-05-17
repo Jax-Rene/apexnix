@@ -6,6 +6,7 @@ const SITE_NAME = "Apexnix";
 const CONTACT_EMAIL = "sales@apextella.com";
 const LOGO_FILE = "apexnix-logo-light.svg";
 const LOGO_DARK_FILE = "apexnix-logo-dark.svg";
+const AVATAR_FILE = "apexnix-avatar.svg";
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 const WEB3FORMS_ACCESS_KEY = "596ad054-05e1-4abb-b4c5-d12debc21725";
 const THEME_KEY = "apexnix-theme";
@@ -655,8 +656,8 @@ function updateDocumentMeta(path = "/") {
   ensureMetaName("twitter:title").setAttribute("content", meta.title);
   ensureMetaName("twitter:description").setAttribute("content", meta.description);
   ensureMetaName("twitter:image").setAttribute("content", image);
-  ensureLinkRel("icon").setAttribute("href", runtimeAssetHref("favicon.svg"));
-  ensureLinkRel("apple-touch-icon").setAttribute("href", runtimeAssetHref("apple-touch-icon.svg"));
+  ensureLinkRel("icon").setAttribute("href", runtimeAssetHref(AVATAR_FILE));
+  ensureLinkRel("apple-touch-icon").setAttribute("href", runtimeAssetHref(AVATAR_FILE));
   ensureLinkRel("manifest").setAttribute("href", runtimeAssetHref("site.webmanifest"));
 
   const schemaNode = ensureHeadTag('script[type="application/ld+json"][data-route-schema]', () => {

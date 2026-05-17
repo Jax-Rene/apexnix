@@ -382,6 +382,8 @@ p { margin: 0; color: var(--muted); }
 .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .card {
+  display: flex;
+  flex-direction: column;
   background: var(--surface);
   border: 1px solid var(--line);
   transition: transform .25s ease, box-shadow .25s ease;
@@ -390,7 +392,14 @@ p { margin: 0; color: var(--muted); }
 .card-image { height: 280px; overflow: hidden; background: var(--bg); }
 .card:hover img { transform: scale(1.03); }
 .card img { transition: transform .45s ease; }
-.card-body { padding: 24px; display: grid; gap: 14px; }
+.card-body {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.card-body .btn { margin-top: auto; }
 .icon-card { padding: 26px; display: grid; gap: 14px; }
 .line-icon {
   width: 44px;

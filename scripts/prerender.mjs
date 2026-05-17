@@ -22,6 +22,7 @@ globalThis.__apexnix = {
   CONTACT_EMAIL,
   LOGO_FILE,
   LOGO_DARK_FILE,
+  AVATAR_FILE,
   routes,
   routeMeta,
   indexableRoutes,
@@ -124,8 +125,8 @@ function buildHead(routePath) {
     <meta name="twitter:description" content="${escapeHtml(meta.description)}" />
     <meta name="twitter:image" content="${image}" />
     <meta name="theme-color" content="#2f3a45" />
-    <link rel="icon" href="${prefix}favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="${prefix}apple-touch-icon.svg" />
+    <link rel="icon" href="${prefix}${site.AVATAR_FILE}" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="${prefix}${site.AVATAR_FILE}" />
     <link rel="manifest" href="${prefix}site.webmanifest" />
     <link rel="preload" as="image" href="${escapeHtml(imagePath)}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
