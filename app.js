@@ -393,7 +393,7 @@ function capabilities() {
 
 function about() {
   return `${simpleHero({
-    title: "About Apexnix Co.,Ltd.",
+    title: "About Apexnix",
     subtitle: "Apexnix is a focused B2B bed frame supplier combining manufacturing know-how, global business thinking, and export-ready cooperation support.",
     image: img.oem,
     actions: cta("Contact Us", "/contact"),
@@ -512,7 +512,7 @@ const routeMeta = {
   },
   "/about": {
     title: "About Apexnix | Focused B2B Bed Frame Supplier",
-    description: "Learn about Apexnix Co.,Ltd., a focused bed frame provider combining manufacturing know-how, global B2B thinking, product line support, and export coordination.",
+    description: "Learn about Apexnix, a focused bed frame provider combining manufacturing know-how, global B2B thinking, product line support, and export coordination.",
     image: img.ourStory,
     priority: "0.7",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "About Us", path: "/about" }],
