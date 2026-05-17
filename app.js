@@ -4,6 +4,8 @@ const BASE_PATH = window.location.protocol === "file:" ? "" : deployedBase;
 const SITE_URL = "https://www.apexnix.com";
 const SITE_NAME = "Apexnix";
 const CONTACT_EMAIL = "sales@apextella.com";
+const LOGO_FILE = "apexnix-logo-light.svg";
+const LOGO_DARK_FILE = "apexnix-logo-dark.svg";
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 const WEB3FORMS_ACCESS_KEY = "596ad054-05e1-4abb-b4c5-d12debc21725";
 const THEME_KEY = "apexnix-theme";
@@ -557,7 +559,7 @@ function schemasForPath(path = "/") {
       name: "Apexnix Co.,Ltd.",
       url: routeUrl("/"),
       email: CONTACT_EMAIL,
-      logo: `${SITE_URL}/favicon.svg`,
+      logo: `${SITE_URL}/${LOGO_FILE}`,
       address: {
         "@type": "PostalAddress",
         streetAddress: "Unit A, Room 504, No.88 Anling 2nd Road, Huli District",

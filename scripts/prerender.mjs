@@ -20,6 +20,8 @@ globalThis.__apexnix = {
   SITE_URL,
   SITE_NAME,
   CONTACT_EMAIL,
+  LOGO_FILE,
+  LOGO_DARK_FILE,
   routes,
   routeMeta,
   indexableRoutes,
@@ -149,11 +151,15 @@ function buildHead(routePath) {
   </head>`;
 }
 
-function buildHeader() {
+function brandMarkup(prefix) {
+  return `<span class="brand-logo-set" aria-hidden="true"><img class="brand-logo brand-logo-light" src="${prefix}${site.LOGO_FILE}" alt="" width="1271" height="336" /><img class="brand-logo brand-logo-dark" src="${prefix}${site.LOGO_DARK_FILE}" alt="" width="1271" height="336" /></span>`;
+}
+
+function buildHeader(routePath) {
+  const prefix = relativePrefix(routePath);
   return `    <header class="site-header">
-      <a class="brand" href="/" data-link>
-        <span class="brand-mark">A</span>
-        <span>Apexnix</span>
+      <a class="brand" href="/" data-link aria-label="Apexnix">
+        ${brandMarkup(prefix)}
       </a>
       <nav class="main-nav" aria-label="Primary navigation">
         <a href="/" data-link>Home</a>
@@ -192,10 +198,11 @@ function buildHeader() {
     </header>`;
 }
 
-function buildFooter() {
+function buildFooter(routePath) {
+  const prefix = relativePrefix(routePath);
   return `    <footer class="site-footer">
       <div>
-        <a class="brand footer-brand" href="/" data-link><span class="brand-mark">A</span><span>Apexnix</span></a>
+        <a class="brand footer-brand" href="/" data-link aria-label="Apexnix">${brandMarkup(prefix)}</a>
         <p>Focused bed frame products and development support for global partners.</p>
       </div>
       <div>
@@ -223,9 +230,9 @@ function buildPage(routePath) {
 <html lang="en">
 ${buildHead(routePath)}
   <body>
-${buildHeader()}
+${buildHeader(routePath)}
     <main id="app">${body}</main>
-${buildFooter()}
+${buildFooter(routePath)}
     <script src="${prefix}app.js?v=${appVersion}" defer></script>
   </body>
 </html>
