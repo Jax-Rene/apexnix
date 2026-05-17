@@ -1,28 +1,42 @@
 # Apexnix
 
-Apexnix is a pure front-end static website for a B2B bed frame supplier. It uses plain HTML, CSS, and JavaScript with client-side routing, so it can be hosted directly on static hosting services.
+Apexnix is a prerendered static website for a B2B bed frame supplier. It uses plain HTML, CSS, and JavaScript, with static HTML generated for each public route so search engines and visitors can read page content before JavaScript runs.
 
 ## Project Structure
 
-- `index.html` - site shell
+- `index.html` - prerendered homepage
+- `products/`, `solutions/`, `capabilities/`, `about/`, `contact/` - prerendered static routes
 - `styles.css` - global styles
-- `app.js` - front-end routing and page rendering
-- `assets/` - static images
-- `404.html` - GitHub Pages fallback for front-end routes
-- `_redirects` - Cloudflare Pages fallback for front-end routes
-- `.nojekyll` - keeps GitHub Pages from processing the site with Jekyll
+- `app.js` - route content, metadata, and front-end interactions
+- `scripts/prerender.mjs` - generates static route HTML, `sitemap.xml`, and `robots.txt`
+- `assets/` - optimized static images
+- `robots.txt` and `sitemap.xml` - search engine crawl hints for `https://www.apexnix.com`
+- `404.html` - custom noindex page for unknown routes
+- `_redirects` - clean trailing-slash redirects for Cloudflare Pages
 
 ## Local Preview
 
-You can open `index.html` directly in a browser, or run any simple static file server from this folder.
-
-Example:
+Run any simple static file server from this folder.
 
 ```bash
 python -m http.server 8080
 ```
 
 Then visit `http://localhost:8080`.
+
+## Static Generation
+
+After editing route content, metadata, or the canonical domain in `app.js`, regenerate the static pages:
+
+```bash
+node scripts/prerender.mjs
+```
+
+The canonical production domain is:
+
+```text
+https://www.apexnix.com
+```
 
 ## Deployment
 
@@ -31,12 +45,12 @@ Then visit `http://localhost:8080`.
 Use these settings when deploying from GitHub:
 
 - Framework preset: None
-- Build command: leave empty
+- Build command: `node scripts/prerender.mjs`
 - Build output directory: `/`
 
 ### GitHub Actions auto deploy
 
-This repository includes `.github/workflows/cloudflare-pages.yml`, which prepares the static site files and deploys them to the Cloudflare Pages project `apexnix` whenever `main` is pushed.
+This repository includes `.github/workflows/cloudflare-pages.yml`, which regenerates the static site files and deploys them to the Cloudflare Pages project `apexnix` whenever `main` is pushed.
 
 Before the workflow can deploy, add these GitHub repository secrets:
 
@@ -46,22 +60,6 @@ Before the workflow can deploy, add these GitHub repository secrets:
 If the Cloudflare Pages project uses a different name, update the `--project-name=apexnix` value in the workflow.
 
 The site does not require a Node.js server, API route, database, or other back-end runtime.
-
-### GitHub Pages
-
-This project also supports GitHub Pages project hosting, including URLs like:
-
-```text
-https://jax-rene.github.io/apexnix/
-```
-
-Recommended GitHub Pages settings:
-
-- Source: Deploy from a branch
-- Branch: `main`
-- Folder: `/root`
-
-The included `404.html` redirects deep links such as `/apexnix/products` back into the single-page app route, so refreshed or shared subpages continue to work.
 
 ## Repository
 

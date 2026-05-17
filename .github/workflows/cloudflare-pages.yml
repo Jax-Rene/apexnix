@@ -26,8 +26,9 @@ jobs:
 
       - name: Prepare static assets
         run: |
+          node scripts/prerender.mjs
           mkdir -p .deploy
-          cp -R index.html 404.html _redirects styles.css app.js assets .deploy/
+          cp -R index.html 404.html _redirects robots.txt sitemap.xml favicon.svg apple-touch-icon.svg site.webmanifest styles.css app.js assets products solutions capabilities about contact .deploy/
 
       - name: Deploy static site
         uses: cloudflare/wrangler-action@v3

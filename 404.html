@@ -3,13 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Apexnix | Redirecting</title>
-    <script>
-      const repoBase = "/apexnix";
-      const base = location.pathname === repoBase || location.pathname.startsWith(`${repoBase}/`) ? repoBase : "";
-      const route = location.pathname.replace(base, "").replace(/\/$/, "") || "/";
-      location.replace(`${location.origin}${base}/#${route}${location.hash}`);
-    </script>
+    <title>Page Not Found | Apexnix</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="https://www.apexnix.com/404.html" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body></body>
+  <body>
+    <main class="section">
+      <div class="container section-head">
+        <span class="kicker">Apexnix</span>
+        <h1>Page Not Found</h1>
+        <p>The page you are looking for may have moved. Visit the Apexnix homepage or contact us for bed frame product and OEM development discussions.</p>
+        <div class="actions">
+          <a class="btn" href="/">Go Home <span>→</span></a>
+          <a class="btn alt" href="/contact/">Contact Apexnix <span>→</span></a>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>

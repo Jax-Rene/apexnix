@@ -1,42 +1,75 @@
 const scriptUrl = new URL(document.currentScript?.src || "./app.js", window.location.href);
 const deployedBase = scriptUrl.pathname.replace(/\/app\.js$/, "").replace(/\/$/, "");
 const BASE_PATH = window.location.protocol === "file:" ? "" : deployedBase;
+const SITE_URL = "https://www.apexnix.com";
+const SITE_NAME = "Apexnix";
 const CONTACT_EMAIL = "sales@apextella.com";
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 const WEB3FORMS_ACCESS_KEY = "596ad054-05e1-4abb-b4c5-d12debc21725";
 const THEME_KEY = "apexnix-theme";
-const A = window.location.protocol === "file:" ? "./assets/" : `${BASE_PATH}/assets/`;
+const A = window.location.protocol === "file:" ? new URL("assets/", scriptUrl).href : `${BASE_PATH}/assets/`;
 const basePattern = new RegExp(`^${BASE_PATH.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=/|$)`);
 const img = {
-  home1: A + "01_home_hero_slide_1_brand_positioning.png.png",
-  home2: A + "02_home_hero_slide_2_manufacturing_capability.png.png",
-  statement: A + "03_home_brand_statement.png.png",
-  metalCard: A + "04_home_product_card_metal_bed_frame.png.png",
-  bambooCard: A + "05_home_product_card_bamboo_bed_frame.png.png",
-  oemCard: A + "06_home_product_card_oem_custom_development.png.png",
-  productHero: A + "07_product_hero.png.png",
-  philosophy: A + "08_product_philosophy.png.png",
-  heavy: A + "09_Heavy_duty_Metal_Platform_Bed.png.png",
-  bambooMore: A + "10_More_Bamboo__Bed_Frame__Style__Directions.png.png",
-  bambooPlatform: A + "11_Bamboo__Platform__Beds.png.png",
-  bambooMinimal: A + "12_Minimal__Bamboo__Beds.png.png",
-  metalMore: A + "13_More_Metal__Bed_Frame__Design__Directions.png.png",
-  oem: A + "14_OEM_Custom_Bed_Frame__Development.png.png",
-  solutionsHero: A + "15_Solutions__Hero.png.png",
-  solutionOem: A + "16_Solution_4_For_OEM_Private__Label__Partners.png.png",
-  ecommerce: A + "17_Solution_1_For_E-commerce___Online_Retail.png.png",
-  retail: A + "18_Solution_2_For_Furniture_Retailers___Wholesalers.png.png",
-  project: A + "19_Solution_3_For_Accommodation___Project_Supply.png.png",
-  headboard: A + "20_Bed_Frames_with_Headboard.png.png",
-  bunkDormitory: A + "21_Bunk_Beds___Dormitory_Solutions.png.png",
-  projectManufacturing: A + "21_Project-Based_Manufacturing.png.png",
-  contactHero: A + "22_Contact_Us_Hero.png.png",
-  ourStory: A + "23_Our_Story.png.png",
-  capabilitiesHero: A + "24_Capabilities_Hero.png.png",
-  valueEngineering: A + "25_Capability_2_Value_Engineering.png.png",
-  oemSupport: A + "26_Capability_5_OEM_Custom_Support.png.png",
-  qualityControl: A + "27_Capability_4_Quality_Control.png.png",
-  exportSupport: A + "28_Capability_6_Export_Support.png.png",
+  home1: A + "home-hero-bed-frame-supplier.jpg",
+  home2: A + "bed-frame-manufacturing-capability.jpg",
+  statement: A + "apexnix-brand-statement-bed-frame-business.jpg",
+  metalCard: A + "metal-bed-frame-card.jpg",
+  bambooCard: A + "bamboo-bed-frame-card.jpg",
+  oemCard: A + "oem-custom-bed-frame-development-card.jpg",
+  productHero: A + "bed-frame-products-hero.jpg",
+  philosophy: A + "bed-frame-product-philosophy.jpg",
+  heavy: A + "heavy-duty-metal-platform-bed-frame.jpg",
+  bambooMore: A + "bamboo-bed-frame-style-directions.jpg",
+  bambooPlatform: A + "bamboo-platform-bed-frame.jpg",
+  bambooMinimal: A + "minimal-bamboo-bed-frame.jpg",
+  metalMore: A + "metal-bed-frame-design-directions.jpg",
+  oem: A + "oem-custom-bed-frame-development.jpg",
+  solutionsHero: A + "bed-frame-solutions-hero.jpg",
+  solutionOem: A + "oem-private-label-bed-frame-partners.jpg",
+  ecommerce: A + "ecommerce-online-retail-bed-frame-solution.jpg",
+  retail: A + "furniture-retail-wholesale-bed-frame-solution.jpg",
+  project: A + "accommodation-project-bed-frame-supply.jpg",
+  headboard: A + "metal-bed-frame-with-headboard.jpg",
+  bunkDormitory: A + "bunk-dormitory-bed-frame-solutions.jpg",
+  projectManufacturing: A + "project-based-bed-frame-manufacturing.jpg",
+  contactHero: A + "contact-apexnix-bed-frame-project.jpg",
+  ourStory: A + "apexnix-bed-frame-supplier-story.jpg",
+  capabilitiesHero: A + "bed-frame-supply-capabilities-hero.jpg",
+  valueEngineering: A + "value-engineering-bed-frame.jpg",
+  oemSupport: A + "oem-custom-support-bed-frame.jpg",
+  qualityControl: A + "quality-control-bed-frame-manufacturing.jpg",
+  exportSupport: A + "export-support-bed-frame-supply.jpg",
+};
+const imageDimensions = {
+  "home-hero-bed-frame-supplier.jpg": [1200, 675],
+  "bed-frame-manufacturing-capability.jpg": [1200, 800],
+  "apexnix-brand-statement-bed-frame-business.jpg": [1200, 675],
+  "metal-bed-frame-card.jpg": [900, 1124],
+  "bamboo-bed-frame-card.jpg": [900, 1026],
+  "oem-custom-bed-frame-development-card.jpg": [900, 1029],
+  "bed-frame-products-hero.jpg": [1200, 800],
+  "bed-frame-product-philosophy.jpg": [1100, 825],
+  "heavy-duty-metal-platform-bed-frame.jpg": [1100, 825],
+  "bamboo-bed-frame-style-directions.jpg": [1100, 825],
+  "bamboo-platform-bed-frame.jpg": [1100, 825],
+  "minimal-bamboo-bed-frame.jpg": [1100, 825],
+  "metal-bed-frame-design-directions.jpg": [1200, 675],
+  "oem-custom-bed-frame-development.jpg": [1200, 631],
+  "bed-frame-solutions-hero.jpg": [1200, 908],
+  "oem-private-label-bed-frame-partners.jpg": [1200, 675],
+  "ecommerce-online-retail-bed-frame-solution.jpg": [1100, 825],
+  "furniture-retail-wholesale-bed-frame-solution.jpg": [1100, 825],
+  "accommodation-project-bed-frame-supply.jpg": [1100, 825],
+  "metal-bed-frame-with-headboard.jpg": [950, 950],
+  "bunk-dormitory-bed-frame-solutions.jpg": [1200, 675],
+  "project-based-bed-frame-manufacturing.jpg": [950, 950],
+  "contact-apexnix-bed-frame-project.jpg": [1200, 800],
+  "apexnix-bed-frame-supplier-story.jpg": [1100, 825],
+  "bed-frame-supply-capabilities-hero.jpg": [1200, 800],
+  "value-engineering-bed-frame.jpg": [700, 631],
+  "oem-custom-support-bed-frame.jpg": [1100, 825],
+  "quality-control-bed-frame-manufacturing.jpg": [950, 950],
+  "export-support-bed-frame-supply.jpg": [950, 950],
 };
 
 const specMetal = [
@@ -71,8 +104,35 @@ const customMatrix = [
   ["Project Requirements", "Bulk delivery, installation discussion, maintenance, replacement parts, compliance discussion based on target market"],
 ];
 
+function canonicalInternalHref(href = "/") {
+  if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:") || /^https?:\/\//i.test(href)) return href;
+  if (!href.startsWith("/")) return href;
+  const [pathPart, hash = ""] = href.split("#");
+  const cleanPath = pathPart === "/" ? "/" : pathPart.replace(/\/$/, "");
+  const canonicalPath = cleanPath === "/" ? "/" : `${cleanPath}/`;
+  return `${canonicalPath}${hash ? `#${hash}` : ""}`;
+}
+
 function cta(label = "Send Request", href = "/contact", alt = false) {
-  return `<a class="btn ${alt ? "alt" : ""}" href="${href}" data-link>${label} <span>→</span></a>`;
+  return `<a class="btn ${alt ? "alt" : ""}" href="${canonicalInternalHref(href)}" data-link>${label} <span>→</span></a>`;
+}
+function escapeAttr(value = "") {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+function fileNameFromSrc(src) {
+  return String(src).split("/").pop().split("?")[0];
+}
+function imageTag(src, alt, options = {}) {
+  const [width, height] = imageDimensions[fileNameFromSrc(src)] || [];
+  const priority = Boolean(options.priority);
+  const loading = priority ? "eager" : "lazy";
+  const dimensions = width && height ? ` width="${width}" height="${height}"` : "";
+  const fetchPriority = priority ? ` fetchpriority="high"` : "";
+  return `<img src="${escapeAttr(src)}" alt="${escapeAttr(alt)}"${dimensions} loading="${loading}" decoding="async"${fetchPriority} />`;
 }
 function tags(items, light = false) {
   return `<ul class="tag-list ${light ? "light-tags" : ""}">${items.map((x) => `<li>${x}</li>`).join("")}</ul>`;
@@ -82,7 +142,7 @@ function table(rows, h1 = "Specification Item", h2 = "Available Options") {
 }
 function simpleHero({ title, subtitle, body = "", image, tagItems = [], actions = "" }) {
   return `<section class="hero short">
-    <div class="hero-bg active"><img src="${image}" alt="${title}" /></div>
+    <div class="hero-bg active">${imageTag(image, title, { priority: true })}</div>
     <div class="hero-content fade-in">
       <span class="kicker">Apexnix</span>
       <h1>${title}</h1>
@@ -95,7 +155,7 @@ function simpleHero({ title, subtitle, body = "", image, tagItems = [], actions 
 }
 function productCard(title, body, image, link, button) {
   return `<article class="card fade-in">
-    <div class="card-image"><img src="${image}" alt="${title}" /></div>
+    <div class="card-image">${imageTag(image, title)}</div>
     <div class="card-body"><h3>${title}</h3><p>${body}</p>${cta(button, link, true)}</div>
   </article>`;
 }
@@ -108,7 +168,7 @@ function section(title, intro, body, cls = "", id = "") {
 function twoCol(title, subtitle, body, image, extra = "", reverse = false, cls = "", id = "") {
   return `<section class="section ${cls}" ${id ? `id="${id}"` : ""}><div class="container split ${reverse ? "reverse" : ""}">
     <div class="fade-in"><span class="kicker">Apexnix</span><h2>${title}</h2><p><strong>${subtitle}</strong></p><p>${body}</p>${extra}</div>
-    <div class="image-panel fade-in"><img src="${image}" alt="${title}" /></div>
+    <div class="image-panel fade-in">${imageTag(image, title)}</div>
   </div></section>`;
 }
 
@@ -118,9 +178,9 @@ function home() {
       [img.home1, "Heavy-Duty Metal & Bamboo Bed Frame Solutions", "Backed by 25+ years of focused bed frame manufacturing, we help retailers, online brands, wholesalers, and project contractors develop value-engineered bed frame products for their channels.", ["25+ Years Bed Frame Manufacturing", "Metal & Bamboo Bed Frames", "Flat-Pack & Easy Assembly", "OEM / Custom Support"], cta("View Products", "/products") + cta("Send Request", "/contact", true)],
       [img.home2, "Focused Manufacturing Know-How", "With long-term focus on bed frame structure, packaging, assembly, and quality control, we build products that balance strength, cost efficiency, and reliable supply.", [], cta("View Capabilities", "/capabilities")],
       [img.oem, "Beyond Products, We Help You Build the Right Bed Frame Line", "We work with partners to understand their market, channel, product positioning, packaging needs, and long-term supply plan.", [], cta("Discuss Your Project", "/contact")],
-    ].map((s, i) => `<div class="hero-bg ${i === 0 ? "active" : ""}"><img src="${s[0]}" alt="${s[1]}" /></div>
+    ].map((s, i) => `<div class="hero-bg ${i === 0 ? "active" : ""}">${imageTag(s[0], s[1], { priority: i === 0 })}</div>
       <div class="hero-content slide-copy ${i === 0 ? "active" : ""}" ${i ? "hidden" : ""}>
-        <span class="kicker">Focused B2B Bed Frame Supplier</span><h1>${s[1]}</h1><p>${s[2]}</p>${tags(s[3])}<div class="hero-actions">${s[4]}</div>
+        <span class="kicker">Focused B2B Bed Frame Supplier</span>${i === 0 ? `<h1>${s[1]}</h1>` : `<p class="hero-slide-title">${s[1]}</p>`}<p>${s[2]}</p>${tags(s[3])}<div class="hero-actions">${s[4]}</div>
       </div>`).join("")}
     <div class="hero-arrows"><button class="icon-button" data-prev>←</button><button class="icon-button" data-next>→</button></div>
     <div class="hero-dots">${[0,1,2].map((_, i) => `<button class="${i === 0 ? "active" : ""}" data-dot="${i}" aria-label="Show slide ${i + 1}"></button>`).join("")}</div>
@@ -137,7 +197,7 @@ function home() {
     { icon: "□", title: "Flat-Pack & Easy Assembly", body: "We focus on carton efficiency, clear instructions, and lower after-sales risk." },
     { icon: "＋", title: "Business-Oriented Partnership", body: "We discuss your market, your customer, and your product line strategy." },
   ]))}
-  <section class="section cta-band"><img src="${img.project}" alt="Export-ready bed frame supply" /><div class="container fade-in"><h2>Ready to Build Your Bed Frame Product Line?</h2><p>Share your market, sales channel, product idea, and supply needs. We will help you explore suitable bed frame solutions that match your business.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
+  <section class="section cta-band">${imageTag(img.project, "Export-ready bed frame supply")}<div class="container fade-in"><h2>Ready to Build Your Bed Frame Product Line?</h2><p>Share your market, sales channel, product idea, and supply needs. We will help you explore suitable bed frame solutions that match your business.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
 }
 
 function products() {
@@ -159,7 +219,7 @@ function products() {
     ["Bamboo Bed Frames", "Natural-style retail and online collections — Differentiated, warm, nature-inspired"],
     ["OEM / Custom Development", "Private label and product line partners — Flexible, market-fit, development-driven"],
   ], "Product Type", "Best For / Key Value"), "alt", "product-comparison")}
-  <section class="section cta-band"><img src="${img.oem}" alt="Product sourcing discussion" /><div class="container fade-in"><h2>Ready to Explore the Bed Frame Solution?</h2><p>Share your market, sales channel, product idea, and supply needs. We will help you explore suitable metal bed frame, bamboo bed frame, or custom development solutions.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
+  <section class="section cta-band">${imageTag(img.oem, "Product sourcing discussion")}<div class="container fade-in"><h2>Ready to Explore the Bed Frame Solution?</h2><p>Share your market, sales channel, product idea, and supply needs. We will help you explore suitable metal bed frame, bamboo bed frame, or custom development solutions.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
 }
 
 function metalPage() {
@@ -178,11 +238,11 @@ function metalPage() {
     { icon: "◎", title: "Custom Structures", body: "Size, height, finish, packaging, and private-label support." },
   ]), "alt")}
   ${twoCol("Heavy-Duty Platform Beds", "A practical metal platform bed direction built for strength, stability, and cost-efficient supply.", "Heavy-duty platform beds are one of our core metal bed frame directions. With clean structure, strong steel support, and practical under-bed clearance, this type is suitable for retail, online sales, wholesale, rental housing, or project use.<br><br>The design focuses on durability, easy assembly, flat-pack potential, and cost-performance balance.", img.heavy, `<ul class="check-list"><li>Strong steel structure</li><li>Platform support system</li><li>No box spring needed</li><li>Storage-friendly under-bed clearance</li><li>Flat-pack packaging potential</li></ul><div class="mini-features"><span>Heavy Duty</span><span>No Box Spring Needed</span><span>Storage Friendly</span><span>Easy Assembly</span><span>Flat-Pack Ready</span></div><div class="actions">${cta("Discuss Platform Bed Options", "/contact", true)}</div>`)}
-  ${twoCol("Bed Frames with Headboard", "A more complete metal bed frame direction for partners who need both structure and visual appeal.", "Bed frames with headboards give users a more finished bedroom product compared with basic platform frames. This direction combines practical metal support with clean-line decorative design, making it suitable for retail, online product pages, and private label collections.", img.headboard, `<div class="gallery"><figure><img src="${img.headboard}" alt="Headboard bed frame" /><figcaption>Modern Minimal</figcaption></figure><figure><img src="${img.home1}" alt="Metal frame" /><figcaption>Clean Line</figcaption></figure><figure><img src="${img.heavy}" alt="Retail bed frame" /><figcaption>Retail Friendly</figcaption></figure><figure><img src="${img.metalMore}" alt="Private label direction" /><figcaption>Private Label Potential</figcaption></figure></div><div class="actions">${cta("Explore Headboard Bed Frame Options", "/contact", true)}</div>`, true, "alt")}
-  ${section("Bunk Beds & Dormitory Solutions", "Metal bed frame solutions for accommodation and high-use environment.", `<div class="split"><div class="image-panel fade-in"><img src="${img.bunkDormitory}" alt="Dormitory bed frame solutions" /></div><div class="fade-in"><p>For dormitories, schools, staff housing, hostels, rental apartments, and other accommodation projects, bed frames need to be durable, space-efficient, easy to install, and simple to maintain. We can support development for bunk beds, dormitory beds, and accommodation-use metal bed frame solutions based on your requirements.</p><br><ul class="check-list"><li>Single bed and bunk bed concepts</li><li>Dormitory-use structure discussion</li><li>Reinforced support</li><li>Simple installation</li><li>Bulk order coordination</li></ul><div class="actions">${cta("Discuss Bunk Bed Solutions", "/contact")}</div></div></div>`, "steel-band")}
+  ${twoCol("Bed Frames with Headboard", "A more complete metal bed frame direction for partners who need both structure and visual appeal.", "Bed frames with headboards give users a more finished bedroom product compared with basic platform frames. This direction combines practical metal support with clean-line decorative design, making it suitable for retail, online product pages, and private label collections.", img.headboard, `<div class="gallery"><figure>${imageTag(img.headboard, "Headboard bed frame")}<figcaption>Modern Minimal</figcaption></figure><figure>${imageTag(img.home1, "Metal frame")}<figcaption>Clean Line</figcaption></figure><figure>${imageTag(img.heavy, "Retail bed frame")}<figcaption>Retail Friendly</figcaption></figure><figure>${imageTag(img.metalMore, "Private label direction")}<figcaption>Private Label Potential</figcaption></figure></div><div class="actions">${cta("Explore Headboard Bed Frame Options", "/contact", true)}</div>`, true, "alt")}
+  ${section("Bunk Beds & Dormitory Solutions", "Metal bed frame solutions for accommodation and high-use environment.", `<div class="split"><div class="image-panel fade-in">${imageTag(img.bunkDormitory, "Dormitory bed frame solutions")}</div><div class="fade-in"><p>For dormitories, schools, staff housing, hostels, rental apartments, and other accommodation projects, bed frames need to be durable, space-efficient, easy to install, and simple to maintain. We can support development for bunk beds, dormitory beds, and accommodation-use metal bed frame solutions based on your requirements.</p><br><ul class="check-list"><li>Single bed and bunk bed concepts</li><li>Dormitory-use structure discussion</li><li>Reinforced support</li><li>Simple installation</li><li>Bulk order coordination</li></ul><div class="actions">${cta("Discuss Bunk Bed Solutions", "/contact")}</div></div></div>`, "steel-band")}
   ${twoCol("More Metal Bed Frame Design Directions", "", "In addition to our core metal platform and headboard bed frame directions, we can discuss more design variations based on your product line needs. These directions may include storage-friendly frames, foldable structures, decorative metal styles, sofa bed options, box spring support frames, and project-based concepts.", img.metalMore, `${tags(["Basic Platform Frames", "Metal Frames with Headboard", "Storage-Friendly High Clearance Frames", "Foldable / Easy-Assembly Frames", "Sofa Bed Options", "Decorative Metal Frame Styles", "Box Spring Support Frames", "Project-Based Concepts"], true)}<p>The designs shown here represent available bed frame directions and development references. Final product selection, specifications, and quotation can be confirmed during product discussion.</p>`)}
   ${section("Metal Bed Frame Specification Options", "", table(specMetal), "alt")}
-  <section class="section cta-band"><img src="${img.oem}" alt="Metal bed frame discussion" /><div class="container fade-in"><h2>Looking for the Right Metal Bed Frame Direction?</h2><p>Share your market, sales channel, product idea, and supply needs. We will help you explore suitable metal bed frame solutions for your business.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
+  <section class="section cta-band">${imageTag(img.oem, "Metal bed frame discussion")}<div class="container fade-in"><h2>Looking for the Right Metal Bed Frame Direction?</h2><p>Share your market, sales channel, product idea, and supply needs. We will help you explore suitable metal bed frame solutions for your business.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
 }
 
 function bambooPage() {
@@ -204,7 +264,7 @@ function bambooPage() {
   ${twoCol("Minimal Bamboo Beds", "Bamboo bed frames with headboard options for a stronger natural-style product identity.", "Minimal bamboo beds are designed for partners who want a more complete bedroom product with natural material appeal and stronger visual identity. Compared with basic bamboo platform beds, this direction is more suitable for lifestyle retail, online product pages, and private label collections.", img.bambooMinimal, `${tags(["Minimal Natural Design", "Modern Bamboo Style", "Warm Home Collection", "Compact Living Product Line"], true)}<div class="actions">${cta("Discuss Minimal Bamboo Bed Options", "/contact", true)}</div>`, true, "alt")}
   ${twoCol("More Bamboo Style Directions", "", "Beyond our core bamboo platform and minimal bamboo bed directions, we can discuss different headboard styles, decorative details, and natural-style design variations based on your product line needs. These styles help partners create a more distinctive bamboo bed frame collection for selected markets and lifestyle-focused channels.", img.bambooMore, `${tags(["Bamboo Platform Style", "Full-Panel Headboard", "Open-Slot Headboard", "Decorative Headboard", "Natural Minimal Style", "Compact Living Style", "Warm Home Collection", "Private Label Direction"], true)}<p>The designs shown here are used as development references. Final specifications and availability can be confirmed during product discussion.</p>`)}
   ${section("Bamboo Bed Frame Specification Options", "", table(specBamboo), "alt")}
-  <section class="section cta-band"><img src="${img.bambooMore}" alt="Bamboo bed frame discussion" /><div class="container fade-in"><h2>Looking for a Natural-Style Bed Frame Direction?</h2><p>Share your product line idea and market needs. We will help you explore suitable bamboo bed frame options.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
+  <section class="section cta-band">${imageTag(img.bambooMore, "Bamboo bed frame discussion")}<div class="container fade-in"><h2>Looking for a Natural-Style Bed Frame Direction?</h2><p>Share your product line idea and market needs. We will help you explore suitable bamboo bed frame options.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
 }
 
 function oemPage() {
@@ -243,7 +303,7 @@ function oemPage() {
     { icon: "3", title: "Commercial Needs", body: "Quantity estimate, target price range, packaging needs, and branding requirements." },
     { icon: "4", title: "References", body: "Photos, drawings, sizes, benchmark products, or project requirements." },
   ]), "alt")}
-  <section class="section cta-band"><img src="${img.oem}" alt="Custom bed frame development" /><div class="container fade-in"><h2>Ready to Develop a Bed Frame Product Around Your Market?</h2><p>Share your product idea, customization needs, and supply expectations. We will help you explore a practical development direction.</p><div class="actions">${cta("Start Custom Development", "/contact")}</div></div></section>`;
+  <section class="section cta-band">${imageTag(img.oem, "Custom bed frame development")}<div class="container fade-in"><h2>Ready to Develop a Bed Frame Product Around Your Market?</h2><p>Share your product idea, customization needs, and supply expectations. We will help you explore a practical development direction.</p><div class="actions">${cta("Start Custom Development", "/contact")}</div></div></section>`;
 }
 
 const solutionData = [
@@ -293,7 +353,7 @@ function solutions() {
     actions: cta("Send Request", "/contact"),
   })}
   ${section("Why Channel Fit Matters", "A bed frame that works well for online retail may not be the best option for a dormitory project. That is why we start by understanding how you sell before recommending what to supply.", `<div class="grid-4">${["Online Retail → Packaging & Assembly", "Retail / Wholesale → Product Line & Price Range", "Projects → Strength & Maintenance", "OEM → Custom Development"].map(x => `<article class="card icon-card fade-in"><span class="line-icon">→</span><h3>${x}</h3></article>`).join("")}</div>`, "alt")}
-  ${section("Solutions by Buyer Type", "", `<div class="tabs" data-tabs><div class="tab-list">${solutionData.map((x, i) => `<button class="${i === 0 ? "active" : ""}" data-tab="${i}">${x.title}</button>`).join("")}</div><div class="tab-panel" data-panel></div></div>`)}
+  ${section("Solutions by Buyer Type", "", `<div class="tabs" data-tabs><div class="tab-list">${solutionData.map((x, i) => `<button class="${i === 0 ? "active" : ""}" data-tab="${i}">${x.title}</button>`).join("")}</div><div class="tab-panel" data-panel>${renderTab(0)}</div></div>`)}
   ${section("How We Work With Partners", "", `<ol class="process">${[
     ["Understand Your Market", "We first learn about your target customers, sales channel, and product positioning."],
     ["Clarify Product Direction", "We discuss suitable bed frame types, structure, price range, packaging, and customization needs."],
@@ -301,12 +361,12 @@ function solutions() {
     ["Support Sampling", "We coordinate sample details, packaging, structure, and specification confirmation."],
     ["Move Toward Production", "Once the product direction is confirmed, we support order planning, packaging, quality control, and export coordination."],
   ].map(x => `<li class="fade-in"><div><h3>${x[0]}</h3><p>${x[1]}</p></div></li>`).join("")}</ol>`, "alt")}
-  <section class="section cta-band"><img src="${img.oem}" alt="Business discussion" /><div class="container fade-in"><h2>Looking for a Bed Frame Supplier Who Understands Your Business?</h2><p>Tell us how you sell, who you sell to, and what kind of product line you want to build. We will help you explore suitable bed frame solutions.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
+  <section class="section cta-band">${imageTag(img.oem, "Business discussion")}<div class="container fade-in"><h2>Looking for a Bed Frame Supplier Who Understands Your Business?</h2><p>Tell us how you sell, who you sell to, and what kind of product line you want to build. We will help you explore suitable bed frame solutions.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
 }
 
 function renderTab(i = 0) {
   const s = solutionData[i];
-  return `<div class="tab-image"><img src="${s.image}" alt="${s.title}" /></div><div class="tab-panel-body"><span class="kicker">${s.title}</span><h3>${s.headline}</h3><p>${s.body}</p><div class="grid-2"><div><h3>Customer Pain Points</h3><ul class="check-list">${s.pain.map(x => `<li>${x}</li>`).join("")}</ul></div><div><h3>How We Support</h3><ul class="check-list">${s.support.map(x => `<li>${x}</li>`).join("")}</ul></div></div>${cta(s.cta, "/contact", true)}</div>`;
+  return `<div class="tab-image">${imageTag(s.image, s.title)}</div><div class="tab-panel-body"><span class="kicker">${s.title}</span><h3>${s.headline}</h3><p>${s.body}</p><div class="grid-2"><div><h3>Customer Pain Points</h3><ul class="check-list">${s.pain.map(x => `<li>${x}</li>`).join("")}</ul></div><div><h3>How We Support</h3><ul class="check-list">${s.support.map(x => `<li>${x}</li>`).join("")}</ul></div></div>${cta(s.cta, "/contact", true)}</div>`;
 }
 
 function capabilities() {
@@ -319,19 +379,19 @@ function capabilities() {
     ["Export Support", img.exportSupport, "We support export-ready packaging, carton marks, product labels, loading discussion, documentation coordination, and order communication."],
   ];
   return `${simpleHero({
-    title: "Capabilities for Market-Ready Bed Frame Supply",
-    subtitle: "From structure and cost balance to packaging, assembly, custom support, and export coordination, we focus on the details that matter to bed frame partners.",
+    title: "Apexnix Bed Frame Supply Capabilities",
+    subtitle: "From structure and cost balance to packaging, assembly, custom support, quality control, and export coordination, we focus on the details that matter to global bed frame partners.",
     image: img.capabilitiesHero,
     actions: cta("Discuss Your Requirements", "/contact"),
   })}
-  <section class="section"><div class="container"><ol class="process">${caps.map((x) => `<li class="fade-in"><div class="split"><div><h3>${x[0]}</h3><p>${x[2]}</p></div><div class="image-panel soft"><img src="${x[1]}" alt="${x[0]}" /></div></div></li>`).join("")}</ol></div></section>
-  <section class="section cta-band"><img src="${img.oem}" alt="Product development table" /><div class="container fade-in"><h2>Need a Bed Frame Product Built Around Your Market?</h2><p>Share your product idea and requirements. We will help you evaluate the right development direction.</p><div class="actions">${cta("Discuss Your Requirements", "/contact")}</div></div></section>`;
+  <section class="section"><div class="container"><ol class="process">${caps.map((x) => `<li class="fade-in"><div class="split"><div><h3>${x[0]}</h3><p>${x[2]}</p></div><div class="image-panel soft">${imageTag(x[1], x[0])}</div></div></li>`).join("")}</ol></div></section>
+  <section class="section cta-band">${imageTag(img.oem, "Product development table")}<div class="container fade-in"><h2>Need a Bed Frame Product Built Around Your Market?</h2><p>Share your product idea and requirements. We will help you evaluate the right development direction.</p><div class="actions">${cta("Discuss Your Requirements", "/contact")}</div></div></section>`;
 }
 
 function about() {
   return `${simpleHero({
-    title: "About Us",
-    subtitle: "We are a focused bed frame provider combining manufacturing know-how with global business thinking.",
+    title: "About Apexnix Co.,Ltd.",
+    subtitle: "Apexnix is a focused B2B bed frame supplier combining manufacturing know-how, global business thinking, and export-ready cooperation support.",
     image: img.oem,
     actions: cta("Contact Us", "/contact"),
   })}
@@ -348,17 +408,17 @@ function about() {
     { icon: "S", title: "Supply Coordination", body: "Support across sampling, packaging, production, quality control, and export communication." },
   ]))}
   ${section("How We Work", "", `<ol class="process">${["Understand your market", "Clarify your sales channel", "Discuss your target price", "Recommend suitable product direction", "Support sampling and customization", "Coordinate production, packaging, and delivery"].map(x => `<li class="fade-in"><div><h3>${x}</h3></div></li>`).join("")}</ol>`, "alt")}
-  <section class="section cta-band"><img src="${img.oem}" alt="Business conversation" /><div class="container fade-in"><h2>Let's Start With a Better Business Conversation</h2><p>Tell us what kind of bed frame business you want to build. We will help you explore the right product direction.</p><div class="actions">${cta("Contact Us", "/contact")}</div></div></section>`;
+  <section class="section cta-band">${imageTag(img.oem, "Business conversation")}<div class="container fade-in"><h2>Let's Start With a Better Business Conversation</h2><p>Tell us what kind of bed frame business you want to build. We will help you explore the right product direction.</p><div class="actions">${cta("Contact Us", "/contact")}</div></div></section>`;
 }
 
 function contact() {
   return `${simpleHero({
-    title: "Let's Discuss Your Bed Frame Project",
+    title: "Contact Apexnix for Your Bed Frame Project",
     subtitle: "Whether you are sourcing for online retail, wholesale, furniture stores, accommodation projects, or private label development, tell us what you are looking for. We will help you explore suitable bed frame solutions.",
     image: img.contactHero,
   })}
   <section class="section"><div class="container contact-layout">
-    <aside class="contact-card fade-in"><h2>Apexnix Co.,Ltd.</h2><p>Unit A, Room 504, No.88 Anling 2nd Road, Huli District, Xiamen, China</p><br><a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></aside>
+    <aside class="contact-card fade-in"><h2>Apexnix Co.,Ltd.</h2><p>Unit A, Room 504<br>No.88 Anling 2nd Road<br>Huli District, Xiamen, China</p><br><a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></aside>
     <div class="fade-in"><div class="section-head"><span class="kicker">Send Request</span><h2>Get In Touch About Your Needs</h2><p>To help us understand your needs better, please share your market, sales channel, target price, quantity, and product requirements. The more context you provide, the better we can recommend suitable bed frame solutions.</p></div>
       <form data-contact-form action="${WEB3FORMS_ENDPOINT}" method="post">
         <input type="hidden" name="access_key" value="${WEB3FORMS_ACCESS_KEY}" />
@@ -397,6 +457,214 @@ const routes = {
   "/about": about,
   "/contact": contact,
 };
+const routeMeta = {
+  "/": {
+    title: "Apexnix Bed Frame Supplier | OEM Bed Frame Development",
+    description: "Apexnix is a focused B2B bed frame supplier offering metal bed frames, bamboo bed frames, OEM custom development, packaging support, and export-ready coordination.",
+    image: img.home1,
+    priority: "1.0",
+    breadcrumb: [{ name: "Home", path: "/" }],
+  },
+  "/products": {
+    title: "Bed Frame Products | Apexnix Metal, Bamboo & OEM Collections",
+    description: "Explore Apexnix bed frame product directions, including metal bed frames, bamboo bed frames, and OEM custom bed frame development for global B2B partners.",
+    image: img.productHero,
+    priority: "0.9",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "Products", path: "/products" }],
+  },
+  "/products/metal-bed-frames": {
+    title: "Metal Bed Frames Collection | Apexnix B2B Bed Frame Supplier",
+    description: "Practical metal bed frame directions for retail, online sales, wholesale, accommodation projects, private label programs, and custom B2B development.",
+    image: img.metalCard,
+    priority: "0.85",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "Products", path: "/products" }, { name: "Metal Bed Frames", path: "/products/metal-bed-frames" }],
+  },
+  "/products/bamboo-bed-frames": {
+    title: "Bamboo Bed Frames Collection | Apexnix Natural-Style Bed Frames",
+    description: "Bamboo bed frame directions for partners seeking natural-style platform beds, minimal bamboo beds, warm home collections, and private-label options.",
+    image: img.bambooCard,
+    priority: "0.85",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "Products", path: "/products" }, { name: "Bamboo Bed Frames", path: "/products/bamboo-bed-frames" }],
+  },
+  "/products/oem-custom-development": {
+    title: "OEM Custom Bed Frame Development | Apexnix",
+    description: "Apexnix supports OEM and custom bed frame development, including size, structure, material direction, packaging, private label, and project-based manufacturing.",
+    image: img.oem,
+    priority: "0.85",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "Products", path: "/products" }, { name: "OEM Custom Development", path: "/products/oem-custom-development" }],
+  },
+  "/solutions": {
+    title: "Bed Frame Solutions by Buyer Type | Apexnix",
+    description: "Apexnix helps e-commerce sellers, furniture retailers, wholesalers, project buyers, and private-label partners select market-fit bed frame solutions.",
+    image: img.solutionsHero,
+    priority: "0.8",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "Solutions", path: "/solutions" }],
+  },
+  "/capabilities": {
+    title: "Bed Frame Supply Capabilities | Apexnix Manufacturing Support",
+    description: "Apexnix capabilities cover bed frame product development, value engineering, packaging optimization, quality control, OEM support, and export coordination.",
+    image: img.capabilitiesHero,
+    priority: "0.75",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "Capabilities", path: "/capabilities" }],
+  },
+  "/about": {
+    title: "About Apexnix | Focused B2B Bed Frame Supplier",
+    description: "Learn about Apexnix Co.,Ltd., a focused bed frame provider combining manufacturing know-how, global B2B thinking, product line support, and export coordination.",
+    image: img.ourStory,
+    priority: "0.7",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "About Us", path: "/about" }],
+  },
+  "/contact": {
+    title: "Contact Apexnix | Bed Frame Project & RFQ Discussion",
+    description: "Contact Apexnix Co.,Ltd. to discuss metal bed frames, bamboo bed frames, OEM custom development, project supply, packaging needs, and export-ready cooperation.",
+    image: img.contactHero,
+    priority: "0.75",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "Contact Us", path: "/contact" }],
+  },
+};
+const indexableRoutes = Object.keys(routeMeta);
+
+function routePath(path = "/") {
+  return path === "/" ? "/" : `${path.replace(/\/$/, "")}/`;
+}
+
+function routeUrl(path = "/") {
+  return `${SITE_URL}${routePath(path)}`;
+}
+
+function assetUrl(src) {
+  if (/^https?:\/\//i.test(src)) return src;
+  const path = String(src).replace(/^\.?\//, "/");
+  return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+function runtimeAssetHref(fileName) {
+  if (window.location.protocol === "file:") return new URL(fileName, scriptUrl).href;
+  return `${BASE_PATH}/${fileName}`;
+}
+
+function getRouteMeta(path = "/") {
+  return routeMeta[path] || routeMeta["/"];
+}
+
+function schemasForPath(path = "/") {
+  const meta = getRouteMeta(path);
+  const breadcrumb = meta.breadcrumb || routeMeta["/"].breadcrumb;
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Apexnix Co.,Ltd.",
+      url: routeUrl("/"),
+      email: CONTACT_EMAIL,
+      logo: `${SITE_URL}/favicon.svg`,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Unit A, Room 504, No.88 Anling 2nd Road, Huli District",
+        addressLocality: "Xiamen",
+        addressCountry: "CN",
+      },
+      knowsAbout: [
+        "Metal bed frames",
+        "Bamboo bed frames",
+        "OEM bed frame development",
+        "Private label bed frames",
+        "Export-ready bed frame supply",
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: routeUrl("/"),
+      publisher: { "@type": "Organization", name: "Apexnix Co.,Ltd." },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: meta.title,
+      description: meta.description,
+      url: routeUrl(path),
+      image: assetUrl(meta.image),
+      isPartOf: { "@type": "WebSite", name: SITE_NAME, url: routeUrl("/") },
+      about: { "@type": "Thing", name: "B2B bed frame supplier" },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: breadcrumb.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.name,
+        item: routeUrl(item.path),
+      })),
+    },
+  ];
+}
+
+function ensureHeadTag(selector, createTag) {
+  let node = document.head.querySelector(selector);
+  if (!node) {
+    node = createTag();
+    document.head.appendChild(node);
+  }
+  return node;
+}
+
+function ensureMetaName(name) {
+  return ensureHeadTag(`meta[name="${name}"]`, () => {
+    const node = document.createElement("meta");
+    node.setAttribute("name", name);
+    return node;
+  });
+}
+
+function ensureMetaProperty(property) {
+  return ensureHeadTag(`meta[property="${property}"]`, () => {
+    const node = document.createElement("meta");
+    node.setAttribute("property", property);
+    return node;
+  });
+}
+
+function ensureLinkRel(rel) {
+  return ensureHeadTag(`link[rel="${rel}"]`, () => {
+    const node = document.createElement("link");
+    node.setAttribute("rel", rel);
+    return node;
+  });
+}
+
+function updateDocumentMeta(path = "/") {
+  const meta = getRouteMeta(path);
+  const canonical = routeUrl(path);
+  const image = assetUrl(meta.image);
+  document.title = meta.title;
+  ensureMetaName("description").setAttribute("content", meta.description);
+  ensureMetaName("robots").setAttribute("content", "index, follow");
+  ensureLinkRel("canonical").setAttribute("href", canonical);
+  ensureMetaProperty("og:site_name").setAttribute("content", SITE_NAME);
+  ensureMetaProperty("og:type").setAttribute("content", "website");
+  ensureMetaProperty("og:title").setAttribute("content", meta.title);
+  ensureMetaProperty("og:description").setAttribute("content", meta.description);
+  ensureMetaProperty("og:url").setAttribute("content", canonical);
+  ensureMetaProperty("og:image").setAttribute("content", image);
+  ensureMetaName("twitter:card").setAttribute("content", "summary_large_image");
+  ensureMetaName("twitter:title").setAttribute("content", meta.title);
+  ensureMetaName("twitter:description").setAttribute("content", meta.description);
+  ensureMetaName("twitter:image").setAttribute("content", image);
+  ensureLinkRel("icon").setAttribute("href", runtimeAssetHref("favicon.svg"));
+  ensureLinkRel("apple-touch-icon").setAttribute("href", runtimeAssetHref("apple-touch-icon.svg"));
+  ensureLinkRel("manifest").setAttribute("href", runtimeAssetHref("site.webmanifest"));
+
+  const schemaNode = ensureHeadTag('script[type="application/ld+json"][data-route-schema]', () => {
+    const node = document.createElement("script");
+    node.setAttribute("type", "application/ld+json");
+    node.setAttribute("data-route-schema", "");
+    return node;
+  });
+  schemaNode.textContent = JSON.stringify(schemasForPath(path));
+}
 
 function getRouteFromLocation() {
   if (window.location.protocol === "file:" || window.location.hash.startsWith("#/")) {
@@ -418,24 +686,30 @@ function getRouteFromLocation() {
   };
 }
 
+function normalizeRoute(route = "/") {
+  const [pathPart = "/", hash = ""] = String(route).split("#");
+  const cleanPath = pathPart.replace(/\/index\.html$/, "").replace(/\/$/, "") || "/";
+  return `${cleanPath}${hash ? `#${hash}` : ""}`;
+}
+
 function getRouteFromHref(href) {
   if (!href || href.startsWith("mailto:") || href.startsWith("tel:")) return null;
   if (/^https?:\/\//i.test(href)) {
     const url = new URL(href);
     if (url.origin !== window.location.origin) return null;
-    return `${url.pathname.replace(basePattern, "") || "/"}${url.hash}`;
+    return normalizeRoute(`${url.pathname.replace(basePattern, "") || "/"}${url.hash}`);
   }
-  if (href.startsWith("#")) return `${getRouteFromLocation().path}${href}`;
-  if (href.startsWith("/")) return href;
+  if (href.startsWith("#")) return normalizeRoute(`${getRouteFromLocation().path}${href}`);
+  if (href.startsWith("/")) return normalizeRoute(href);
   const url = new URL(href, window.location.href);
-  return `${url.pathname.replace(basePattern, "") || "/"}${url.hash}`;
+  return normalizeRoute(`${url.pathname.replace(basePattern, "") || "/"}${url.hash}`);
 }
 
 function toDeployedPath(route) {
-  if (window.location.protocol === "file:") return route;
-  const [path, hash = ""] = route.split("#");
-  const cleanPath = path === "/" ? "" : path;
-  return `${BASE_PATH}${cleanPath || "/"}${hash ? `#${hash}` : ""}`;
+  const [path, hash = ""] = normalizeRoute(route).split("#");
+  const canonicalPath = routePath(path);
+  if (window.location.protocol === "file:") return `${canonicalPath}${hash ? `#${hash}` : ""}`;
+  return `${BASE_PATH}${canonicalPath}${hash ? `#${hash}` : ""}`;
 }
 
 function getStoredTheme() {
@@ -480,6 +754,7 @@ function bindThemeToggle() {
 
 function render() {
   const { path, anchor } = getRouteFromLocation();
+  updateDocumentMeta(path);
   document.querySelector("#app").innerHTML = (routes[path] || home)();
   document.querySelector(".main-nav").classList.remove("open");
   bindLinks();
@@ -492,18 +767,22 @@ function render() {
 }
 
 function bindLinks() {
-  document.querySelectorAll("[data-link]").forEach((a) => {
-    a.onclick = (e) => {
-      const route = getRouteFromHref(a.getAttribute("href"));
-      if (!route) return;
-      e.preventDefault();
-      if (window.location.protocol === "file:") {
-        window.location.hash = route;
-      } else {
-        history.pushState({}, "", toDeployedPath(route));
-      }
-      render();
-    };
+  if (document.documentElement.dataset.linksBound) return;
+  document.documentElement.dataset.linksBound = "true";
+  document.addEventListener("click", (event) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = event.target.closest("a[data-link]");
+    if (!link || link.target) return;
+    const route = getRouteFromHref(link.getAttribute("href"));
+    if (!route) return;
+    event.preventDefault();
+    const nextPath = toDeployedPath(route);
+    if (window.location.protocol === "file:") {
+      window.location.hash = nextPath;
+    } else {
+      history.pushState({}, "", nextPath);
+    }
+    render();
   });
 }
 function bindCarousel() {

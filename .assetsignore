@@ -8,6 +8,8 @@
 .deploy/**
 node_modules
 node_modules/**
+scripts
+scripts/**
 .DS_Store
 .assetsignore
 .gitignore
