@@ -191,7 +191,7 @@ function buildHeader(routePath) {
             </svg>
           </span>
         </button>
-        <a class="header-cta" href="/contact/" data-link>Send Request <span>→</span></a>
+        <a class="header-cta" href="/contact/" data-link>Send Request <span class="soft-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg></span></a>
       </div>
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>

@@ -117,7 +117,11 @@ function canonicalInternalHref(href = "/") {
 }
 
 function cta(label = "Send Request", href = "/contact", alt = false) {
-  return `<a class="btn ${alt ? "alt" : ""}" href="${canonicalInternalHref(href)}" data-link>${label} <span>→</span></a>`;
+  return `<a class="btn ${alt ? "alt" : ""}" href="${canonicalInternalHref(href)}" data-link>${label} ${arrowIcon()}</a>`;
+}
+function arrowIcon(direction = "right") {
+  if (direction === "both") return `<span class="soft-arrow soft-arrow-both" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 12h16"></path><path d="m8 6-6 6 6 6"></path><path d="m16 6 6 6-6 6"></path></svg></span>`;
+  return `<span class="soft-arrow${direction === "left" ? " soft-arrow-left" : ""}" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg></span>`;
 }
 function escapeAttr(value = "") {
   return String(value)
@@ -185,7 +189,7 @@ function home() {
       <div class="hero-content slide-copy ${i === 0 ? "active" : ""}" ${i ? "hidden" : ""}>
         <span class="kicker">Focused B2B Bed Frame Supplier</span>${i === 0 ? `<h1>${s[1]}</h1>` : `<p class="hero-slide-title">${s[1]}</p>`}<p>${s[2]}</p>${tags(s[3])}<div class="hero-actions">${s[4]}</div>
       </div>`).join("")}
-    <div class="hero-arrows"><button class="icon-button" data-prev>←</button><button class="icon-button" data-next>→</button></div>
+    <div class="hero-arrows"><button class="icon-button" data-prev aria-label="Previous slide">${arrowIcon("left")}</button><button class="icon-button" data-next aria-label="Next slide">${arrowIcon()}</button></div>
     <div class="hero-dots">${[0,1,2].map((_, i) => `<button class="${i === 0 ? "active" : ""}" data-dot="${i}" aria-label="Show slide ${i + 1}"></button>`).join("")}</div>
   </section>
   ${twoCol("Better Bed Frames. Better Business Conversations.", "", "With years of focused experience in bed frame manufacturing, we understand that a competitive bed frame is not only about production.<br><br>It also needs the right structure, reliable quality, efficient packaging, easy assembly, and a cost-performance balance that supports your business model.<br><br>That is why we combine manufacturing know-how with market understanding, helping partners build bed frame products that are not only well-made, but ready for real sales channels.", img.statement, "", false)}
@@ -196,7 +200,7 @@ function home() {
   </div>`, "alt")}
   ${section("What Makes Us Different", "We combine bed frame manufacturing know-how with global business thinking, so our cooperation starts before the quotation.", iconGrid([
     { icon: "◇", title: "Value-Engineered Products", body: "We balance structure, cost, quality, packaging, and assembly for stronger product competitiveness." },
-    { icon: "↔", title: "Channel-Fit Solutions", body: "We develop bed frame solutions based on how you sell: online, retail, wholesale, or project supply." },
+    { icon: arrowIcon("both"), title: "Channel-Fit Solutions", body: "We develop bed frame solutions based on how you sell: online, retail, wholesale, or project supply." },
     { icon: "□", title: "Flat-Pack & Easy Assembly", body: "We focus on carton efficiency, clear instructions, and lower after-sales risk." },
     { icon: "＋", title: "Business-Oriented Partnership", body: "We discuss your market, your customer, and your product line strategy." },
   ]))}
@@ -355,7 +359,7 @@ function solutions() {
     image: img.solutionsHero,
     actions: cta("Send Request", "/contact"),
   })}
-  ${section("Why Channel Fit Matters", "A bed frame that works well for online retail may not be the best option for a dormitory project. That is why we start by understanding how you sell before recommending what to supply.", `<div class="grid-4">${["Online Retail → Packaging & Assembly", "Retail / Wholesale → Product Line & Price Range", "Projects → Strength & Maintenance", "OEM → Custom Development"].map(x => `<article class="card icon-card fade-in"><span class="line-icon">→</span><h3>${x}</h3></article>`).join("")}</div>`, "alt")}
+  ${section("Why Channel Fit Matters", "A bed frame that works well for online retail may not be the best option for a dormitory project. That is why we start by understanding how you sell before recommending what to supply.", `<div class="grid-4">${["Online Retail / Packaging & Assembly", "Retail / Wholesale / Product Line & Price Range", "Projects / Strength & Maintenance", "OEM / Custom Development"].map(x => `<article class="card icon-card fade-in"><span class="line-icon">${arrowIcon()}</span><h3>${x}</h3></article>`).join("")}</div>`, "alt")}
   ${section("Solutions by Buyer Type", "", `<div class="tabs" data-tabs><div class="tab-list">${solutionData.map((x, i) => `<button class="${i === 0 ? "active" : ""}" data-tab="${i}">${x.title}</button>`).join("")}</div><div class="tab-panel" data-panel>${renderTab(0)}</div></div>`)}
   ${section("How We Work With Partners", "", `<ol class="process">${[
     ["Understand Your Market", "We first learn about your target customers, sales channel, and product positioning."],
@@ -443,7 +447,7 @@ function contact() {
         <label>Sales Channel<select name="sales_channel"><option>Online Retail</option><option>Offline Retail</option><option>Wholesale Distribution</option><option>Project Supply</option><option>Private Label / Brand</option><option>Other</option></select></label>
         <label class="full">Message<textarea name="message"></textarea></label>
         <p class="form-status full" data-contact-status hidden></p>
-        <button class="btn full" type="submit">Send Request <span>→</span></button>
+        <button class="btn full" type="submit">Send Request ${arrowIcon()}</button>
       </form>
     </div>
   </div></section>`;

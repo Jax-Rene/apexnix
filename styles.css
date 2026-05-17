@@ -249,8 +249,27 @@ p { margin: 0; color: var(--muted); }
   box-shadow: var(--action-hover-shadow);
   transform: translateY(-2px);
 }
-.btn:hover span { transform: translateX(4px); }
-.btn span { display: inline-block; transition: transform .25s ease; }
+.soft-arrow {
+  --arrow-size: 18px;
+  display: inline-block;
+  flex: 0 0 var(--arrow-size);
+  width: var(--arrow-size);
+  height: var(--arrow-size);
+  color: currentColor;
+  transition: transform .25s ease;
+}
+.soft-arrow svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.soft-arrow-left { transform: scaleX(-1); }
+.header-cta:hover .soft-arrow, .btn:hover .soft-arrow { transform: translateX(4px); }
 .btn.alt {
   background: transparent;
   color: var(--strong);
@@ -324,11 +343,14 @@ p { margin: 0; color: var(--muted); }
   gap: 10px;
 }
 .hero-dots button {
+  flex: 0 0 10px;
   width: 10px;
   height: 10px;
+  padding: 0;
   border: 1px solid rgba(255,255,255,.8);
-  border-radius: 50%;
+  border-radius: 999px;
   background: transparent;
+  appearance: none;
 }
 .hero-dots button.active { background: var(--white); }
 .hero-arrows {
@@ -342,11 +364,21 @@ p { margin: 0; color: var(--muted); }
 .icon-button {
   width: 42px;
   height: 42px;
+  display: grid;
+  place-items: center;
   border: 1px solid rgba(255,255,255,.5);
+  border-radius: 999px;
   background: rgba(255,255,255,.08);
   color: var(--white);
   cursor: pointer;
+  transition: background .25s ease, border-color .25s ease, transform .25s ease;
 }
+.icon-button:hover {
+  border-color: rgba(255,255,255,.78);
+  background: rgba(255,255,255,.14);
+  transform: translateY(-1px);
+}
+.icon-button .soft-arrow { --arrow-size: 18px; }
 .tag-list { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 0; padding: 0; list-style: none; }
 .tag-list li {
   padding: 7px 11px;
@@ -407,9 +439,11 @@ p { margin: 0; color: var(--muted); }
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
+  border-radius: 999px;
   color: var(--warm);
   font-weight: 800;
 }
+.line-icon .soft-arrow { --arrow-size: 18px; }
 .steel-band {
   background: var(--steel-bg);
   color: var(--white);
