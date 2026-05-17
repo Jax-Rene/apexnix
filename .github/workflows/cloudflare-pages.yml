@@ -24,6 +24,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
       - name: Prepare static assets
         run: |
           node scripts/prerender.mjs
