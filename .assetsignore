@@ -16,4 +16,3 @@ scripts/**
 .nojekyll
 README.md
 wrangler.jsonc
-_worker.js
