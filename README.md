@@ -13,7 +13,7 @@ Apexnix is a prerendered static website for a B2B bed frame supplier. It uses pl
 - `robots.txt` and `sitemap.xml` - search engine crawl hints for `https://www.apexnix.com`
 - `404.html` - custom noindex page for unknown routes
 - `_redirects` - clean trailing-slash redirects for Cloudflare Pages
-- `functions/_middleware.js` - production canonical redirects for `https://www.apexnix.com`
+- `_worker.js` - Cloudflare Pages advanced-mode worker for production canonical redirects
 
 ## Local Preview
 
@@ -54,7 +54,7 @@ For Google Search Console:
 3. Submit `https://www.apexnix.com/sitemap.xml`.
 4. Use URL Inspection for the nine sitemap URLs and request indexing where needed.
 
-Cloudflare Pages `_redirects` does not support domain-level redirects, so `functions/_middleware.js` handles canonical host and protocol redirects. It redirects `http://*`, `https://apexnix.com/*`, and `https://apexnix.pages.dev/*` to `https://www.apexnix.com/*` with a 301, preserving the path and query string. The middleware also mirrors the trailing-slash redirects as a safeguard, while `_redirects` remains the static path-level fallback.
+Cloudflare Pages `_redirects` does not support domain-level redirects, so `_worker.js` uses Pages advanced mode to handle canonical host and protocol redirects before static assets are served. It redirects `http://*`, `https://apexnix.com/*`, and `https://*.apexnix.pages.dev/*` to `https://www.apexnix.com/*` with a 301, preserving the path and query string. The worker also mirrors the trailing-slash redirects as a safeguard, while `_redirects` remains the static path-level fallback.
 
 If Google Search Console reports `Syntax not understood` for a `Content-Signal` line in `robots.txt`, that line is injected by Cloudflare's managed robots.txt setting, not this repository. To keep the public robots file strictly standard, turn off Cloudflare's managed robots.txt / content signals display in the Cloudflare dashboard.
 
