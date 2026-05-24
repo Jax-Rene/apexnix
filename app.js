@@ -4,6 +4,8 @@ const BASE_PATH = window.location.protocol === "file:" ? "" : deployedBase;
 const SITE_URL = "https://www.apexnix.com";
 const SITE_NAME = "Apexnix";
 const CONTACT_EMAIL = "sales@apextella.com";
+const ROBOTS_META = "index, follow, max-image-preview:large";
+const OG_LOCALE = "en_US";
 const LOGO_FILE = "apexnix-logo-light.svg";
 const LOGO_DARK_FILE = "apexnix-logo-dark.svg";
 const AVATAR_FILE = "apexnix-avatar.svg";
@@ -166,6 +168,9 @@ function productCard(title, body, image, link, button) {
     <div class="card-body"><h3>${title}</h3><p>${body}</p>${cta(button, link, true)}</div>
   </article>`;
 }
+function textCard(title, body, link = "", button = "Learn More") {
+  return `<article class="card icon-card fade-in"><h3>${title}</h3><p>${body}</p>${link ? cta(button, link, true) : ""}</article>`;
+}
 function iconGrid(cards) {
   return `<div class="grid-4">${cards.map((x) => `<article class="card icon-card fade-in"><span class="line-icon">${x.icon}</span><h3>${x.title}</h3><p>${x.body}</p></article>`).join("")}</div>`;
 }
@@ -177,6 +182,13 @@ function twoCol(title, subtitle, body, image, extra = "", reverse = false, cls =
     <div class="fade-in"><span class="kicker">Apexnix</span><h2>${title}</h2><p><strong>${subtitle}</strong></p><p>${body}</p>${extra}</div>
     <div class="image-panel fade-in">${imageTag(image, title)}</div>
   </div></section>`;
+}
+function faqSection(items = [], cls = "alt") {
+  if (!items.length) return "";
+  return section("Frequently Asked Questions", "", `<div class="faq-grid">${items.map((item) => `<article class="faq-item fade-in"><h3>${item.question}</h3><p>${item.answer}</p></article>`).join("")}</div>`, cls);
+}
+function routeFaq(path = "/") {
+  return routeMeta[path]?.faq || [];
 }
 
 function home() {
@@ -204,6 +216,7 @@ function home() {
     { icon: "□", title: "Flat-Pack & Easy Assembly", body: "We focus on carton efficiency, clear instructions, and lower after-sales risk." },
     { icon: "＋", title: "Business-Oriented Partnership", body: "We discuss your market, your customer, and your product line strategy." },
   ]))}
+  ${faqSection(routeFaq("/"))}
   <section class="section cta-band">${imageTag(img.project, "Export-ready bed frame supply")}<div class="container fade-in"><h2>Ready to Build Your Bed Frame Product Line?</h2><p>Share your market, sales channel, product idea, and supply needs. We will help you explore suitable bed frame solutions that match your business.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
 }
 
@@ -226,6 +239,7 @@ function products() {
     ["Bamboo Bed Frames", "Natural-style retail and online collections — Differentiated, warm, nature-inspired"],
     ["OEM / Custom Development", "Private label and product line partners — Flexible, market-fit, development-driven"],
   ], "Product Type", "Best For / Key Value"), "alt", "product-comparison")}
+  ${faqSection(routeFaq("/products"), "")}
   <section class="section cta-band">${imageTag(img.oem, "Product sourcing discussion")}<div class="container fade-in"><h2>Ready to Explore the Bed Frame Solution?</h2><p>Share your market, sales channel, product idea, and supply needs. We will help you explore suitable metal bed frame, bamboo bed frame, or custom development solutions.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
 }
 
@@ -249,6 +263,7 @@ function metalPage() {
   ${section("Bunk Beds & Dormitory Solutions", "Metal bed frame solutions for accommodation and high-use environment.", `<div class="split"><div class="image-panel fade-in">${imageTag(img.bunkDormitory, "Dormitory bed frame solutions")}</div><div class="fade-in"><p>For dormitories, schools, staff housing, hostels, rental apartments, and other accommodation projects, bed frames need to be durable, space-efficient, easy to install, and simple to maintain. We can support development for bunk beds, dormitory beds, and accommodation-use metal bed frame solutions based on your requirements.</p><br><ul class="check-list"><li>Single bed and bunk bed concepts</li><li>Dormitory-use structure discussion</li><li>Reinforced support</li><li>Simple installation</li><li>Bulk order coordination</li></ul><div class="actions">${cta("Discuss Bunk Bed Solutions", "/contact")}</div></div></div>`, "steel-band")}
   ${twoCol("More Metal Bed Frame Design Directions", "", "In addition to our core metal platform and headboard bed frame directions, we can discuss more design variations based on your product line needs. These directions may include storage-friendly frames, foldable structures, decorative metal styles, sofa bed options, box spring support frames, and project-based concepts.", img.metalMore, `${tags(["Basic Platform Frames", "Metal Frames with Headboard", "Storage-Friendly High Clearance Frames", "Foldable / Easy-Assembly Frames", "Sofa Bed Options", "Decorative Metal Frame Styles", "Box Spring Support Frames", "Project-Based Concepts"], true)}<p>The designs shown here represent available bed frame directions and development references. Final product selection, specifications, and quotation can be confirmed during product discussion.</p>`)}
   ${section("Metal Bed Frame Specification Options", "", table(specMetal), "alt")}
+  ${faqSection(routeFaq("/products/metal-bed-frames"), "")}
   <section class="section cta-band">${imageTag(img.oem, "Metal bed frame discussion")}<div class="container fade-in"><h2>Looking for the Right Metal Bed Frame Direction?</h2><p>Share your market, sales channel, product idea, and supply needs. We will help you explore suitable metal bed frame solutions for your business.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
 }
 
@@ -271,6 +286,7 @@ function bambooPage() {
   ${twoCol("Minimal Bamboo Beds", "Bamboo bed frames with headboard options for a stronger natural-style product identity.", "Minimal bamboo beds are designed for partners who want a more complete bedroom product with natural material appeal and stronger visual identity. Compared with basic bamboo platform beds, this direction is more suitable for lifestyle retail, online product pages, and private label collections.", img.bambooMinimal, `${tags(["Minimal Natural Design", "Modern Bamboo Style", "Warm Home Collection", "Compact Living Product Line"], true)}<div class="actions">${cta("Discuss Minimal Bamboo Bed Options", "/contact", true)}</div>`, true, "alt")}
   ${twoCol("More Bamboo Style Directions", "", "Beyond our core bamboo platform and minimal bamboo bed directions, we can discuss different headboard styles, decorative details, and natural-style design variations based on your product line needs. These styles help partners create a more distinctive bamboo bed frame collection for selected markets and lifestyle-focused channels.", img.bambooMore, `${tags(["Bamboo Platform Style", "Full-Panel Headboard", "Open-Slot Headboard", "Decorative Headboard", "Natural Minimal Style", "Compact Living Style", "Warm Home Collection", "Private Label Direction"], true)}<p>The designs shown here are used as development references. Final specifications and availability can be confirmed during product discussion.</p>`)}
   ${section("Bamboo Bed Frame Specification Options", "", table(specBamboo), "alt")}
+  ${faqSection(routeFaq("/products/bamboo-bed-frames"), "")}
   <section class="section cta-band">${imageTag(img.bambooMore, "Bamboo bed frame discussion")}<div class="container fade-in"><h2>Looking for a Natural-Style Bed Frame Direction?</h2><p>Share your product line idea and market needs. We will help you explore suitable bamboo bed frame options.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
 }
 
@@ -310,47 +326,128 @@ function oemPage() {
     { icon: "3", title: "Commercial Needs", body: "Quantity estimate, target price range, packaging needs, and branding requirements." },
     { icon: "4", title: "References", body: "Photos, drawings, sizes, benchmark products, or project requirements." },
   ]), "alt")}
+  ${faqSection(routeFaq("/products/oem-custom-development"), "")}
   <section class="section cta-band">${imageTag(img.oem, "Custom bed frame development")}<div class="container fade-in"><h2>Ready to Develop a Bed Frame Product Around Your Market?</h2><p>Share your product idea, customization needs, and supply expectations. We will help you explore a practical development direction.</p><div class="actions">${cta("Start Custom Development", "/contact")}</div></div></section>`;
 }
 
 const solutionData = [
   {
+    path: "/solutions/ecommerce-bed-frame-supply",
     title: "For E-commerce & Online Retail",
+    metaTitle: "E-commerce Bed Frame Supplier | Flat-Pack Online Retail Supply",
+    metaDescription: "Apexnix supports e-commerce bed frame sellers with flat-pack metal and bamboo bed frames, easy assembly, compact cartons, private label packaging, and OEM development.",
+    heroTitle: "E-commerce Bed Frame Supplier for Online Retail",
+    heroSubtitle: "Flat-pack, easy-assembly bed frame solutions for online sellers, marketplace brands, and direct-to-consumer furniture businesses.",
     image: img.project,
     headline: "Bed frames designed to sell online, and survive the full customer journey.",
     body: "For online sales, a bed frame must do more than look good in photos. It needs to be easy to ship, easy to assemble, easy to understand, and stable enough to reduce complaints after delivery.",
     pain: ["Carton size affects shipping cost.", "Complicated assembly leads to bad reviews.", "Weak packaging increases damage risk.", "Unclear product selling points reduce conversion."],
-    support: ["Flat-pack structure discussion", "Compact carton planning", "Easy-assembly design direction", "Private label packaging options"],
+    support: ["Flat-pack structure discussion", "Compact carton planning", "Easy-assembly design direction", "Private label packaging options", "Product-page selling point support"],
+    productDirections: [
+      ["Metal Platform Beds", "Cost-efficient steel platform bed frames with no-box-spring support and storage-friendly clearance.", "/products/metal-bed-frames"],
+      ["Bamboo Platform Beds", "Natural-style platform beds for online home and compact living collections.", "/products/bamboo-bed-frames"],
+      ["Private Label Packaging", "Carton marks, barcodes, instruction manuals, and packaging details for marketplace operations.", "/products/oem-custom-development"],
+    ],
+    faq: [
+      { question: "What bed frame features matter most for online retail?", answer: "Online retail bed frames usually need compact cartons, clear instructions, easy assembly, stable structure, and photo-friendly product stories." },
+      { question: "Can Apexnix support private label packaging for e-commerce sellers?", answer: "Yes. Packaging discussion can include carton marks, barcode labels, instruction manuals, protection details, and private label presentation." },
+      { question: "Which product direction is best for a first online bed frame line?", answer: "Most new online lines start with practical metal platform bed frames, then add bamboo or headboard options once positioning is clear." },
+    ],
     cta: "Discuss E-commerce Bed Frame Solutions",
   },
   {
+    path: "/solutions/furniture-retail-wholesale-bed-frames",
     title: "For Furniture Retailers & Wholesalers",
+    metaTitle: "Wholesale Bed Frame Supplier | Retail & Distributor Bed Frames",
+    metaDescription: "Apexnix helps furniture retailers, importers, and wholesalers build repeatable metal, bamboo, and private-label bed frame lines with stable supply and export packaging.",
+    heroTitle: "Wholesale Bed Frame Supplier for Retailers and Distributors",
+    heroSubtitle: "Build a repeatable bed frame product line with practical structures, multiple size options, stable supply, and export-ready packaging.",
     image: img.retail,
     headline: "Build a bed frame line that is easy to position, repeat, and sell.",
     body: "Retailers and wholesalers need more than one good-looking product. They need a clear product line, stable supply, suitable price levels, and SKUs that can serve different customer needs.",
     pain: ["Too many similar products make selection difficult.", "Low-price products may create quality and complaint risks.", "Unstable supply affects repeat orders.", "Poor packaging increases warehouse and logistics problems."],
     support: ["Product line planning", "Multiple size options", "Color and finish options", "Stable repeatable product selection", "Export packaging support"],
+    productDirections: [
+      ["Core Metal Bed Frames", "Practical platform and headboard bed frames for repeatable retail and wholesale programs.", "/products/metal-bed-frames"],
+      ["Bamboo Bed Frame Collection", "A differentiated natural-style option for retailers who need warmer product stories.", "/products/bamboo-bed-frames"],
+      ["OEM Line Development", "Adjust size, finish, packaging, and private label details for distributor programs.", "/products/oem-custom-development"],
+    ],
+    faq: [
+      { question: "Can Apexnix support multiple bed frame sizes for wholesale programs?", answer: "Yes. Standard size platforms can include US and European sizes, with custom dimensions discussed based on market and order plan." },
+      { question: "How do wholesalers reduce bed frame product risk?", answer: "Start with a focused product line, confirm packaging and assembly logic early, and choose structures that can be repeated reliably across orders." },
+      { question: "Does Apexnix supply both metal and bamboo bed frames?", answer: "Yes. Apexnix focuses on metal bed frames, bamboo bed frames, and OEM custom development for B2B partners." },
+    ],
     cta: "Build Your Retail / Wholesale Bed Frame Line",
   },
   {
+    path: "/solutions/accommodation-project-bed-frames",
     title: "For Accommodation & Project Supply",
+    metaTitle: "Project Bed Frame Supplier | Dormitory & Rental Housing Beds",
+    metaDescription: "Apexnix supports accommodation, dormitory, hostel, and rental housing buyers with durable metal bed frames, bunk bed concepts, bulk packaging, and supply coordination.",
+    heroTitle: "Project Bed Frame Supplier for Accommodation and Dormitories",
+    heroSubtitle: "Durable metal bed frame and bunk bed directions for high-use environments, bulk delivery, and project-based supply.",
     image: img.project,
     headline: "Durable bed frame options for high-use environments.",
     body: "Accommodation projects require bed frames that are practical, durable, easy to install, and simple to maintain. The focus is structure, stability, bulk supply, and long-term use.",
     pain: ["Products must handle frequent use.", "Installation needs to be simple for bulk projects.", "Maintenance and replacement should be manageable.", "Packaging should support bulk delivery."],
-    support: ["Metal bed frame options for project use", "Bunk bed / dormitory bed discussion", "Reinforced structure options", "Bulk packaging support"],
+    support: ["Metal bed frame options for project use", "Bunk bed / dormitory bed discussion", "Reinforced structure options", "Bulk packaging support", "Replacement and maintenance discussion"],
+    productDirections: [
+      ["Heavy-Duty Platform Beds", "Steel platform frames for rental housing, staff housing, and repeated-use environments.", "/products/metal-bed-frames"],
+      ["Bunk and Dormitory Bed Concepts", "Space-efficient metal bed directions for schools, hostels, and accommodation projects.", "/products/metal-bed-frames"],
+      ["Project-Based Manufacturing", "Structure, packaging, installation, and bulk supply details discussed around the project scenario.", "/products/oem-custom-development"],
+    ],
+    faq: [
+      { question: "What matters most for accommodation project bed frames?", answer: "Project buyers usually care about durable structure, simple installation, manageable maintenance, bulk packaging, and stable replacement support." },
+      { question: "Can Apexnix discuss bunk bed or dormitory bed concepts?", answer: "Yes. Metal bunk bed and dormitory bed concepts can be discussed based on use environment, size, structure, and bulk order needs." },
+      { question: "Are project bed frames the same as retail bed frames?", answer: "Not always. Project-use frames often need stronger structure, simpler installation, easier maintenance, and packaging that fits bulk delivery." },
+    ],
     cta: "Discuss Project Bed Frame Supply",
   },
   {
+    path: "/solutions/private-label-oem-bed-frames",
     title: "For OEM / Private Label Partners",
+    metaTitle: "Private Label Bed Frame Manufacturer | OEM Custom Development",
+    metaDescription: "Apexnix provides OEM and private label bed frame development for brands and importers, including custom sizes, structures, packaging, labels, and target-price discussion.",
+    heroTitle: "Private Label Bed Frame Manufacturer and OEM Development Partner",
+    heroSubtitle: "Turn a market idea into a manufacturable metal, bamboo, or mixed-material bed frame product line.",
     image: img.solutionOem,
     headline: "Turn your market idea into a manufacturable bed frame product.",
     body: "For private label partners, the real question is whether the product fits your brand, channel, target price, packaging standard, and customer expectations.",
     pain: ["Existing factory models may not fit the target market.", "Product cost and structure need to match the price strategy.", "Packaging and labels must support the partner's brand.", "Sampling without clear direction wastes time."],
-    support: ["Market and channel discussion", "Target-price development", "Structure adjustment", "Size and color customization", "Mass production follow-up"],
+    support: ["Market and channel discussion", "Target-price development", "Structure adjustment", "Size and color customization", "Private label packaging", "Mass production follow-up"],
+    productDirections: [
+      ["OEM Metal Bed Frames", "Adjust steel frame size, height, support, finish, packaging, and label details around your channel.", "/products/metal-bed-frames"],
+      ["OEM Bamboo Bed Frames", "Develop natural-style bamboo bed frame directions for lifestyle retail or online collections.", "/products/bamboo-bed-frames"],
+      ["Custom Development Process", "Clarify product direction, review references, align sample scope, then move toward production.", "/products/oem-custom-development"],
+    ],
+    faq: [
+      { question: "What can be customized for private label bed frames?", answer: "Customization can include size, height, structure, material direction, color, packaging, carton marks, labels, instruction manuals, and project requirements." },
+      { question: "Can Apexnix help before a final product drawing is ready?", answer: "Yes. The process can start from market, channel, benchmark products, target price, and product direction before detailed sample alignment." },
+      { question: "Does OEM development require a completely new structure?", answer: "Not always. Many projects start from an existing platform and adjust size, finish, packaging, or structure for better market fit." },
+    ],
     cta: "Start OEM / Private Label Discussion",
   },
 ];
+
+function solutionCard(solution) {
+  return productCard(solution.heroTitle, solution.metaDescription, solution.image, solution.path, solution.cta);
+}
+
+function solutionLandingPage(solution) {
+  return `${simpleHero({
+    title: solution.heroTitle,
+    subtitle: solution.heroSubtitle,
+    body: solution.body,
+    image: solution.image,
+    tagItems: solution.support.slice(0, 4),
+    actions: cta(solution.cta, "/contact"),
+  })}
+  ${section("Common Buyer Requirements", "These are the practical sourcing questions that usually decide whether a bed frame line works in the real channel.", `<div class="grid-4">${solution.pain.map((item) => textCard(item, "Apexnix uses the RFQ discussion to clarify this requirement before recommending a product direction.")).join("")}</div>`, "alt")}
+  ${twoCol(solution.headline, "", `${solution.body}<br><br>We connect product structure, packaging, assembly, target price, and supply planning so the selected bed frame direction fits the buyer's business model, not only the factory catalog.`, solution.image, `<ul class="check-list">${solution.support.map((item) => `<li>${item}</li>`).join("")}</ul><div class="actions">${cta("Send Project Details", "/contact", true)}</div>`)}
+  ${section("Recommended Product Directions", "Use these directions as a starting point for sourcing discussion. Final specifications, sizes, materials, and packaging can be confirmed during RFQ.", `<div class="grid-3">${solution.productDirections.map((item) => textCard(item[0], item[1], item[2], "View Related Products")).join("")}</div>`, "alt")}
+  ${faqSection(solution.faq, "")}
+  <section class="section cta-band">${imageTag(img.oem, solution.heroTitle)}<div class="container fade-in"><h2>Ready to Discuss This Bed Frame Supply Scenario?</h2><p>Share your market, sales channel, target price, quantity estimate, packaging needs, and product references. We will help you evaluate a practical product direction.</p><div class="actions">${cta(solution.cta, "/contact")}</div></div></section>`;
+}
 
 function solutions() {
   return `${simpleHero({
@@ -360,7 +457,8 @@ function solutions() {
     actions: cta("Send Request", "/contact"),
   })}
   ${section("Why Channel Fit Matters", "A bed frame that works well for online retail may not be the best option for a dormitory project. That is why we start by understanding how you sell before recommending what to supply.", `<div class="grid-4">${["Online Retail / Packaging & Assembly", "Retail / Wholesale / Product Line & Price Range", "Projects / Strength & Maintenance", "OEM / Custom Development"].map(x => `<article class="card icon-card fade-in"><span class="line-icon">${arrowIcon()}</span><h3>${x}</h3></article>`).join("")}</div>`, "alt")}
-  ${section("Solutions by Buyer Type", "", `<div class="tabs" data-tabs><div class="tab-list">${solutionData.map((x, i) => `<button class="${i === 0 ? "active" : ""}" data-tab="${i}">${x.title}</button>`).join("")}</div><div class="tab-panel" data-panel>${renderTab(0)}</div></div>`)}
+  ${section("Solutions by Sourcing Scenario", "Choose the page that best matches your sourcing scenario. Each page explains buyer needs, product directions, and RFQ details for that channel.", `<div class="grid-2">${solutionData.map(solutionCard).join("")}</div>`)}
+  ${section("Solutions by Buyer Type", "", `<div class="tabs" data-tabs><div class="tab-list">${solutionData.map((x, i) => `<button class="${i === 0 ? "active" : ""}" data-tab="${i}">${x.title}</button>`).join("")}</div><div class="tab-panel" data-panel>${renderTab(0)}</div></div>`, "alt")}
   ${section("How We Work With Partners", "", `<ol class="process">${[
     ["Understand Your Market", "We first learn about your target customers, sales channel, and product positioning."],
     ["Clarify Product Direction", "We discuss suitable bed frame types, structure, price range, packaging, and customization needs."],
@@ -368,6 +466,7 @@ function solutions() {
     ["Support Sampling", "We coordinate sample details, packaging, structure, and specification confirmation."],
     ["Move Toward Production", "Once the product direction is confirmed, we support order planning, packaging, quality control, and export coordination."],
   ].map(x => `<li class="fade-in"><div><h3>${x[0]}</h3><p>${x[1]}</p></div></li>`).join("")}</ol>`, "alt")}
+  ${faqSection(routeFaq("/solutions"), "")}
   <section class="section cta-band">${imageTag(img.oem, "Business discussion")}<div class="container fade-in"><h2>Looking for a Bed Frame Supplier Who Understands Your Business?</h2><p>Tell us how you sell, who you sell to, and what kind of product line you want to build. We will help you explore suitable bed frame solutions.</p><div class="actions">${cta("Send Request", "/contact")}</div></div></section>`;
 }
 
@@ -392,6 +491,7 @@ function capabilities() {
     actions: cta("Discuss Your Requirements", "/contact"),
   })}
   <section class="section"><div class="container"><ol class="process">${caps.map((x) => `<li class="fade-in"><div class="split"><div><h3>${x[0]}</h3><p>${x[2]}</p></div><div class="image-panel soft">${imageTag(x[1], x[0])}</div></div></li>`).join("")}</ol></div></section>
+  ${faqSection(routeFaq("/capabilities"))}
   <section class="section cta-band">${imageTag(img.oem, "Product development table")}<div class="container fade-in"><h2>Need a Bed Frame Product Built Around Your Market?</h2><p>Share your product idea and requirements. We will help you evaluate the right development direction.</p><div class="actions">${cta("Discuss Your Requirements", "/contact")}</div></div></section>`;
 }
 
@@ -415,6 +515,7 @@ function about() {
     { icon: "S", title: "Supply Coordination", body: "Support across sampling, packaging, production, quality control, and export communication." },
   ]))}
   ${section("How We Work", "", `<ol class="process">${["Understand your market", "Clarify your sales channel", "Discuss your target price", "Recommend suitable product direction", "Support sampling and customization", "Coordinate production, packaging, and delivery"].map(x => `<li class="fade-in"><div><h3>${x}</h3></div></li>`).join("")}</ol>`, "alt")}
+  ${faqSection(routeFaq("/about"), "")}
   <section class="section cta-band">${imageTag(img.oem, "Business conversation")}<div class="container fade-in"><h2>Let's Start With a Better Business Conversation</h2><p>Tell us what kind of bed frame business you want to build. We will help you explore the right product direction.</p><div class="actions">${cta("Contact Us", "/contact")}</div></div></section>`;
 }
 
@@ -450,7 +551,8 @@ function contact() {
         <button class="btn full" type="submit">Send Request ${arrowIcon()}</button>
       </form>
     </div>
-  </div></section>`;
+  </div></section>
+  ${faqSection(routeFaq("/contact"), "alt")}`;
 }
 
 const routes = {
@@ -460,73 +562,199 @@ const routes = {
   "/products/bamboo-bed-frames": bambooPage,
   "/products/oem-custom-development": oemPage,
   "/solutions": solutions,
+  "/solutions/ecommerce-bed-frame-supply": () => solutionLandingPage(solutionData[0]),
+  "/solutions/furniture-retail-wholesale-bed-frames": () => solutionLandingPage(solutionData[1]),
+  "/solutions/accommodation-project-bed-frames": () => solutionLandingPage(solutionData[2]),
+  "/solutions/private-label-oem-bed-frames": () => solutionLandingPage(solutionData[3]),
   "/capabilities": capabilities,
   "/about": about,
   "/contact": contact,
 };
 const routeMeta = {
   "/": {
-    title: "Apexnix Bed Frame Supplier | OEM Bed Frame Development",
-    description: "Apexnix is a focused B2B bed frame supplier offering metal bed frames, bamboo bed frames, OEM custom development, packaging support, and export-ready coordination.",
+    title: "Bed Frame Manufacturer & OEM Supplier | Apexnix",
+    description: "Apexnix is a B2B bed frame manufacturer and OEM supplier for metal bed frames, bamboo bed frames, private label development, packaging, and export-ready supply.",
     image: img.home1,
     priority: "1.0",
+    changefreq: "weekly",
     breadcrumb: [{ name: "Home", path: "/" }],
+    faq: [
+      { question: "What does Apexnix supply?", answer: "Apexnix supplies focused B2B bed frame solutions, including metal bed frames, bamboo bed frames, OEM custom development, private label packaging, and export-ready coordination." },
+      { question: "Who is Apexnix best suited for?", answer: "Apexnix is best suited for online retailers, furniture retailers, wholesalers, importers, accommodation project buyers, and private label bed frame partners." },
+      { question: "Can Apexnix help choose the right bed frame direction?", answer: "Yes. Apexnix starts from the buyer's market, channel, product positioning, target price, packaging needs, and supply plan before recommending a product direction." },
+    ],
   },
   "/products": {
-    title: "Bed Frame Products | Apexnix Metal, Bamboo & OEM Collections",
-    description: "Explore Apexnix bed frame product directions, including metal bed frames, bamboo bed frames, and OEM custom bed frame development for global B2B partners.",
+    title: "Bed Frame Products | Metal, Bamboo & OEM Collections",
+    description: "Explore Apexnix bed frame products for B2B buyers, including metal platform beds, bamboo bed frames, OEM custom development, and private label product lines.",
     image: img.productHero,
     priority: "0.9",
+    changefreq: "weekly",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Products", path: "/products" }],
+    schemaType: "CollectionPage",
+    itemList: [
+      { name: "Metal Bed Frames", description: "Platform, headboard, bunk, dormitory, and custom metal bed frame directions.", url: "/products/metal-bed-frames", image: img.metalCard },
+      { name: "Bamboo Bed Frames", description: "Natural-style bamboo platform and headboard bed frame directions.", url: "/products/bamboo-bed-frames", image: img.bambooCard },
+      { name: "OEM Custom Bed Frame Development", description: "Custom size, structure, packaging, private label, and project development support.", url: "/products/oem-custom-development", image: img.oem },
+    ],
+    faq: [
+      { question: "What bed frame product categories does Apexnix focus on?", answer: "Apexnix focuses on metal bed frames, bamboo bed frames, and OEM custom bed frame development for global B2B buyers." },
+      { question: "Can product specifications be adjusted?", answer: "Yes. Size, height, structure, material direction, color, packaging, labels, and project requirements can be discussed based on the buyer's market and order plan." },
+      { question: "Are these finished retail products or development references?", answer: "The pages show product directions and development references. Final specifications, availability, and quotation are confirmed during RFQ discussion." },
+    ],
   },
   "/products/metal-bed-frames": {
-    title: "Metal Bed Frames Collection | Apexnix B2B Bed Frame Supplier",
-    description: "Practical metal bed frame directions for retail, online sales, wholesale, accommodation projects, private label programs, and custom B2B development.",
+    title: "Metal Bed Frame Manufacturer | Wholesale Platform Beds",
+    description: "Apexnix supplies wholesale metal bed frames, platform beds, headboard frames, bunk and dormitory bed concepts, flat-pack packaging, and OEM custom structures.",
     image: img.metalCard,
     priority: "0.85",
+    changefreq: "weekly",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Products", path: "/products" }, { name: "Metal Bed Frames", path: "/products/metal-bed-frames" }],
+    schemaType: "CollectionPage",
+    itemList: [
+      { name: "Heavy-Duty Metal Platform Beds", description: "Steel platform bed frames with no-box-spring support and storage-friendly clearance.", url: "/products/metal-bed-frames", image: img.heavy },
+      { name: "Metal Bed Frames with Headboard", description: "Retail-friendly metal bed frame directions with cleaner bedroom presentation.", url: "/products/metal-bed-frames", image: img.headboard },
+      { name: "Bunk Beds and Dormitory Solutions", description: "Project-use metal bed frame and dormitory bed concepts for accommodation buyers.", url: "/products/metal-bed-frames", image: img.bunkDormitory },
+    ],
+    faq: [
+      { question: "What metal bed frame types can Apexnix discuss?", answer: "Apexnix can discuss metal platform beds, bed frames with headboards, storage-friendly frames, bunk bed and dormitory concepts, and custom metal bed frame structures." },
+      { question: "Are metal bed frames suitable for online retail?", answer: "Yes. Metal platform bed frames can be designed around flat-pack packaging, easy assembly, storage-friendly clearance, and no-box-spring support for online retail." },
+      { question: "Can Apexnix support project-use metal bed frames?", answer: "Yes. Project-use discussions can include reinforced support, bulk packaging, installation, maintenance, and bunk or dormitory bed concepts." },
+    ],
   },
   "/products/bamboo-bed-frames": {
-    title: "Bamboo Bed Frames Collection | Apexnix Natural-Style Bed Frames",
-    description: "Bamboo bed frame directions for partners seeking natural-style platform beds, minimal bamboo beds, warm home collections, and private-label options.",
+    title: "Bamboo Bed Frame Supplier | Natural Platform Beds",
+    description: "Apexnix supplies bamboo bed frame directions for B2B buyers, including bamboo platform beds, minimal bamboo beds, natural-style collections, and OEM options.",
     image: img.bambooCard,
     priority: "0.85",
+    changefreq: "weekly",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Products", path: "/products" }, { name: "Bamboo Bed Frames", path: "/products/bamboo-bed-frames" }],
+    schemaType: "CollectionPage",
+    itemList: [
+      { name: "Bamboo Platform Beds", description: "Clean bamboo platform bed frames with natural material appeal.", url: "/products/bamboo-bed-frames", image: img.bambooPlatform },
+      { name: "Minimal Bamboo Beds", description: "Bamboo bed frames with headboard options for lifestyle retail collections.", url: "/products/bamboo-bed-frames", image: img.bambooMinimal },
+      { name: "Custom Bamboo Structures", description: "Size, appearance, packaging, and private label discussion for bamboo bed frame programs.", url: "/products/oem-custom-development", image: img.bambooMore },
+    ],
+    faq: [
+      { question: "Why choose bamboo bed frames for a product line?", answer: "Bamboo bed frames create a warmer natural-style product story, which can help retailers and online sellers differentiate from standard metal frame collections." },
+      { question: "Can bamboo bed frames be customized?", answer: "Yes. Size, appearance, headboard direction, packaging, private label presentation, and structure details can be discussed based on the product line." },
+      { question: "Are bamboo bed frames only for eco-focused brands?", answer: "No. They can also support warm home, compact living, lifestyle retail, and online product lines that need a softer visual identity." },
+    ],
   },
   "/products/oem-custom-development": {
-    title: "OEM Custom Bed Frame Development | Apexnix",
-    description: "Apexnix supports OEM and custom bed frame development, including size, structure, material direction, packaging, private label, and project-based manufacturing.",
+    title: "OEM Custom Bed Frame Development | Private Label Supplier",
+    description: "Apexnix provides OEM custom bed frame development for private label partners, including custom sizes, structures, materials, packaging, labels, and project manufacturing.",
     image: img.oem,
     priority: "0.85",
+    changefreq: "weekly",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Products", path: "/products" }, { name: "OEM Custom Development", path: "/products/oem-custom-development" }],
+    service: { name: "OEM Custom Bed Frame Development", serviceType: "OEM bed frame development", areaServed: "Worldwide" },
+    faq: [
+      { question: "What is included in OEM custom bed frame development?", answer: "OEM development can include size, height, structure, material direction, color, packaging, labels, instruction manuals, target price discussion, and project-based manufacturing support." },
+      { question: "Can Apexnix help with private label bed frame packaging?", answer: "Yes. Packaging discussion can cover carton size, protection, instruction manuals, carton marks, barcode labels, and private label presentation." },
+      { question: "What should buyers prepare for a custom bed frame RFQ?", answer: "Useful RFQ details include target country, sales channel, customer type, quantity estimate, target price range, product references, size needs, and packaging requirements." },
+    ],
   },
   "/solutions": {
-    title: "Bed Frame Solutions by Buyer Type | Apexnix",
-    description: "Apexnix helps e-commerce sellers, furniture retailers, wholesalers, project buyers, and private-label partners select market-fit bed frame solutions.",
+    title: "Bed Frame Solutions by Buyer Type | Retail, Project & OEM",
+    description: "Find bed frame solutions for e-commerce sellers, furniture retailers, wholesalers, project buyers, accommodation supply, and private label OEM partners.",
     image: img.solutionsHero,
     priority: "0.8",
+    changefreq: "weekly",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Solutions", path: "/solutions" }],
+    schemaType: "CollectionPage",
+    itemList: solutionData.map((solution) => ({
+      name: solution.heroTitle,
+      description: solution.metaDescription,
+      url: solution.path,
+      image: solution.image,
+      type: "Service",
+    })),
+    faq: [
+      { question: "Why does Apexnix organize bed frame solutions by buyer type?", answer: "Different channels need different products. Online retail, wholesale, accommodation projects, and private label programs each have different packaging, assembly, durability, price, and SKU requirements." },
+      { question: "Which buyer type should I choose if I am not sure?", answer: "Start with the sales channel. Online sellers should review e-commerce supply, distributors should review wholesale supply, project buyers should review accommodation supply, and brands should review OEM/private label development." },
+      { question: "Can one product serve multiple buyer types?", answer: "Sometimes yes, but the specification, packaging, instruction manual, carton mark, and product positioning may still need channel-specific adjustments." },
+    ],
+  },
+  "/solutions/ecommerce-bed-frame-supply": {
+    title: solutionData[0].metaTitle,
+    description: solutionData[0].metaDescription,
+    image: solutionData[0].image,
+    priority: "0.82",
+    changefreq: "weekly",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "Solutions", path: "/solutions" }, { name: "E-commerce Bed Frame Supply", path: solutionData[0].path }],
+    service: { name: solutionData[0].heroTitle, serviceType: "E-commerce bed frame supply", areaServed: "Worldwide" },
+    faq: solutionData[0].faq,
+  },
+  "/solutions/furniture-retail-wholesale-bed-frames": {
+    title: solutionData[1].metaTitle,
+    description: solutionData[1].metaDescription,
+    image: solutionData[1].image,
+    priority: "0.82",
+    changefreq: "weekly",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "Solutions", path: "/solutions" }, { name: "Wholesale Bed Frames", path: solutionData[1].path }],
+    service: { name: solutionData[1].heroTitle, serviceType: "Wholesale bed frame supply", areaServed: "Worldwide" },
+    faq: solutionData[1].faq,
+  },
+  "/solutions/accommodation-project-bed-frames": {
+    title: solutionData[2].metaTitle,
+    description: solutionData[2].metaDescription,
+    image: solutionData[2].image,
+    priority: "0.82",
+    changefreq: "weekly",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "Solutions", path: "/solutions" }, { name: "Project Bed Frames", path: solutionData[2].path }],
+    service: { name: solutionData[2].heroTitle, serviceType: "Project bed frame supply", areaServed: "Worldwide" },
+    faq: solutionData[2].faq,
+  },
+  "/solutions/private-label-oem-bed-frames": {
+    title: solutionData[3].metaTitle,
+    description: solutionData[3].metaDescription,
+    image: solutionData[3].image,
+    priority: "0.82",
+    changefreq: "weekly",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "Solutions", path: "/solutions" }, { name: "Private Label OEM Bed Frames", path: solutionData[3].path }],
+    service: { name: solutionData[3].heroTitle, serviceType: "Private label bed frame manufacturing", areaServed: "Worldwide" },
+    faq: solutionData[3].faq,
   },
   "/capabilities": {
-    title: "Bed Frame Supply Capabilities | Apexnix Manufacturing Support",
-    description: "Apexnix capabilities cover bed frame product development, value engineering, packaging optimization, quality control, OEM support, and export coordination.",
+    title: "Bed Frame Manufacturing Capabilities | OEM Supply Support",
+    description: "Review Apexnix bed frame manufacturing capabilities: product development, value engineering, packaging optimization, quality control, OEM support, and export supply.",
     image: img.capabilitiesHero,
     priority: "0.75",
+    changefreq: "monthly",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Capabilities", path: "/capabilities" }],
+    service: { name: "Bed frame manufacturing and supply capabilities", serviceType: "B2B bed frame manufacturing support", areaServed: "Worldwide" },
+    faq: [
+      { question: "What manufacturing capabilities does Apexnix emphasize?", answer: "Apexnix emphasizes product development, value engineering, packaging optimization, quality control, OEM customization, and export coordination for bed frame projects." },
+      { question: "Why is packaging optimization important for bed frames?", answer: "Packaging affects shipping cost, warehouse handling, damage risk, assembly experience, and after-sales complaints, especially for online and export channels." },
+      { question: "Can Apexnix support quality control before shipment?", answer: "Yes. Quality control discussion can include material checks, welding, surface treatment, dimensions, trial assembly, packaging inspection, and pre-shipment review." },
+    ],
   },
   "/about": {
-    title: "About Apexnix | Focused B2B Bed Frame Supplier",
-    description: "Learn about Apexnix, a focused bed frame provider combining manufacturing know-how, global B2B thinking, product line support, and export coordination.",
+    title: "About Apexnix | Focused B2B Bed Frame Manufacturer",
+    description: "Learn about Apexnix, a focused B2B bed frame manufacturer combining manufacturing know-how, global business thinking, product line support, and export coordination.",
     image: img.ourStory,
     priority: "0.7",
+    changefreq: "monthly",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "About Us", path: "/about" }],
+    faq: [
+      { question: "What makes Apexnix different from a general furniture supplier?", answer: "Apexnix focuses on bed frame products instead of broad furniture categories, allowing deeper work on structure, packaging, assembly, cost balance, and channel fit." },
+      { question: "Does Apexnix only quote existing models?", answer: "No. Apexnix starts with market and channel discussion, then recommends standard, adjusted, or custom product directions based on buyer needs." },
+      { question: "Where is Apexnix located?", answer: "Apexnix Co.,Ltd. is located in Xiamen, China, and works with global B2B partners on export-ready bed frame supply." },
+    ],
   },
   "/contact": {
-    title: "Contact Apexnix | Bed Frame Project & RFQ Discussion",
-    description: "Contact Apexnix Co.,Ltd. to discuss metal bed frames, bamboo bed frames, OEM custom development, project supply, packaging needs, and export-ready cooperation.",
+    title: "Contact Apexnix | Bed Frame RFQ & OEM Project Discussion",
+    description: "Contact Apexnix Co.,Ltd. for bed frame RFQ discussion covering metal bed frames, bamboo bed frames, OEM custom development, project supply, packaging, and export support.",
     image: img.contactHero,
     priority: "0.75",
+    changefreq: "monthly",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Contact Us", path: "/contact" }],
+    faq: [
+      { question: "What information should I include in a bed frame RFQ?", answer: "Please include target country, sales channel, business type, product direction, size needs, estimated quantity, target price range, packaging needs, and any reference photos or drawings." },
+      { question: "Can I contact Apexnix without final specifications?", answer: "Yes. You can share your market, channel, budget, and product idea first. Apexnix can help clarify the most practical bed frame direction." },
+      { question: "What email can I use for direct contact?", answer: `You can contact Apexnix at ${CONTACT_EMAIL} for bed frame product and OEM project discussions.` },
+    ],
   },
 };
 const indexableRoutes = Object.keys(routeMeta);
@@ -557,28 +785,38 @@ function getRouteMeta(path = "/") {
 function schemasForPath(path = "/") {
   const meta = getRouteMeta(path);
   const breadcrumb = meta.breadcrumb || routeMeta["/"].breadcrumb;
-  return [
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      name: "Apexnix Co.,Ltd.",
-      url: routeUrl("/"),
-      email: CONTACT_EMAIL,
-      logo: `${SITE_URL}/${LOGO_FILE}`,
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "Unit A, Room 504, No.88 Anling 2nd Road, Huli District",
-        addressLocality: "Xiamen",
-        addressCountry: "CN",
-      },
-      knowsAbout: [
-        "Metal bed frames",
-        "Bamboo bed frames",
-        "OEM bed frame development",
-        "Private label bed frames",
-        "Export-ready bed frame supply",
-      ],
+  const organization = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Apexnix Co.,Ltd.",
+    url: routeUrl("/"),
+    email: CONTACT_EMAIL,
+    logo: `${SITE_URL}/${LOGO_FILE}`,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Unit A, Room 504, No.88 Anling 2nd Road, Huli District",
+      addressLocality: "Xiamen",
+      addressCountry: "CN",
     },
+    contactPoint: {
+      "@type": "ContactPoint",
+      email: CONTACT_EMAIL,
+      contactType: "sales",
+      areaServed: "Worldwide",
+      availableLanguage: ["en"],
+    },
+    knowsAbout: [
+      "Metal bed frames",
+      "Bamboo bed frames",
+      "OEM bed frame development",
+      "Private label bed frames",
+      "Wholesale bed frame supply",
+      "Project bed frame supply",
+      "Export-ready bed frame supply",
+    ],
+  };
+  const schemas = [
+    organization,
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -588,13 +826,15 @@ function schemasForPath(path = "/") {
     },
     {
       "@context": "https://schema.org",
-      "@type": "WebPage",
+      "@type": meta.schemaType || "WebPage",
       name: meta.title,
       description: meta.description,
       url: routeUrl(path),
       image: assetUrl(meta.image),
+      primaryImageOfPage: assetUrl(meta.image),
       isPartOf: { "@type": "WebSite", name: SITE_NAME, url: routeUrl("/") },
-      about: { "@type": "Thing", name: "B2B bed frame supplier" },
+      about: { "@type": "Thing", name: "B2B bed frame supplier and OEM manufacturer" },
+      provider: { "@type": "Organization", name: "Apexnix Co.,Ltd.", url: routeUrl("/") },
     },
     {
       "@context": "https://schema.org",
@@ -607,6 +847,57 @@ function schemasForPath(path = "/") {
       })),
     },
   ];
+  if (meta.itemList?.length) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: meta.title,
+      itemListElement: meta.itemList.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": item.type || "Product",
+          name: item.name,
+          description: item.description,
+          image: assetUrl(item.image),
+          url: routeUrl(item.url),
+          ...(item.type === "Service"
+            ? { provider: { "@type": "Organization", name: "Apexnix Co.,Ltd." } }
+            : {
+                brand: { "@type": "Brand", name: SITE_NAME },
+                manufacturer: { "@type": "Organization", name: "Apexnix Co.,Ltd." },
+              }),
+        },
+      })),
+    });
+  }
+  if (meta.service) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: meta.service.name,
+      serviceType: meta.service.serviceType,
+      description: meta.description,
+      areaServed: meta.service.areaServed || "Worldwide",
+      provider: organization,
+      url: routeUrl(path),
+    });
+  }
+  if (meta.faq?.length) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: meta.faq.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer,
+        },
+      })),
+    });
+  }
+  return schemas;
 }
 
 function ensureHeadTag(selector, createTag) {
@@ -642,15 +933,28 @@ function ensureLinkRel(rel) {
   });
 }
 
+function ensureAlternate(hreflang) {
+  return ensureHeadTag(`link[rel="alternate"][hreflang="${hreflang}"]`, () => {
+    const node = document.createElement("link");
+    node.setAttribute("rel", "alternate");
+    node.setAttribute("hreflang", hreflang);
+    return node;
+  });
+}
+
 function updateDocumentMeta(path = "/") {
   const meta = getRouteMeta(path);
   const canonical = routeUrl(path);
   const image = assetUrl(meta.image);
   document.title = meta.title;
   ensureMetaName("description").setAttribute("content", meta.description);
-  ensureMetaName("robots").setAttribute("content", "index, follow");
+  ensureMetaName("robots").setAttribute("content", ROBOTS_META);
+  ensureMetaName("googlebot").setAttribute("content", ROBOTS_META);
   ensureLinkRel("canonical").setAttribute("href", canonical);
+  ensureAlternate("en").setAttribute("href", canonical);
+  ensureAlternate("x-default").setAttribute("href", canonical);
   ensureMetaProperty("og:site_name").setAttribute("content", SITE_NAME);
+  ensureMetaProperty("og:locale").setAttribute("content", OG_LOCALE);
   ensureMetaProperty("og:type").setAttribute("content", "website");
   ensureMetaProperty("og:title").setAttribute("content", meta.title);
   ensureMetaProperty("og:description").setAttribute("content", meta.description);
