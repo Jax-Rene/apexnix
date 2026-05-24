@@ -20,8 +20,6 @@ globalThis.__apexnix = {
   SITE_URL,
   SITE_NAME,
   CONTACT_EMAIL,
-  ROBOTS_META,
-  OG_LOCALE,
   LOGO_FILE,
   LOGO_DARK_FILE,
   AVATAR_FILE,
@@ -114,13 +112,9 @@ function buildHead(routePath) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escapeHtml(meta.title)}</title>
     <meta name="description" content="${escapeHtml(meta.description)}" />
-    <meta name="robots" content="${escapeHtml(site.ROBOTS_META)}" />
-    <meta name="googlebot" content="${escapeHtml(site.ROBOTS_META)}" />
+    <meta name="robots" content="index, follow" />
     <link rel="canonical" href="${canonical}" />
-    <link rel="alternate" hreflang="en" href="${canonical}" />
-    <link rel="alternate" hreflang="x-default" href="${canonical}" />
     <meta property="og:site_name" content="${escapeHtml(site.SITE_NAME)}" />
-    <meta property="og:locale" content="${escapeHtml(site.OG_LOCALE)}" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="${escapeHtml(meta.title)}" />
     <meta property="og:description" content="${escapeHtml(meta.description)}" />
@@ -180,15 +174,7 @@ function buildHeader(routePath) {
             <a href="/products/#product-comparison" data-link>Product Comparison</a>
           </div>
         </div>
-        <div class="nav-group">
-          <a href="/solutions/" data-link>Solutions</a>
-          <div class="dropdown">
-            <a href="/solutions/ecommerce-bed-frame-supply/" data-link>E-commerce Bed Frame Supply</a>
-            <a href="/solutions/furniture-retail-wholesale-bed-frames/" data-link>Wholesale Bed Frames</a>
-            <a href="/solutions/accommodation-project-bed-frames/" data-link>Project Bed Frames</a>
-            <a href="/solutions/private-label-oem-bed-frames/" data-link>Private Label OEM</a>
-          </div>
-        </div>
+        <a href="/solutions/" data-link>Solutions</a>
         <a href="/capabilities/" data-link>Capabilities</a>
         <a href="/about/" data-link>About Us</a>
         <a href="/contact/" data-link>Contact Us</a>
@@ -228,10 +214,6 @@ function buildFooter(routePath) {
       <div class="footer-links">
         <a href="/products/" data-link>Products</a>
         <a href="/solutions/" data-link>Solutions</a>
-        <a href="/solutions/ecommerce-bed-frame-supply/" data-link>E-commerce Bed Frame Supply</a>
-        <a href="/solutions/furniture-retail-wholesale-bed-frames/" data-link>Wholesale Bed Frames</a>
-        <a href="/solutions/accommodation-project-bed-frames/" data-link>Project Bed Frames</a>
-        <a href="/solutions/private-label-oem-bed-frames/" data-link>Private Label OEM</a>
         <a href="/capabilities/" data-link>Capabilities</a>
         <a href="/about/" data-link>About</a>
         <a href="/contact/" data-link>Contact</a>
@@ -278,7 +260,7 @@ ${site.indexableRoutes.map((routePath) => {
   return `  <url>
     <loc>${pageUrl(routePath)}</loc>
     <lastmod>${lastmod}</lastmod>
-    <changefreq>${meta.changefreq || "monthly"}</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>${meta.priority}</priority>
   </url>`;
 }).join("\n")}
@@ -291,12 +273,6 @@ Allow: /
 Sitemap: ${site.SITE_URL}/sitemap.xml
 `;
 
-const redirects = site.indexableRoutes
-  .filter((routePath) => routePath !== "/")
-  .map((routePath) => `${routePath.replace(/\/$/, "")} ${routePath.replace(/\/$/, "")}/ 301`)
-  .join("\n");
-
 fs.writeFileSync(path.join(rootDir, "sitemap.xml"), sitemap);
 fs.writeFileSync(path.join(rootDir, "robots.txt"), robots);
-fs.writeFileSync(path.join(rootDir, "_redirects"), `${redirects}\n`);
-console.log("wrote sitemap.xml, robots.txt, and _redirects");
+console.log("wrote sitemap.xml and robots.txt");

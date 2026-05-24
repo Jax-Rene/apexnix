@@ -67,11 +67,16 @@ Use these settings when deploying from GitHub:
 - Build command: `node scripts/prerender.mjs`
 - Build output directory: `/`
 
-### Cloudflare Pages auto deploy
+### GitHub Actions auto deploy
 
-Cloudflare Pages is connected to this GitHub repository and should regenerate the static site with `node scripts/prerender.mjs` whenever `main` is pushed.
+This repository includes `.github/workflows/cloudflare-pages.yml`, which regenerates the static site files and deploys them to the Cloudflare Pages project `apexnix` whenever `main` is pushed.
 
-This repository intentionally does not keep a separate GitHub Actions deploy workflow. Cloudflare Pages is the deployment source of truth.
+Before the workflow can deploy, add these GitHub repository secrets:
+
+- `CLOUDFLARE_ACCOUNT_ID` - your Cloudflare account ID
+- `CLOUDFLARE_API_TOKEN` - a Cloudflare API token with Account > Cloudflare Pages > Edit permission
+
+If the Cloudflare Pages project uses a different name, update the `--project-name=apexnix` value in the workflow.
 
 The site does not require a Node.js server, API route, database, or other back-end runtime.
 
