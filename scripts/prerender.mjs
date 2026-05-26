@@ -213,7 +213,7 @@ function buildFooter(routePath) {
         <a href="mailto:${site.CONTACT_EMAIL}">${site.CONTACT_EMAIL}</a>
       </div>
       <div class="footer-links">
-        <strong>Bed Frame Sourcing</strong>
+        <a class="footer-heading" href="/products/" data-link>Bed Frame Sourcing</a>
         <a href="/metal-bed-frame-manufacturer/" data-link>Metal Bed Frame Manufacturer</a>
         <a href="/oem-bed-frame-manufacturer/" data-link>OEM Bed Frame Manufacturer</a>
         <a href="/bed-frame-quality-control/" data-link>Bed Frame Quality Control</a>
@@ -222,7 +222,7 @@ function buildFooter(routePath) {
         <a href="/dormitory-bed-frame-supplier/" data-link>Dormitory Bed Frame Supplier</a>
       </div>
       <div class="footer-links">
-        <strong>Company</strong>
+        <a class="footer-heading" href="/about/" data-link>Company</a>
         <a href="/products/" data-link>Products</a>
         <a href="/solutions/" data-link>Solutions</a>
         <a href="/capabilities/" data-link>Capabilities</a>

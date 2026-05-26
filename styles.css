@@ -589,6 +589,7 @@ button:disabled { cursor: progress; opacity: .7; }
   background: var(--footer-bg);
 }
 .footer-links { display: grid; gap: 8px; align-content: start; font-weight: 700; }
+.footer-heading { color: var(--strong); }
 .fade-in { opacity: 1; transform: translateY(0); }
 .js .fade-in { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s ease; }
 .js .fade-in.visible { opacity: 1; transform: translateY(0); }
