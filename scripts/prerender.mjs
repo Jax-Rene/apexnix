@@ -116,6 +116,7 @@ function buildHead(routePath) {
     <link rel="canonical" href="${canonical}" />
     <meta property="og:site_name" content="${escapeHtml(site.SITE_NAME)}" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content="${escapeHtml(meta.title)}" />
     <meta property="og:description" content="${escapeHtml(meta.description)}" />
     <meta property="og:url" content="${canonical}" />
@@ -212,6 +213,16 @@ function buildFooter(routePath) {
         <a href="mailto:${site.CONTACT_EMAIL}">${site.CONTACT_EMAIL}</a>
       </div>
       <div class="footer-links">
+        <strong>Bed Frame Sourcing</strong>
+        <a href="/metal-bed-frame-manufacturer/" data-link>Metal Bed Frame Manufacturer</a>
+        <a href="/oem-bed-frame-manufacturer/" data-link>OEM Bed Frame Manufacturer</a>
+        <a href="/bed-frame-quality-control/" data-link>Bed Frame Quality Control</a>
+        <a href="/metal-bed-frame-production-process/" data-link>Metal Bed Frame Production Process</a>
+        <a href="/flat-pack-bed-frame-packaging/" data-link>Flat-Pack Packaging</a>
+        <a href="/dormitory-bed-frame-supplier/" data-link>Dormitory Bed Frame Supplier</a>
+      </div>
+      <div class="footer-links">
+        <strong>Company</strong>
         <a href="/products/" data-link>Products</a>
         <a href="/solutions/" data-link>Solutions</a>
         <a href="/capabilities/" data-link>Capabilities</a>
