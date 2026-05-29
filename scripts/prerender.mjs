@@ -209,7 +209,7 @@ function buildFooter(routePath) {
       </div>
       <div>
         <strong>Apexnix Co.,Ltd.</strong>
-        <p>Unit A, Room 504<br>No.88 Anling 2nd Road<br>Huli District, Xiamen, China</p>
+        <p>No.88 Anling 2nd Road , Huli District, Xiamen, China</p>
         <a href="mailto:${site.CONTACT_EMAIL}">${site.CONTACT_EMAIL}</a>
       </div>
       <div class="footer-links">

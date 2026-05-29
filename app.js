@@ -471,7 +471,7 @@ function contact() {
     image: img.contactHero,
   })}
   <section class="section"><div class="container contact-layout">
-    <aside class="contact-card fade-in"><h2>Apexnix Co.,Ltd.</h2><p>Unit A, Room 504<br>No.88 Anling 2nd Road<br>Huli District, Xiamen, China</p><br><a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></aside>
+    <aside class="contact-card fade-in"><h2>Apexnix Co.,Ltd.</h2><p>No.88 Anling 2nd Road , Huli District, Xiamen, China</p><br><a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></aside>
     <div class="fade-in"><div class="section-head"><span class="kicker">Send Request</span><h2>Get In Touch About Your Needs</h2><p>To help us understand your needs better, please share your market, sales channel, target price, quantity, and product requirements. The more details you provide, the faster we can understand your project and recommend a suitable product direction.</p></div>
       <form data-contact-form action="${WEB3FORMS_ENDPOINT}" method="post">
         <input type="hidden" name="access_key" value="${WEB3FORMS_ACCESS_KEY}" />
@@ -848,7 +848,7 @@ function schemasForPath(path = "/") {
       logo: `${SITE_URL}/${LOGO_FILE}`,
       address: {
         "@type": "PostalAddress",
-        streetAddress: "Unit A, Room 504, No.88 Anling 2nd Road, Huli District",
+        streetAddress: "No.88 Anling 2nd Road , Huli District",
         addressLocality: "Xiamen",
         addressCountry: "CN",
       },
