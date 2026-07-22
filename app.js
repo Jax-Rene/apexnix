@@ -11,6 +11,8 @@ const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 const WEB3FORMS_ACCESS_KEY = "596ad054-05e1-4abb-b4c5-d12debc21725";
 const THEME_KEY = "apexnix-theme";
 const A = window.location.protocol === "file:" ? new URL("assets/", scriptUrl).href : `${BASE_PATH}/assets/`;
+const insightsData = globalThis.APEXNIX_INSIGHTS || { categories: [], articles: [] };
+const bambooStory = insightsData.articles[0];
 const basePattern = new RegExp(`^${BASE_PATH.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=/|$)`);
 const img = {
   home1: A + "home-hero-bed-frame-supplier.jpg",
@@ -73,6 +75,10 @@ const imageDimensions = {
   "oem-custom-support-bed-frame.jpg": [1100, 825],
   "quality-control-bed-frame-manufacturing.jpg": [950, 950],
   "export-support-bed-frame-supply.jpg": [950, 950],
+  "bamboo-grove-growth-story-hero.webp": [1600, 900],
+  "bamboo-grove-growth-story-og.webp": [1200, 630],
+  "bamboo-material-from-culm-to-board.webp": [1000, 1000],
+  "bamboo-bed-frame-natural-style.webp": [1200, 900],
 };
 
 const specMetal = [
@@ -139,7 +145,8 @@ function imageTag(src, alt, options = {}) {
   const loading = priority ? "eager" : "lazy";
   const dimensions = width && height ? ` width="${width}" height="${height}"` : "";
   const fetchPriority = priority ? ` fetchpriority="high"` : "";
-  return `<img src="${escapeAttr(src)}" alt="${escapeAttr(alt)}"${dimensions} loading="${loading}" decoding="async"${fetchPriority} />`;
+  const sizes = options.sizes ? ` sizes="${escapeAttr(options.sizes)}"` : "";
+  return `<img src="${escapeAttr(src)}" alt="${escapeAttr(alt)}"${dimensions} loading="${loading}" decoding="async"${fetchPriority}${sizes} />`;
 }
 function tags(items, light = false) {
   return `<ul class="tag-list ${light ? "light-tags" : ""}">${items.map((x) => `<li>${x}</li>`).join("")}</ul>`;
@@ -182,6 +189,97 @@ function twoCol(title, subtitle, body, image, extra = "", reverse = false, cls =
   </div></section>`;
 }
 
+function formatArticleDate(date) {
+  return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })
+    .format(new Date(`${date}T00:00:00Z`));
+}
+
+function articleParagraphs(items = []) {
+  return items.map((item) => `<p>${item}</p>`).join("");
+}
+
+function articleBullets(items = []) {
+  return items.length ? `<ul class="article-list">${items.map((item) => `<li>${item}</li>`).join("")}</ul>` : "";
+}
+
+function articleGroups(items = []) {
+  return items.length ? `<div class="article-groups">${items.map((item) => `<section><h3>${item.title}</h3><p>${item.body}</p></section>`).join("")}</div>` : "";
+}
+
+function insightFeature({ eyebrow, title, body, linkLabel, className = "" }) {
+  return `<section class="section insight-feature ${className}"><div class="container insight-feature__layout">
+    <figure class="insight-feature__media fade-in">${imageTag(bambooStory.cardImage, bambooStory.cardAlt, { sizes: "(max-width: 800px) 100vw, 560px" })}</figure>
+    <div class="insight-feature__copy fade-in"><span class="kicker">${eyebrow}</span><h2>${title}</h2><p>${body}</p><div class="actions">${cta(linkLabel, `/insights/${bambooStory.slug}`, true)}</div></div>
+  </div></section>`;
+}
+
+function insightsPage() {
+  const categoryLinks = insightsData.categories.map((category) => {
+    const slug = category === "All" ? "" : category.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const href = slug ? `/insights/?category=${slug}` : "/insights/";
+    return `<a class="${category === "All" ? "active" : ""}" href="${href}">${category}</a>`;
+  }).join("");
+
+  return `<section class="section insights-index-hero"><div class="container">
+    <div class="insights-index-hero__copy fade-in"><span class="kicker">Apexnix Insights</span><h1>Bed Frame Insights for Better Product and Sourcing Decisions</h1><p>Practical articles on bed frame materials, structure, manufacturing, packaging, quality control, OEM development, and market-fit product planning.</p></div>
+    <nav class="insights-categories" aria-label="Insight categories">${categoryLinks}</nav>
+  </div></section>
+  <section class="section alt insights-featured"><div class="container">
+    <div class="section-head fade-in"><span class="kicker">Featured Article</span><h2>Product &amp; Material</h2></div>
+    <article class="featured-article fade-in">
+      <a class="featured-article__media" href="/insights/${bambooStory.slug}/" data-link aria-label="Read ${escapeAttr(bambooStory.shortTitle)}">${imageTag(bambooStory.cardImage, bambooStory.cardAlt, { sizes: "(max-width: 800px) 100vw, 650px" })}</a>
+      <div class="featured-article__body"><span class="kicker">${bambooStory.category}</span><h3><a href="/insights/${bambooStory.slug}/" data-link>${bambooStory.shortTitle}</a></h3><p>${bambooStory.excerpt}</p><div class="actions">${cta("Read Article", `/insights/${bambooStory.slug}`, true)}</div></div>
+    </article>
+  </div></section>`;
+}
+
+function renderArticleSection(sectionData) {
+  if (sectionData.kind === "material") {
+    return `<section class="article-section article-section--material" id="${sectionData.id}">
+      <div class="article-media-split">
+        <figure class="article-media-split__figure">${imageTag(bambooStory.materialImage, bambooStory.materialAlt, { sizes: "(max-width: 800px) 100vw, 360px" })}<figcaption>${bambooStory.materialCaption}</figcaption></figure>
+        <div class="article-media-split__copy"><h2>${sectionData.title}</h2>${articleParagraphs(sectionData.lead)}</div>
+      </div>
+      <div class="article-process-content"><p>${sectionData.transition}</p><ol class="article-process">${sectionData.steps.map((step) => `<li>${step}</li>`).join("")}</ol>${articleParagraphs(sectionData.paragraphs)}</div>
+    </section>`;
+  }
+
+  return `<section class="article-section" id="${sectionData.id}">
+    <h2>${sectionData.title}</h2>
+    ${articleParagraphs(sectionData.paragraphs)}
+    ${articleBullets(sectionData.bullets)}
+    ${articleParagraphs(sectionData.afterBullets)}
+    ${articleBullets(sectionData.secondaryBullets)}
+    ${articleGroups(sectionData.groups)}
+    ${sectionData.closing ? `<p>${sectionData.closing}</p>` : ""}
+    ${sectionData.productFigure ? `<figure class="article-figure article-figure--product">${imageTag(bambooStory.productImage, bambooStory.productAlt, { sizes: "(max-width: 800px) 100vw, 820px" })}<figcaption>${bambooStory.productCaption}</figcaption></figure>` : ""}
+  </section>`;
+}
+
+function articlePage() {
+  const tocItems = [...bambooStory.sections.map((item) => ({ id: item.id, title: item.title })), { id: "frequently-asked-questions", title: "Frequently Asked Questions" }];
+  const toc = `<ol>${tocItems.map((item) => `<li><a href="#${item.id}" data-link>${item.title}</a></li>`).join("")}</ol>`;
+  return `<article class="insight-article">
+    <header class="article-header section"><div class="container">
+      <nav class="article-breadcrumb" aria-label="Breadcrumb"><ol>
+        <li><a href="/" data-link>Home</a></li><li><a href="/insights/" data-link>Insights</a></li><li><a href="/insights/?category=product-material">Product &amp; Material</a></li><li><span aria-current="page">${bambooStory.shortTitle}</span></li>
+      </ol></nav>
+      <div class="article-heading fade-in"><span class="kicker">${bambooStory.category}</span><h1>${bambooStory.title}</h1><p class="article-intro">${bambooStory.intro}</p><div class="article-meta"><time datetime="${bambooStory.publishedAt}">${formatArticleDate(bambooStory.publishedAt)}</time><span>${bambooStory.readingTime}</span><span>Reviewed by ${bambooStory.author}</span></div></div>
+      <figure class="article-hero-media fade-in">${imageTag(bambooStory.heroImage, bambooStory.heroAlt, { priority: true, sizes: "(max-width: 768px) 100vw, 1200px" })}<figcaption>${bambooStory.heroCaption}</figcaption></figure>
+    </div></header>
+    <div class="article-layout container">
+      <main class="article-content">
+        <details class="article-mobile-toc"><summary>On this page</summary>${toc}</details>
+        <section class="article-opening">${articleParagraphs(bambooStory.opening.paragraphs)}${articleBullets(bambooStory.opening.bullets)}<p>${bambooStory.opening.closing}</p><blockquote class="article-key-message">${bambooStory.opening.keyMessage}</blockquote></section>
+        ${bambooStory.sections.map(renderArticleSection).join("")}
+        <section class="article-section article-faq" id="frequently-asked-questions"><h2>Frequently Asked Questions</h2>${bambooStory.faqs.map((item) => `<details><summary>${item.question}</summary><p>${item.answer}</p></details>`).join("")}</section>
+      </main>
+      <aside class="article-toc" aria-label="On this page"><strong>On this page</strong>${toc}</aside>
+    </div>
+    <section class="section article-cta"><div class="container"><div class="article-cta__inner fade-in"><span class="kicker">Bamboo Bed Frame Development</span><h2>Exploring a Bamboo Bed Frame Product Line?</h2><p>Apexnix supports bamboo bed frame discussions for retailers, online brands, wholesalers, and private-label partners looking for a differentiated natural-style product direction.</p><p>Review our bamboo bed frame product directions or share your target market, sales channel, expected quantity, and product requirements with our team.</p><p>Share your target market, sales channel, expected quantity, and product requirements. Apexnix will help you evaluate suitable bamboo bed frame structures, sizes, packaging, and private-label directions.</p><div class="actions">${cta("Explore Bamboo Bed Frame Options", "/products/bamboo-bed-frames")} ${cta("Send a Bed Frame Sourcing Request", "/contact", true)}</div></div></div></section>
+  </article>`;
+}
+
 function home() {
   return `<section class="hero" data-carousel>
     ${[
@@ -206,6 +304,13 @@ function home() {
     ["OEM Bed Frame Manufacturer", "OEM and custom development support for partners planning market-fit bed frame product lines.", "OEM Bed Frame Manufacturer", "/oem-bed-frame-manufacturer"],
     ["Quality and Packaging Support", "Review quality control and flat-pack packaging topics that affect B2B bed frame sourcing.", "View Quality Control", "/bed-frame-quality-control"],
   ]))}
+  ${insightFeature({
+    eyebrow: "Latest Insight",
+    title: "From Bamboo Grove to Bamboo Bed Frame",
+    body: "Bamboo brings more than a natural appearance. Explore how its growth pattern, engineered processing, and product positioning come together in a modern bamboo bed frame.",
+    linkLabel: "Read the Material Story",
+    className: "alt",
+  })}
   ${section("What Makes Us Different", "We combine bed frame manufacturing know-how with global business thinking, so our cooperation starts before the quotation.", iconGrid([
     { icon: "◇", title: "Value-Engineered Products", body: "We balance structure, cost, quality, packaging, and assembly for stronger product competitiveness." },
     { icon: arrowIcon("both"), title: "Channel-Fit Solutions", body: "We develop bed frame solutions based on how you sell: online, retail, wholesale, or project supply." },
@@ -280,7 +385,7 @@ function bambooPage() {
     subtitle: "Apexnix provides bamboo bed frame product directions for partners looking to add natural-style, warm, and differentiated bed frame options to their product lines.",
     body: "Bamboo bed frames can support selected retail, online, compact living, and private-label collections where material identity and visual warmth matter.",
     image: img.bambooCard,
-    tagItems: ["Natural Material Appeal", "Eco-friendly", "Storage-Friendly", "Easy Assembly", "Private-Label Potential"],
+    tagItems: ["Natural Material Appeal", "Renewable Material Story", "Storage-Friendly", "Easy Assembly", "Private-Label Potential"],
     actions: cta("Discuss Bamboo Bed Frame Options", "/contact"),
   })}
   ${section("Bamboo Bed Frame Product Directions", "This collection includes clean bamboo platform beds, bamboo beds with headboard options, and additional bamboo style directions for selected markets and natural-style product lines.", iconGrid([
@@ -298,6 +403,12 @@ function bambooPage() {
     ["Flat-Pack Packaging", "Review packaging topics connected with carton planning, parts organization, and instructions.", "View Flat-Pack Packaging", "/flat-pack-bed-frame-packaging"],
     ["Contact Apexnix", "Share your bamboo bed frame idea, target market, and sourcing requirements.", "Send Bed Frame Sourcing Request", "/contact"],
   ]), "alt")}
+  ${insightFeature({
+    eyebrow: "Related Insight",
+    title: "Understand the Material Story Behind Bamboo Bed Frames",
+    body: "From the growth pattern of bamboo to engineered furniture components, this article explains what gives a bamboo bed frame its material identity, and what sourcing teams should confirm before development.",
+    linkLabel: "Read the Bamboo Material Story",
+  })}
   <section class="section cta-band">${imageTag(img.bambooMore, "Bamboo bed frame discussion")}<div class="container fade-in"><h2>Looking for a Natural-Style Bed Frame Direction?</h2><p>Share your product line idea and market needs. We will help you explore suitable bamboo bed frame options.</p><div class="actions">${cta("Send Bed Frame Sourcing Request", "/contact")}</div></div></section>`;
 }
 
@@ -694,6 +805,8 @@ const routes = {
   "/products/oem-custom-development": oemPage,
   "/solutions": solutions,
   "/capabilities": capabilities,
+  "/insights": insightsPage,
+  "/insights/from-bamboo-grove-to-bamboo-bed-frame": articlePage,
   "/about": about,
   "/contact": contact,
   "/metal-bed-frame-manufacturer": metalManufacturerPage,
@@ -752,6 +865,32 @@ const routeMeta = {
     image: img.capabilitiesHero,
     priority: "0.75",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Capabilities", path: "/capabilities" }],
+  },
+  "/insights": {
+    title: "Bed Frame Insights for Sourcing and Product Development | Apexnix",
+    description: "Explore practical insights on bed frame materials, structure, manufacturing, packaging, quality control, OEM development, and market-fit product planning.",
+    image: bambooStory.cardImage,
+    priority: "0.8",
+    lastmod: "2026-07-22",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "Insights", path: "/insights" }],
+  },
+  "/insights/from-bamboo-grove-to-bamboo-bed-frame": {
+    title: "From Bamboo Grove to Bamboo Bed Frame | Apexnix",
+    description: "See how bamboo grows, becomes engineered components, and shapes modern bamboo bed frames for retail, online, and private-label product lines.",
+    ogTitle: "From Bamboo Grove to Bamboo Bed Frame",
+    ogDescription: "The material story, product engineering, and commercial positioning behind modern bamboo bed frames.",
+    ogType: "article",
+    image: bambooStory.ogImage,
+    preloadImage: bambooStory.heroImage,
+    priority: "0.82",
+    lastmod: bambooStory.modifiedAt,
+    article: bambooStory,
+    breadcrumb: [
+      { name: "Home", path: "/" },
+      { name: "Insights", path: "/insights" },
+      { name: "Product & Material", path: "/insights" },
+      { name: bambooStory.shortTitle, path: `/insights/${bambooStory.slug}` },
+    ],
   },
   "/about": {
     title: "About Apexnix | Focused B2B Bed Frame Supplier",
@@ -838,7 +977,7 @@ function getRouteMeta(path = "/") {
 function schemasForPath(path = "/") {
   const meta = getRouteMeta(path);
   const breadcrumb = meta.breadcrumb || routeMeta["/"].breadcrumb;
-  return [
+  const schemas = [
     {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -888,6 +1027,35 @@ function schemasForPath(path = "/") {
       })),
     },
   ];
+
+  if (meta.article) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: meta.article.title,
+      description: meta.description,
+      image: assetUrl(meta.article.ogImage),
+      datePublished: meta.article.publishedAt,
+      dateModified: meta.article.modifiedAt,
+      articleSection: meta.article.category,
+      author: {
+        "@type": "Organization",
+        name: "Apexnix Product Team",
+        url: routeUrl("/about"),
+      },
+      publisher: {
+        "@type": "Organization",
+        name: SITE_NAME,
+        url: routeUrl("/"),
+      },
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": routeUrl(path),
+      },
+    });
+  }
+
+  return schemas;
 }
 
 function ensureHeadTag(selector, createTag) {
@@ -927,24 +1095,35 @@ function updateDocumentMeta(path = "/") {
   const meta = getRouteMeta(path);
   const canonical = routeUrl(path);
   const image = assetUrl(meta.image);
+  const socialTitle = meta.ogTitle || meta.title;
+  const socialDescription = meta.ogDescription || meta.description;
   document.title = meta.title;
   ensureMetaName("description").setAttribute("content", meta.description);
   ensureMetaName("robots").setAttribute("content", "index, follow");
   ensureLinkRel("canonical").setAttribute("href", canonical);
   ensureMetaProperty("og:site_name").setAttribute("content", SITE_NAME);
-  ensureMetaProperty("og:type").setAttribute("content", "website");
+  ensureMetaProperty("og:type").setAttribute("content", meta.ogType || "website");
   ensureMetaProperty("og:locale").setAttribute("content", "en_US");
-  ensureMetaProperty("og:title").setAttribute("content", meta.title);
-  ensureMetaProperty("og:description").setAttribute("content", meta.description);
+  ensureMetaProperty("og:title").setAttribute("content", socialTitle);
+  ensureMetaProperty("og:description").setAttribute("content", socialDescription);
   ensureMetaProperty("og:url").setAttribute("content", canonical);
   ensureMetaProperty("og:image").setAttribute("content", image);
   ensureMetaName("twitter:card").setAttribute("content", "summary_large_image");
-  ensureMetaName("twitter:title").setAttribute("content", meta.title);
-  ensureMetaName("twitter:description").setAttribute("content", meta.description);
+  ensureMetaName("twitter:title").setAttribute("content", socialTitle);
+  ensureMetaName("twitter:description").setAttribute("content", socialDescription);
   ensureMetaName("twitter:image").setAttribute("content", image);
   ensureLinkRel("icon").setAttribute("href", runtimeAssetHref(AVATAR_FILE));
   ensureLinkRel("apple-touch-icon").setAttribute("href", runtimeAssetHref(AVATAR_FILE));
   ensureLinkRel("manifest").setAttribute("href", runtimeAssetHref("site.webmanifest"));
+
+  ["article:published_time", "article:modified_time", "article:author"].forEach((property) => {
+    document.head.querySelector(`meta[property="${property}"]`)?.remove();
+  });
+  if (meta.article) {
+    ensureMetaProperty("article:published_time").setAttribute("content", meta.article.publishedAt);
+    ensureMetaProperty("article:modified_time").setAttribute("content", meta.article.modifiedAt);
+    ensureMetaProperty("article:author").setAttribute("content", meta.article.author);
+  }
 
   const schemaNode = ensureHeadTag('script[type="application/ld+json"][data-route-schema]', () => {
     const node = document.createElement("script");

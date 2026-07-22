@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url";
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const appPath = path.join(rootDir, "app.js");
 const appSource = fs.readFileSync(appPath, "utf8");
+const insightsPath = path.join(rootDir, "content", "insights.js");
+const insightsSource = fs.readFileSync(insightsPath, "utf8");
 const stylePath = path.join(rootDir, "styles.css");
 const runtimeMarker = "\nfunction getRouteFromLocation()";
 const runtimeIndex = appSource.indexOf(runtimeMarker);
@@ -15,7 +17,8 @@ if (runtimeIndex === -1) {
   throw new Error("Could not find app runtime marker for prerendering.");
 }
 
-const browserFreeSource = `${appSource.slice(0, runtimeIndex)}
+const browserFreeSource = `${insightsSource}
+${appSource.slice(0, runtimeIndex)}
 globalThis.__apexnix = {
   SITE_URL,
   SITE_NAME,
@@ -56,6 +59,7 @@ vm.runInContext(browserFreeSource, context, { filename: "app.js" });
 
 const site = context.__apexnix;
 const appVersion = hashFile(appPath);
+const insightsVersion = hashFile(insightsPath);
 const styleVersion = hashFile(stylePath);
 
 function hashFile(filePath) {
@@ -93,7 +97,9 @@ function rewriteRootAssetPaths(html, routePath) {
   const prefix = relativePrefix(routePath);
   return html
     .replaceAll('src="/assets/', `src="${prefix}assets/`)
-    .replaceAll('href="/assets/', `href="${prefix}assets/`);
+    .replaceAll('href="/assets/', `href="${prefix}assets/`)
+    .replaceAll('src="/images/', `src="${prefix}images/`)
+    .replaceAll('href="/images/', `href="${prefix}images/`);
 }
 
 function buildHead(routePath) {
@@ -101,10 +107,16 @@ function buildHead(routePath) {
   const canonical = pageUrl(routePath);
   const image = site.assetUrl(meta.image);
   const prefix = relativePrefix(routePath);
-  const imagePath = `${prefix}${String(meta.image).replace(/^\//, "")}`;
+  const preloadImage = meta.preloadImage || meta.image;
+  const imagePath = `${prefix}${String(preloadImage).replace(/^\//, "")}`;
   const [imageWidth, imageHeight] = imageSize(meta.image);
+  const socialTitle = meta.ogTitle || meta.title;
+  const socialDescription = meta.ogDescription || meta.description;
   const imageSizeMeta = imageWidth && imageHeight
     ? `\n    <meta property="og:image:width" content="${imageWidth}" />\n    <meta property="og:image:height" content="${imageHeight}" />`
+    : "";
+  const articleMeta = meta.article
+    ? `\n    <meta property="article:published_time" content="${meta.article.publishedAt}" />\n    <meta property="article:modified_time" content="${meta.article.modifiedAt}" />\n    <meta property="article:author" content="${escapeHtml(meta.article.author)}" />`
     : "";
 
   return `  <head>
@@ -115,16 +127,16 @@ function buildHead(routePath) {
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="${canonical}" />
     <meta property="og:site_name" content="${escapeHtml(site.SITE_NAME)}" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="${meta.ogType || "website"}" />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:title" content="${escapeHtml(meta.title)}" />
-    <meta property="og:description" content="${escapeHtml(meta.description)}" />
+    <meta property="og:title" content="${escapeHtml(socialTitle)}" />
+    <meta property="og:description" content="${escapeHtml(socialDescription)}" />
     <meta property="og:url" content="${canonical}" />
     <meta property="og:image" content="${image}" />${imageSizeMeta}
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${escapeHtml(meta.title)}" />
-    <meta name="twitter:description" content="${escapeHtml(meta.description)}" />
-    <meta name="twitter:image" content="${image}" />
+    <meta name="twitter:title" content="${escapeHtml(socialTitle)}" />
+    <meta name="twitter:description" content="${escapeHtml(socialDescription)}" />
+    <meta name="twitter:image" content="${image}" />${articleMeta}
     <meta name="theme-color" content="#2f3a45" />
     <link rel="icon" href="${prefix}${site.AVATAR_FILE}" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="${prefix}${site.AVATAR_FILE}" />
@@ -177,6 +189,7 @@ function buildHeader(routePath) {
         </div>
         <a href="/solutions/" data-link>Solutions</a>
         <a href="/capabilities/" data-link>Capabilities</a>
+        <a href="/insights/" data-link>Insights</a>
         <a href="/about/" data-link>About Us</a>
         <a href="/contact/" data-link>Contact Us</a>
       </nav>
@@ -220,12 +233,15 @@ function buildFooter(routePath) {
         <a href="/metal-bed-frame-production-process/" data-link>Metal Bed Frame Production Process</a>
         <a href="/flat-pack-bed-frame-packaging/" data-link>Flat-Pack Packaging</a>
         <a href="/dormitory-bed-frame-supplier/" data-link>Dormitory Bed Frame Supplier</a>
+        <a href="/insights/" data-link>Insights</a>
+        <a href="/insights/from-bamboo-grove-to-bamboo-bed-frame/" data-link>Bamboo Bed Frame Material Story</a>
       </div>
       <div class="footer-links">
         <a class="footer-heading" href="/about/" data-link>Company</a>
         <a href="/products/" data-link>Products</a>
         <a href="/solutions/" data-link>Solutions</a>
         <a href="/capabilities/" data-link>Capabilities</a>
+        <a href="/insights/" data-link>Insights</a>
         <a href="/about/" data-link>About</a>
         <a href="/contact/" data-link>Contact</a>
       </div>
@@ -245,6 +261,7 @@ ${buildHead(routePath)}
 ${buildHeader(routePath)}
     <main id="app">${body}</main>
 ${buildFooter(routePath)}
+    <script src="${prefix}content/insights.js?v=${insightsVersion}" defer></script>
     <script src="${prefix}app.js?v=${appVersion}" defer></script>
   </body>
 </html>
@@ -263,14 +280,13 @@ for (const routePath of site.indexableRoutes) {
   console.log(`prerendered ${routePath} -> ${path.relative(rootDir, target)}`);
 }
 
-const lastmod = new Date().toISOString().slice(0, 10);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${site.indexableRoutes.map((routePath) => {
   const meta = site.routeMeta[routePath];
   return `  <url>
     <loc>${pageUrl(routePath)}</loc>
-    <lastmod>${lastmod}</lastmod>
+    <lastmod>${meta.lastmod || "2026-05-29"}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>${meta.priority}</priority>
   </url>`;
