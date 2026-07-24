@@ -23,6 +23,3 @@ build/
 .parcel-cache/
 .vite/
 .wrangler/
-
-# Generated public assets copied from public/ during prerendering
-/videos/
