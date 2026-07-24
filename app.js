@@ -244,21 +244,26 @@ function renderArticleSection(sectionData) {
     </section>`;
   }
 
+  const content = [
+    `<h2>${sectionData.title}</h2>`,
+    articleParagraphs(sectionData.paragraphs),
+    articleBullets(sectionData.bullets),
+    articleParagraphs(sectionData.afterBullets),
+    articleBullets(sectionData.secondaryBullets),
+    articleGroups(sectionData.groups),
+    sectionData.closing ? `<p>${sectionData.closing}</p>` : "",
+    sectionData.productFigure ? `<figure class="article-figure article-figure--product">${imageTag(bambooStory.productImage, bambooStory.productAlt, { sizes: "(max-width: 800px) 100vw, 820px" })}<figcaption>${bambooStory.productCaption}</figcaption></figure>` : "",
+  ].filter(Boolean);
+
   return `<section class="article-section" id="${sectionData.id}">
-    <h2>${sectionData.title}</h2>
-    ${articleParagraphs(sectionData.paragraphs)}
-    ${articleBullets(sectionData.bullets)}
-    ${articleParagraphs(sectionData.afterBullets)}
-    ${articleBullets(sectionData.secondaryBullets)}
-    ${articleGroups(sectionData.groups)}
-    ${sectionData.closing ? `<p>${sectionData.closing}</p>` : ""}
-    ${sectionData.productFigure ? `<figure class="article-figure article-figure--product">${imageTag(bambooStory.productImage, bambooStory.productAlt, { sizes: "(max-width: 800px) 100vw, 820px" })}<figcaption>${bambooStory.productCaption}</figcaption></figure>` : ""}
+    ${content.join("\n    ")}
   </section>`;
 }
 
 function articlePage() {
   const tocItems = [...bambooStory.sections.map((item) => ({ id: item.id, title: item.title })), { id: "frequently-asked-questions", title: "Frequently Asked Questions" }];
   const toc = `<ol>${tocItems.map((item) => `<li><a href="#${item.id}" data-link>${item.title}</a></li>`).join("")}</ol>`;
+  const video = bambooStory.video;
   return `<article class="insight-article">
     <header class="article-header section"><div class="container">
       <nav class="article-breadcrumb" aria-label="Breadcrumb"><ol>
@@ -271,6 +276,13 @@ function articlePage() {
       <main class="article-content">
         <details class="article-mobile-toc"><summary>On this page</summary>${toc}</details>
         <section class="article-opening">${articleParagraphs(bambooStory.opening.paragraphs)}${articleBullets(bambooStory.opening.bullets)}<p>${bambooStory.opening.closing}</p><blockquote class="article-key-message">${bambooStory.opening.keyMessage}</blockquote></section>
+        <section class="article-video-section" aria-labelledby="bamboo-story-video-title">
+          <div class="article-video-section__heading"><span class="kicker">WATCH THE STORY</span><h2 id="bamboo-story-video-title">${video.name}</h2><p>${video.description}</p></div>
+          <video class="article-video" controls playsinline preload="metadata" poster="${video.poster}" width="1280" height="720" data-lazy-video>
+            <source data-src="${video.contentUrl}" type="video/mp4" />
+            Your browser does not support the video element.
+          </video>
+        </section>
         ${bambooStory.sections.map(renderArticleSection).join("")}
         <section class="article-section article-faq" id="frequently-asked-questions"><h2>Frequently Asked Questions</h2>${bambooStory.faqs.map((item) => `<details><summary>${item.question}</summary><p>${item.answer}</p></details>`).join("")}</section>
       </main>
@@ -1053,6 +1065,19 @@ function schemasForPath(path = "/") {
         "@id": routeUrl(path),
       },
     });
+
+    if (meta.article.video) {
+      schemas.push({
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        name: meta.article.video.name,
+        description: meta.article.video.description,
+        thumbnailUrl: assetUrl(meta.article.video.poster),
+        contentUrl: assetUrl(meta.article.video.contentUrl),
+        uploadDate: meta.article.video.uploadDate,
+        duration: meta.article.video.duration,
+      });
+    }
   }
 
   return schemas;
@@ -1229,6 +1254,7 @@ function render() {
   bindCarousel();
   bindTabs();
   bindContactForm();
+  bindLazyVideos();
   observe();
   if (anchor) setTimeout(() => document.querySelector(anchor)?.scrollIntoView(), 50);
   else window.scrollTo({ top: 0 });
@@ -1335,6 +1361,33 @@ function bindContactForm() {
       }
     }
   };
+}
+function bindLazyVideos() {
+  const videos = [...document.querySelectorAll("video[data-lazy-video]")];
+  if (!videos.length) return;
+
+  const loadVideo = (video) => {
+    const source = video.querySelector("source[data-src]");
+    if (!source) return;
+    source.src = source.dataset.src;
+    source.removeAttribute("data-src");
+    video.load();
+  };
+
+  if (!("IntersectionObserver" in window)) {
+    videos.forEach(loadVideo);
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      loadVideo(entry.target);
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.01 });
+
+  videos.forEach((video) => observer.observe(video));
 }
 function observe() {
   const io = new IntersectionObserver((entries) => {

@@ -8,7 +8,7 @@
     excerpt: "Explore how bamboo's distinctive growth pattern, natural appearance, and engineered processing come together in a modern bamboo bed frame product direction.",
     intro: "The material story, product engineering, and commercial positioning behind modern bamboo bed frames.",
     publishedAt: "2026-07-22",
-    modifiedAt: "2026-07-22",
+    modifiedAt: "2026-07-24",
     author: "Apexnix Product Team",
     readingTime: "7 min read",
     heroImage: "/images/insights/bamboo-story/bamboo-grove-growth-story-hero.webp",
@@ -23,6 +23,14 @@
     productImage: "/images/insights/bamboo-story/bamboo-bed-frame-natural-style.webp",
     productAlt: "Bamboo bed frame with visible platform slats in a natural-style interior",
     productCaption: "A bamboo bed frame direction shown without a mattress, allowing the platform support structure to remain visible.",
+    video: {
+      name: "From Bamboo Grove to Bamboo Bed Frame",
+      description: "A short visual journey from bamboo growth to engineered material and a finished bamboo bed frame direction.",
+      poster: "/videos/bamboo-story/from-bamboo-grove-to-bamboo-bed-frame-poster.webp",
+      contentUrl: "/videos/bamboo-story/from-bamboo-grove-to-bamboo-bed-frame-web.mp4",
+      uploadDate: "2026-07-24",
+      duration: "PT21S",
+    },
     opening: {
       paragraphs: [
         "A bamboo bed frame begins long before its structure, dimensions, packaging, or price are discussed.",

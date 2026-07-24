@@ -5,6 +5,24 @@ import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const publicVideoDir = path.join(rootDir, "public", "videos");
+const generatedVideoDir = path.join(rootDir, "videos");
+
+function copyDirectory(source, target) {
+  fs.mkdirSync(target, { recursive: true });
+  for (const entry of fs.readdirSync(source, { withFileTypes: true })) {
+    const sourcePath = path.join(source, entry.name);
+    const targetPath = path.join(target, entry.name);
+    if (entry.isDirectory()) copyDirectory(sourcePath, targetPath);
+    else fs.copyFileSync(sourcePath, targetPath);
+  }
+}
+
+if (fs.existsSync(publicVideoDir)) {
+  fs.rmSync(generatedVideoDir, { recursive: true, force: true });
+  copyDirectory(publicVideoDir, generatedVideoDir);
+}
+
 const appPath = path.join(rootDir, "app.js");
 const appSource = fs.readFileSync(appPath, "utf8");
 const insightsPath = path.join(rootDir, "content", "insights.js");
