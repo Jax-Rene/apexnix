@@ -3,7 +3,7 @@ const deployedBase = scriptUrl.pathname.replace(/\/app\.js$/, "").replace(/\/$/,
 const BASE_PATH = window.location.protocol === "file:" ? "" : deployedBase;
 const SITE_URL = "https://www.apexnix.com";
 const SITE_NAME = "Apexnix";
-const CONTACT_EMAIL = "sales@apextella.com";
+const CONTACT_EMAIL = "business@apexnix.com";
 const LOGO_FILE = "apexnix-logo-light.svg";
 const LOGO_DARK_FILE = "apexnix-logo-dark.svg";
 const AVATAR_FILE = "apexnix-avatar.svg";
@@ -82,15 +82,14 @@ const imageDimensions = {
 };
 
 const specMetal = [
-  ["Product Types", "Platform metal bed frames; bed frames with headboard; storage-friendly frames; bunk beds & dormitory solutions; OEM / custom structures"],
-  ["Size Platform", "US: Twin, Twin XL, Full, Queen, King, Cal King / Europe: Single, Double, King, Super King; support custom dimensions"],
-  ["Core Height Options", "14'' / 18''; support custom height"],
-  ["Structure Options", "Basic platform frame; frame with headboard / footboard; project-based bunk or dormitory structure"],
-  ["Frame Material", "Steel / iron frame structure, depending on product design and requirement"],
-  ["Slat / Support System", "Metal slats, reinforced support bars, or customized support structure"],
-  ["Surface Finish", "Powder coating; common colors include matte black, white, grey, or custom colors"],
-  ["Packaging", "KD / flat-pack packaging; carton, instruction manual, label, and private label options available"],
-  ["Customization", "Size, height, structure, color, packaging, label, instruction manual, and project-based development"],
+  ["Market size", "Market-specific size direction worldwide; exact dimensions confirmed by product"],
+  ["Frame type", "Platform, headboard, bunk, daybed, foldable, rail frame or custom structure"],
+  ["Height and clearance", "Adjusted according to product design, storage direction and use case"],
+  ["Structure and support", "Tube layout, center support, legs, slats and connection method"],
+  ["Finish and color", "Surface finish and color direction confirmed by model and program"],
+  ["Hardware and instructions", "Hardware set, labeling and assembly instructions"],
+  ["Packaging", "Flat-pack or project-specific packaging discussion"],
+  ["Private label", "Brand labels, artwork and packaging requirements reviewed by project"],
 ];
 const specBamboo = [
   ["Product Types", "Bamboo platform beds; bamboo beds with headboard; minimal bamboo beds; storage-style headboard options; OEM / custom bamboo structures"],
@@ -103,14 +102,14 @@ const specBamboo = [
   ["Packaging", "KD / flat-pack packaging; carton, instruction manual, label, and private label options available"],
 ];
 const customMatrix = [
-  ["Size", "US / EU / UK size platforms, custom dimensions, project-specific requirements"],
-  ["Height", "14'' / 18'', or custom height based on product direction"],
-  ["Structure", "Platform frame, headboard / footboard, reinforced structure, bunk structure, storage-friendly structure"],
-  ["Material", "Steel / iron frame, bamboo-based structure, mixed material direction"],
-  ["Surface / Appearance", "Powder coating, common colors, natural bamboo appearance, custom finish / color discussion"],
-  ["Packaging", "KD / flat-pack packaging, carton size, protection, instruction manual"],
-  ["Private Label", "Carton mark, barcode label, product label, retail label, brand presentation"],
-  ["Project Requirements", "Bulk delivery, installation discussion, maintenance, replacement parts, compliance discussion based on target market"],
+  ["Size and fit", "Target market dimensions, mattress fit and overall product dimensions"],
+  ["Structure", "Frame layout, headboard or footboard direction, connections, center support and legs"],
+  ["Height", "Overall height, under-bed clearance and use-case requirements"],
+  ["Material combination", "Metal structure, bamboo frame with steel slats, and other project-specific combinations"],
+  ["Finish and color", "Surface direction and color aligned with the product and channel"],
+  ["Support configuration", "Slats, center support, legs and related structural elements"],
+  ["Hardware and instructions", "Hardware organization, labels and assembly instructions"],
+  ["Packaging and private label", "Carton direction, protection, artwork, labels and channel requirements"],
 ];
 
 function canonicalInternalHref(href = "/") {
@@ -154,14 +153,13 @@ function tags(items, light = false) {
 function table(rows, h1 = "Specification Item", h2 = "Available Options") {
   return `<div class="table-wrap"><table><thead><tr><th>${h1}</th><th>${h2}</th></tr></thead><tbody>${rows.map((r) => `<tr><td data-label="${h1}">${r[0]}</td><td data-label="${h2}">${r[1]}</td></tr>`).join("")}</tbody></table></div>`;
 }
-function simpleHero({ title, subtitle, body = "", image, tagItems = [], actions = "" }) {
+function simpleHero({ title, subtitle, body = "", image, tagItems = [], actions = "", eyebrow = "Apexnix" }) {
   return `<section class="hero short">
     <div class="hero-bg active">${imageTag(image, title, { priority: true })}</div>
     <div class="hero-content fade-in">
-      <span class="kicker">Apexnix</span>
+      <span class="kicker">${eyebrow}</span>
       <h1>${title}</h1>
-      <p>${subtitle}</p>
-      ${body ? `<p>${body}</p>` : ""}
+      <p>${subtitle}</p>${body ? `\n      <p>${body}</p>` : ""}
       ${tagItems.length ? tags(tagItems) : ""}
       ${actions ? `<div class="hero-actions">${actions}</div>` : ""}
     </div>
@@ -173,14 +171,17 @@ function productCard(title, body, image, link, button) {
     <div class="card-body"><h3>${title}</h3><p>${body}</p>${cta(button, link, true)}</div>
   </article>`;
 }
-function iconGrid(cards) {
-  return `<div class="grid-4">${cards.map((x) => `<article class="card icon-card fade-in"><span class="line-icon">${x.icon}</span><h3>${x.title}</h3><p>${x.body}</p></article>`).join("")}</div>`;
+function iconGrid(cards, gridClass = "grid-4") {
+  return `<div class="${gridClass}">${cards.map((x) => `<article class="card icon-card fade-in"><span class="line-icon">${x.icon}</span><h3>${x.title}</h3><p>${x.body}</p></article>`).join("")}</div>`;
 }
 function linkGrid(links) {
   return `<div class="grid-3">${links.map((x) => `<article class="card icon-card link-card fade-in"><h3>${x[0]}</h3><p>${x[1]}</p><div class="actions">${cta(x[2], x[3], true)}</div></article>`).join("")}</div>`;
 }
 function section(title, intro, body, cls = "", id = "") {
   return `<section class="section ${cls}" ${id ? `id="${id}"` : ""}><div class="container"><div class="section-head fade-in"><span class="kicker">Apexnix</span><h2>${title}</h2>${intro ? `<p>${intro}</p>` : ""}</div>${body}</div></section>`;
+}
+function faqSection(items = []) {
+  return section("Frequently Asked Questions", "", `<div class="article-faq">${items.map((item) => `<details><summary>${item.question}</summary><p>${item.answer}</p></details>`).join("")}</div>`, "alt");
 }
 function twoCol(title, subtitle, body, image, extra = "", reverse = false, cls = "", id = "") {
   return `<section class="section ${cls}" ${id ? `id="${id}"` : ""}><div class="container split ${reverse ? "reverse" : ""}">
@@ -288,7 +289,7 @@ function articlePage() {
       </main>
       <aside class="article-toc" aria-label="On this page"><strong>On this page</strong>${toc}</aside>
     </div>
-    <section class="section article-cta"><div class="container"><div class="article-cta__inner fade-in"><span class="kicker">Bamboo Bed Frame Development</span><h2>Exploring a Bamboo Bed Frame Product Line?</h2><p>Apexnix supports bamboo bed frame discussions for retailers, online brands, wholesalers, and private-label partners looking for a differentiated natural-style product direction.</p><p>Review our bamboo bed frame product directions or share your target market, sales channel, expected quantity, and product requirements with our team.</p><p>Share your target market, sales channel, expected quantity, and product requirements. Apexnix will help you evaluate suitable bamboo bed frame structures, sizes, packaging, and private-label directions.</p><div class="actions">${cta("Explore Bamboo Bed Frame Options", "/products/bamboo-bed-frames")} ${cta("Send a Bed Frame Sourcing Request", "/contact", true)}</div></div></div></section>
+    <section class="section article-cta"><div class="container"><div class="article-cta__inner fade-in"><span class="kicker">Bamboo Bed Frame Development</span><h2>Exploring a Bamboo Bed Frame Product Line?</h2><p>Apexnix supports bamboo bed frame development for retail, online and private-label programs, combining bamboo frames with steel slats and market-specific product planning. Share your target market, product direction and packaging requirements to start the discussion.</p><p><a href="/products/bamboo-bed-frames/" data-link>bamboo bed frames for B2B product lines</a></p><div class="actions">${cta("Explore Bamboo Bed Frames", "/products/bamboo-bed-frames")} ${cta("Contact Apexnix", "/contact", true)}</div></div></div></section>
   </article>`;
 }
 
@@ -362,40 +363,39 @@ function products() {
 
 function metalPage() {
   return `${simpleHero({
-    title: "Metal Bed Frame Supplier for B2B Partners",
-    subtitle: "Apexnix provides practical metal bed frame product directions for retailers, online brands, wholesalers, private-label partners, and project teams.",
-    body: "Our metal bed frame collection focuses on strong structure, efficient packaging, easy assembly, flexible sizing, and cost-performance balance.",
+    title: "Wholesale Metal Bed Frames for B2B Partners",
+    subtitle: "Explore metal bed frames for wholesale, retail, online and project supply. The Apexnix range covers platform beds, headboard frames, bunk and dormitory solutions, daybeds, foldable beds, universal rail frames and custom metal structures. Specifications and packaging can be reviewed for the target market and channel.",
     image: img.metalCard,
-    tagItems: ["Metal Platform Beds", "Headboard Bed Frames", "Bunk & Dormitory Solutions", "OEM / Custom Structures"],
-    actions: cta("Discuss Your Metal Bed Frame Project", "/contact"),
+    tagItems: ["Platform Beds", "Headboard Frames", "Bunk & Dormitory Beds", "Custom Metal Structures"],
+    actions: `${cta("Request Product Information", "/contact")} ${cta("View Manufacturing Capability", "/metal-bed-frame-manufacturer", true)}`,
+    eyebrow: "METAL BED FRAME PRODUCT RANGE",
   })}
-  ${section("Metal Bed Frame Product Directions", "This collection covers core platform frames, retail-facing decorative metal beds, accommodation-use bunk solutions, and additional design directions available for development discussion.", iconGrid([
-    { icon: "▣", title: "Platform Frames", body: "Core durable structures for retail, online sales, wholesale, and project use." },
-    { icon: "▥", title: "Headboard Frames", body: "Clean-line decorative metal beds for more complete bedroom product lines." },
-    { icon: "▤", title: "Dormitory Solutions", body: "Space-efficient and durable concepts for accommodation projects." },
-    { icon: "◎", title: "Custom Structures", body: "Size, height, finish, packaging, and private-label support." },
+  ${section("Metal Bed Frame Product Directions", "The collection is organized by product direction rather than a fixed list of standard items. Buyers can start from an existing model or use the range as a reference for a customized product discussion.", `<div class="grid-4">
+    <article class="card fade-in"><div class="card-image">${imageTag(img.heavy, "Platform and heavy-duty bed frames")}</div><div class="card-body"><h3>Platform and Heavy-Duty Bed Frames</h3><p>Practical platform structures for retail, online, wholesale and project programs, with different height, support and packaging directions available for discussion.</p></div></article>
+    <article class="card fade-in"><div class="card-image">${imageTag(img.headboard, "Metal bed frames with headboards")}</div><div class="card-body"><h3>Bed Frames with Headboards</h3><p>Metal bed frames with integrated headboard or headboard-and-footboard designs for more decorative and collection-led product lines.</p></div></article>
+    <article class="card fade-in"><div class="card-image">${imageTag(img.bunkDormitory, "Bunk and dormitory bed frames")}</div><div class="card-body"><h3>Bunk and Dormitory Bed Frames</h3><p>Bed frame directions for schools, staff housing, hostels, rental accommodation and other high-use environments, subject to project-specific structure and compliance requirements. Review our <a href="/dormitory-bed-frame-supplier/" data-link>dormitory bed frame solutions</a>.</p></div></article>
+    <article class="card fade-in"><div class="card-image">${imageTag(img.metalMore, "More metal bed frame directions")}</div><div class="card-body"><h3>More Metal Bed Frame Directions</h3><p>Daybeds, foldable beds, universal rail frames and other metal structures can be reviewed as standalone products or as additions to a wider bed frame collection.</p></div></article>
+  </div><div class="gallery"><figure>${imageTag(img.headboard, "Headboard bed frame")}<figcaption>Modern Minimal</figcaption></figure><figure>${imageTag(img.home1, "Metal frame")}<figcaption>Clean Line</figcaption></figure><figure>${imageTag(img.heavy, "Retail bed frame")}<figcaption>Retail Friendly</figcaption></figure><figure>${imageTag(img.metalMore, "Private label direction")}<figcaption>Private Label Potential</figcaption></figure></div>`, "alt")}
+  ${section("Options to Define for Each Product", "The final product specification should be confirmed around the intended market, use case and sales channel. The options below are discussion fields, not a claim that every combination applies to every model.", table(specMetal, "Specification field", "Discussion direction"))}
+  ${section("Product Selection by Sales Channel", "A product range should be planned around how it will be sold and used. Apexnix reviews product direction together with the buyer's channel requirements.", iconGrid([
+    { icon: "01", title: "Wholesale and Distribution", body: "Build a focused range with clear product differences, repeatable specifications and packaging suitable for distribution." },
+    { icon: "02", title: "Retail and Online", body: "Review product presentation, assembly experience, packaging protection and the role of each item within the collection." },
+    { icon: "03", title: "Accommodation and Project Supply", body: "Confirm environment, use intensity, dimensions, structure, installation, packaging and delivery requirements before selecting the product direction." },
+    { icon: "04", title: "Private-Label Programs", body: "Use an existing platform as a starting point or move into a custom development project for a more differentiated product." },
   ]), "alt")}
-  ${twoCol("Heavy-Duty Platform Beds", "A practical metal platform bed direction built for strength, stability, and cost-efficient supply.", "Heavy-duty platform beds are one of our core metal bed frame directions. With clean structure, strong steel support, and practical under-bed clearance, this type is suitable for retail, online sales, wholesale, rental housing, or project use.<br><br>The design focuses on durability, easy assembly, flat-pack potential, and cost-performance balance.", img.heavy, `<ul class="check-list"><li>Strong steel structure</li><li>Platform support system</li><li>No box spring needed</li><li>Storage-friendly under-bed clearance</li><li>Flat-pack packaging potential</li></ul><div class="mini-features"><span>Heavy Duty</span><span>No Box Spring Needed</span><span>Storage Friendly</span><span>Easy Assembly</span><span>Flat-Pack Ready</span></div><div class="actions">${cta("Discuss Platform Bed Options", "/contact", true)}</div>`)}
-  ${twoCol("Bed Frames with Headboard", "A more complete metal bed frame direction for partners who need both structure and visual appeal.", "Bed frames with headboards give users a more finished bedroom product compared with basic platform frames. This direction combines practical metal support with clean-line decorative design, making it suitable for retail, online product pages, and private label collections.", img.headboard, `<div class="gallery"><figure>${imageTag(img.headboard, "Headboard bed frame")}<figcaption>Modern Minimal</figcaption></figure><figure>${imageTag(img.home1, "Metal frame")}<figcaption>Clean Line</figcaption></figure><figure>${imageTag(img.heavy, "Retail bed frame")}<figcaption>Retail Friendly</figcaption></figure><figure>${imageTag(img.metalMore, "Private label direction")}<figcaption>Private Label Potential</figcaption></figure></div><div class="actions">${cta("Explore Headboard Bed Frame Options", "/contact", true)}</div>`, true, "alt")}
-  ${section("Bunk Beds & Dormitory Solutions", "Metal bed frame solutions for accommodation and high-use environment.", `<div class="split"><div class="image-panel fade-in">${imageTag(img.bunkDormitory, "Dormitory bed frame solutions")}</div><div class="fade-in"><p>For dormitories, schools, staff housing, hostels, rental apartments, and other accommodation projects, bed frames need to be durable, space-efficient, easy to install, and simple to maintain. We can support development for bunk beds, dormitory beds, and accommodation-use metal bed frame solutions based on your requirements.</p><br><ul class="check-list"><li>Single bed and bunk bed concepts</li><li>Dormitory-use structure discussion</li><li>Reinforced support</li><li>Simple installation</li><li>Bulk order coordination</li></ul><div class="actions">${cta("Discuss Bunk Bed Solutions", "/contact")}</div></div></div>`, "steel-band")}
-  ${twoCol("More Metal Bed Frame Design Directions", "", "In addition to our core metal platform and headboard bed frame directions, we can discuss more design variations based on your product line needs. These directions may include storage-friendly frames, foldable structures, decorative metal styles, sofa bed options, box spring support frames, and project-based concepts.", img.metalMore, `${tags(["Basic Platform Frames", "Metal Frames with Headboard", "Storage-Friendly High Clearance Frames", "Foldable / Easy-Assembly Frames", "Sofa Bed Options", "Decorative Metal Frame Styles", "Box Spring Support Frames", "Project-Based Concepts"], true)}<p>The designs shown here represent available bed frame directions and development references. Final product selection, specifications, and quotation can be confirmed during product discussion.</p>`)}
-  ${section("Metal Bed Frame Specification Options", "", table(specMetal), "alt")}
-  ${section("Metal Bed Frame Supply Planning", "Metal bed frame sourcing is easier to evaluate when product direction, production flow, quality control, packaging, and project-use requirements are discussed together.", linkGrid([
-    ["Metal Bed Frame Manufacturer", "Manufacturing and development support for retail, wholesale, project, and private-label metal bed frame programs.", "View Manufacturer Page", "/metal-bed-frame-manufacturer"],
-    ["Production Process", "Understand the typical metal bed frame production flow from requirements to packaging.", "View Production Process", "/metal-bed-frame-production-process"],
-    ["Quality Control", "Review practical inspection points for structure, surface finish, hardware, assembly, and packaging.", "View Quality Control", "/bed-frame-quality-control"],
-    ["Flat-Pack Packaging", "Explore KD and flat-pack packaging discussion points for bed frame sourcing.", "View Packaging Support", "/flat-pack-bed-frame-packaging"],
-    ["Dormitory Bed Frame Supplier", "Review project-use and accommodation bed frame discussion points.", "View Dormitory Solutions", "/dormitory-bed-frame-supplier"],
-    ["Contact Apexnix", "Share your target market, quantity, target price, and product requirements.", "Send Bed Frame Sourcing Request", "/contact"],
-  ]))}
-  <section class="section cta-band">${imageTag(img.oem, "Metal bed frame discussion")}<div class="container fade-in"><h2>Looking for the Right Metal Bed Frame Direction?</h2><p>Share your market, sales channel, product idea, and supply needs. We will help you explore suitable metal bed frame solutions for your business.</p><div class="actions">${cta("Send Bed Frame Sourcing Request", "/contact")}</div></div></section>`;
+  ${section("Manufacturing and Supply Support", "", `<p>Apexnix connects the product range with its own <a href="/metal-bed-frame-manufacturer/" data-link>metal bed frame manufacturing capability</a>, routine quality control, OEM development and <a href="/flat-pack-bed-frame-packaging/" data-link>flat-pack packaging support</a>. Order terms, sampling and production arrangements are confirmed according to the selected model, specification, packaging and purchasing plan.</p>`)}
+  <section class="section cta-band">${imageTag(img.oem, "Metal bed frame product information")}<div class="container fade-in"><h2>Looking for the Right Metal Bed Frame Direction?</h2><p>Share the products you are interested in, your target market, preferred size range, channel, packaging requirements and expected purchasing plan. We will help organize the next product discussion.</p><div class="actions">${cta("Request Product Information", "/contact")}</div></div></section>
+  ${faqSection([
+    { question: "What types of wholesale metal bed frames does Apexnix supply?", answer: "The range includes platform beds, bed frames with headboards, bunk and dormitory beds, daybeds, foldable beds, universal rail frames and custom metal structures." },
+    { question: "Can metal bed frame sizes be adapted for different markets?", answer: "Yes. Product dimensions can be reviewed and adapted for market requirements worldwide, including but not limited to the US, UK and EU, subject to the structure and specification of each model." },
+    { question: "Are MOQ and lead time the same for every metal bed frame?", answer: "No. Order terms, sampling and lead time depend on the model, specification, packaging and purchasing plan and are confirmed during the project discussion." },
+  ])}`;
 }
 
 function bambooPage() {
   return `${simpleHero({
     title: "Bamboo Bed Frame Supplier for Natural-Style Collections",
-    subtitle: "Apexnix provides bamboo bed frame product directions for partners looking to add natural-style, warm, and differentiated bed frame options to their product lines.",
-    body: "Bamboo bed frames can support selected retail, online, compact living, and private-label collections where material identity and visual warmth matter.",
+    subtitle: "Apexnix develops bamboo bed frames with bamboo frames and steel slats for retail, online and private-label product lines. Product size, structure, finish and packaging can be reviewed according to the target market and sales channel.",
     image: img.bambooCard,
     tagItems: ["Natural Material Appeal", "Renewable Material Story", "Storage-Friendly", "Easy Assembly", "Private-Label Potential"],
     actions: cta("Discuss Bamboo Bed Frame Options", "/contact"),
@@ -419,53 +419,41 @@ function bambooPage() {
     eyebrow: "Related Insight",
     title: "Understand the Material Story Behind Bamboo Bed Frames",
     body: "From the growth pattern of bamboo to engineered furniture components, this article explains what gives a bamboo bed frame its material identity, and what sourcing teams should confirm before development.",
-    linkLabel: "Read the Bamboo Material Story",
+    linkLabel: "bamboo bed frame material story",
   })}
   <section class="section cta-band">${imageTag(img.bambooMore, "Bamboo bed frame discussion")}<div class="container fade-in"><h2>Looking for a Natural-Style Bed Frame Direction?</h2><p>Share your product line idea and market needs. We will help you explore suitable bamboo bed frame options.</p><div class="actions">${cta("Send Bed Frame Sourcing Request", "/contact")}</div></div></section>`;
 }
 
 function oemPage() {
   return `${simpleHero({
-    title: "OEM / Custom Bed Frame Development",
-    subtitle: "Apexnix supports OEM and custom bed frame development for partners who need more than standard models.",
-    body: "We help discuss product positioning, target market, structure, size, material direction, packaging, private label needs, and target-price requirements before moving into sampling and production coordination.",
+    title: "Custom Bed Frame Development from Concept to Production",
+    subtitle: "Develop a bed frame around your market, channel and product direction. Apexnix supports both ground-up development of new structures and practical adaptations of existing platforms, including size, height, structure, finish, support configuration, hardware, instructions and packaging.",
     image: img.oem,
-    tagItems: ["OEM Product Development", "Custom Sizes & Structures", "Packaging Customization", "Private Label Support", "Project-Based Manufacturing", "Material Combination Solutions"],
-    actions: cta("Start Custom Development", "/contact"),
+    tagItems: ["New Structures", "Existing Platform Adaptation", "Packaging & Labels", "Sample Review"],
+    actions: `${cta("Start a Development Discussion", "/contact")} ${cta("View OEM Manufacturing", "/oem-bed-frame-manufacturer", true)}`,
+    eyebrow: "CUSTOM PRODUCT DEVELOPMENT",
   })}
-  ${twoCol("From Standard Models to Market-Fit Product Lines", "", "In B2B bed frame sourcing, a standard model is often only the starting point. Different partners may need different structures, size platforms, packaging methods, labels, finishes, or project requirements.<br><br>Our custom development approach focuses on turning product ideas into practical, manufacturable, and supply-ready bed frame solutions.", img.oemCard, `<ul class="check-list"><li>What product direction fits the market</li><li>What structure supports the use scenario</li><li>What packaging supports the sales channel</li><li>What customization is necessary</li><li>What can remain standardized for better efficiency</li></ul>`, false, "alt")}
-  ${section("Development Scope", "", iconGrid([
-    { icon: "01", title: "OEM Product Development", body: "Develop or adjust bed frame products based on your brand, channel, and product line needs." },
-    { icon: "02", title: "Custom Sizes & Structures", body: "Support discussion on size platforms, height, headboard design, support structure, storage clearance, and frame construction." },
-    { icon: "03", title: "Packaging Customization", body: "Discuss carton size, protection, instruction manual, labels, and private label packaging." },
-    { icon: "04", title: "Project-Based Manufacturing", body: "Support product direction discussion for dormitories, rental housing, accommodation projects, and bulk-use environment." },
-  ]) + `<div class="grid-2" style="margin-top:22px">${[
-    ["Material Combination Solutions", "Explore metal, bamboo, wood-look, mixed material, and finish combinations based on product positioning."],
-    ["Commercial Positioning Support", "Discuss how the product should be positioned for online sales, retail, wholesale, project supply, or private-label collections."],
-  ].map(x => `<article class="card icon-card fade-in"><h3>${x[0]}</h3><p>${x[1]}</p></article>`).join("")}</div>`)}
-  ${section("Customization Matrix", "", table(customMatrix, "Custom Area", "What Can Be Discussed"), "alt")}
-  ${section("How Custom Development Works", "", `<ol class="process">${[
-    ["Share Your Requirement", "Tell us your product idea, sales channel, target market, quantity estimate, and customization needs."],
-    ["Clarify Product Direction", "We discuss suitable bed frame type, structure, material direction, packaging logic, and commercial positioning."],
-    ["Review Existing References", "We check whether an existing platform can be adapted, or whether a new development direction is needed."],
-    ["Confirm Sample Direction", "We align on structure, size, appearance, packaging, label, and key requirements before sampling."],
-    ["Sample & Adjustment", "Samples can be reviewed and adjusted based on assembly, structure, packaging, and market feedback."],
-    ["Move Toward Production", "After confirmation, we support production coordination, packaging preparation, quality control, and export communication."],
-  ].map(x => `<li class="fade-in"><div><h3>${x[0]}</h3><p>${x[1]}</p></div></li>`).join("")}</ol>`)}
-  ${twoCol("Packaging and Private Label Support", "", "For B2B bed frame products, packaging is part of product competitiveness. It affects logistics, warehouse efficiency, customer experience, assembly clarity, and after-sales risk.", img.ecommerce, `<ul class="check-list"><li>KD / flat-pack packaging</li><li>Carton size planning</li><li>Protection material discussion</li><li>Instruction manual support</li><li>Carton mark and barcode label</li><li>Private-label packaging direction</li></ul>`, false, "alt")}
-  ${twoCol("Project-Based Manufacturing Support", "", "For accommodation, rental, dormitory, hospitality, and bulk-use environments, product development needs to consider use intensity, structure, installation, maintenance, packaging, and delivery coordination.", img.projectManufacturing, `<ul class="check-list"><li>Project-use metal bed frame direction</li><li>Bunk and dormitory bed concepts</li><li>Reinforced support options</li><li>Bulk packaging</li><li>Maintenance and replacement considerations</li><li>Compliance testing discussion based on target market</li></ul>`)}
-  ${section("What to Prepare for RFQ", "A clear RFQ helps us recommend the right product direction faster.", iconGrid([
-    { icon: "1", title: "Market & Channel", body: "Target country, sales channel, and customer type." },
-    { icon: "2", title: "Product Direction", body: "Metal, bamboo, headboard, platform, bunk, or custom concept." },
-    { icon: "3", title: "Commercial Needs", body: "Quantity estimate, target price range, packaging needs, and branding requirements." },
-    { icon: "4", title: "References", body: "Photos, drawings, sizes, benchmark products, or project requirements." },
-  ]), "alt")}
-  ${section("Custom Bed Frame Development Support", "OEM bed frame development works best when product requirements, packaging logic, quality expectations, and RFQ details are aligned from the beginning.", linkGrid([
-    ["OEM Bed Frame Manufacturer", "Review OEM development support for private-label partners, online brands, retailers, wholesalers, and project teams.", "View OEM Manufacturer Page", "/oem-bed-frame-manufacturer"],
-    ["Flat-Pack Packaging", "Explore carton planning, protection, instructions, labeling, and private-label packaging topics.", "View Packaging Support", "/flat-pack-bed-frame-packaging"],
-    ["Quality Control", "Review practical quality points for structure, assembly, surface finish, hardware, and packaging.", "View Quality Control", "/bed-frame-quality-control"],
-  ]))}
-  <section class="section cta-band">${imageTag(img.oem, "Custom bed frame development")}<div class="container fade-in"><h2>Ready to Develop a Bed Frame Product Around Your Market?</h2><p>Share your product idea, customization needs, and supply expectations. We will help you explore a practical development direction.</p><div class="actions">${cta("Start Custom Development", "/contact")}</div></div></section>`;
+  ${section("Two Custom Development Routes", "Not every custom project needs to begin in the same way. The right route depends on how clearly the product has been defined, the level of differentiation required and the buyer's commercial objective.", `<div class="split"><div class="grid-2">
+    <article class="card icon-card fade-in"><h3>Develop a New Structure</h3><p>Start from a concept, reference, drawing or functional requirement and work toward a new bed frame structure. The discussion may cover overall layout, support system, connections, dimensions, materials, finish, assembly, packaging and target positioning.</p></article>
+    <article class="card icon-card fade-in"><h3>Adapt an Existing Platform</h3><p>Use an existing Apexnix or buyer reference as a starting point and adjust selected elements such as size, height, color, finish, support configuration, hardware, labels or packaging. This route is suitable when the basic product direction is already clear.</p></article>
+  </div><div class="image-panel fade-in">${imageTag(img.oemCard, "Custom bed frame development routes")}</div></div>`, "alt")}
+  ${section("What Can Be Customized?", "Customization is reviewed as a connected product system. A change to size or structure may also affect support, hardware, packaging and assembly, so the final combination must be evaluated as one product rather than a list of independent options.", table(customMatrix, "Development area", "Typical discussion points"))}
+  ${section("Custom Bed Frame Development Workflow", "The workflow below is a practical framework. The exact sequence may vary according to how complete the buyer's initial information is and whether the project starts from a new or existing structure.", `<ol class="process">${[
+    ["Share the Starting Information", "Share the market, channel, product direction, reference information and commercial requirements."],
+    ["Review the Product System", "Review the structure, dimensions, materials, finish, support configuration and packaging implications."],
+    ["Align the Sample Direction", "Align the proposed product and sample direction."],
+    ["Review and Adjust the Sample", "Review the sample and collect the required adjustments."],
+    ["Confirm Product and Packaging Details", "Confirm the product specification, hardware, instructions, labels and packaging direction."],
+    ["Move into Manufacturing Preparation", "Move the approved direction into OEM manufacturing and production preparation."],
+  ].map(x => `<li class="fade-in"><div><h3>${x[0]}</h3><p>${x[1]}</p></div></li>`).join("")}</ol>`, "alt")}
+  ${twoCol("What Should the Buyer Prepare?", "", "A development discussion moves faster when the commercial objective and product requirements are both visible. Buyers do not need to have every technical detail finalized before the first discussion.", img.ecommerce, `<ul class="check-list"><li>Target country or region and sales channel</li><li>Product category and intended use</li><li>Reference images, drawings, samples or links, if available</li><li>Required sizes, height, structure and key functions</li><li>Preferred finish, color and visual direction</li><li>Packaging, labeling and private-label requirements</li><li>Expected purchasing plan and target schedule</li></ul>`, false, "alt")}
+  ${twoCol("Moving from Development to Manufacturing", "", "Once the product and packaging direction are agreed, the project moves into manufacturing preparation. Specifications, sample decisions and packaging requirements should remain aligned so the approved direction can be transferred into repeatable production.", img.projectManufacturing, `<p>Continue with an <a href="/oem-bed-frame-manufacturer/" data-link>OEM bed frame manufacturer</a>, review the <a href="/products/metal-bed-frames/" data-link>metal bed frame collection</a>, or explore the <a href="/products/bamboo-bed-frames/" data-link>bamboo bed frame collection</a>.</p>`)}
+  <section class="section cta-band">${imageTag(img.oem, "Custom bed frame development discussion")}<div class="container fade-in"><h2>Ready to Develop a Bed Frame for Your Market?</h2><p>Share the product direction and the information currently available. Apexnix will help identify whether the project should begin from a new structure or an adaptation of an existing platform, and what needs to be confirmed next.</p><div class="actions">${cta("Start a Development Discussion", "/contact")}</div></div></section>
+  ${faqSection([
+    { question: "Can a custom bed frame project start from a concept or reference image?", answer: "Yes. A project can begin from a concept, reference image, drawing, sample or functional requirement, subject to product and manufacturing review." },
+    { question: "Can Apexnix modify an existing bed frame instead of creating a new structure?", answer: "Yes. Existing platforms can be reviewed for changes to size, height, structure, finish, configuration, hardware, labels and packaging." },
+    { question: "What affects the custom development process?", answer: "The process depends on the starting information, structural complexity, target market, product specification, sample requirements and packaging direction." },
+  ])}`;
 }
 
 const solutionData = [
@@ -551,7 +539,7 @@ function capabilities() {
     image: img.capabilitiesHero,
     actions: cta("Discuss Your Bed Frame Requirements", "/contact"),
   })}
-  <section class="section"><div class="container"><ol class="process">${caps.map((x) => `<li class="fade-in"><div class="split"><div><h3>${x[0]}</h3><p>${x[2]}</p></div><div class="image-panel soft">${imageTag(x[1], x[0])}</div></div></li>`).join("")}</ol></div></section>
+  <section class="section"><div class="container"><div class="section-head fade-in"><span class="kicker">Apexnix</span><h2>Core Bed Frame Manufacturing and Supply Capabilities</h2><p>Our capabilities cover the practical steps required to turn a bed frame direction into a market-ready B2B product, including product development, value engineering, packaging, quality control, OEM support and supply coordination.</p></div><ol class="process">${caps.map((x) => `<li class="fade-in"><div class="split"><div><h3>${x[0]}</h3><p>${x[2]}</p></div><div class="image-panel soft">${imageTag(x[1], x[0])}</div></div></li>`).join("")}</ol></div></section>
   ${section("Supply Details That Shape the Final Product", "Manufacturing flow, inspection points, packaging, and OEM development decisions all affect how a bed frame performs in real sales channels.", linkGrid([
     ["Metal Bed Frame Production Process", "Understand the typical production flow for metal bed frame products.", "View Production Process", "/metal-bed-frame-production-process"],
     ["Bed Frame Quality Control", "Review quality control points that may apply during sampling, production, packaging, and shipment.", "View Quality Control", "/bed-frame-quality-control"],
@@ -630,66 +618,71 @@ function contact() {
 
 function metalManufacturerPage() {
   return `${simpleHero({
-    title: "Metal Bed Frame Manufacturer for Retail, Wholesale and Project Supply",
-    subtitle: "Apexnix supports global B2B partners with practical metal bed frame product directions, including platform beds, bed frames with headboards, bunk and dormitory solutions, and OEM/custom metal bed frame development.",
-    body: "Our focus is to help partners balance structure, cost, packaging, assembly, and market-fit requirements.",
+    title: "Metal Bed Frame Manufacturer for B2B Supply",
+    subtitle: "Apexnix supports retailers, wholesalers, project buyers and private-label brands with metal bed frame manufacturing, product development, routine factory quality control and flat-pack packaging. Our own factory brings more than 25 years of bed frame manufacturing experience.",
     image: img.heavy,
-    tagItems: ["Retail and Wholesale Supply", "Online Brand Programs", "Accommodation Projects", "Private-Label Development"],
-    actions: cta("Discuss Your Metal Bed Frame Project", "/contact"),
+    tagItems: ["Own Manufacturing Facility", "25+ Years of Factory Experience", "B2B Product Support", "Routine Factory QC"],
+    actions: `${cta("Discuss Your Project", "/contact")} ${cta("Explore Metal Bed Frames", "/products/metal-bed-frames", true)}`,
+    eyebrow: "FACTORY-BACKED BED FRAME SUPPLY",
   })}
-  ${section("Metal Bed Frame Solutions for B2B Channels", "Different sales channels require different metal bed frame solutions. Online sellers may focus on flat-pack packaging and easy assembly. Retailers and wholesalers may need stable product lines and flexible size options. Project partners may care more about structure, installation, maintenance, and bulk-use durability.", `<ul class="check-list"><li>Online brands and e-commerce sellers</li><li>Furniture retailers and wholesalers</li><li>Importers and distributors</li><li>Accommodation and dormitory project partners</li><li>OEM and private-label partners</li></ul>`, "alt")}
-  ${section("Product Directions We Can Discuss", "", iconGrid([
-    { icon: "01", title: "Heavy-Duty Metal Platform Beds", body: "Practical platform structures for retail, online sales, wholesale, rental housing, and project use." },
-    { icon: "02", title: "Metal Bed Frames with Headboard", body: "Clean-line metal bed frames for partners who need a more complete bedroom product line." },
-    { icon: "03", title: "Bunk Beds and Dormitory Solutions", body: "Metal bed frame directions for dormitories, staff housing, hostels, schools, rental apartments, and bulk-use environments." },
-    { icon: "04", title: "OEM / Custom Metal Structures", body: "Custom discussion for size, structure, height, support system, finish, packaging, and private-label requirements." },
-  ]))}
-  ${section("Key Sourcing Discussion Points", "A clear sourcing discussion helps connect product structure with sales channel, commercial position, and packaging needs.", `<ul class="check-list"><li>Size platform: US, UK, EU, or custom dimensions</li><li>Height options: 14 inch, 18 inch, or custom height discussion</li><li>Structure: platform, headboard, footboard, bunk, reinforced structure</li><li>Surface finish: powder coating and common color direction</li><li>Packaging: KD / flat-pack packaging, carton planning, labels, instruction manual</li><li>Commercial target: commercial positioning, sales channel, quantity, and product positioning</li></ul>`, "alt")}
-  ${twoCol("Why Work with a Focused Bed Frame Supplier", "", "A focused bed frame supplier can support more than production. Product competitiveness also depends on structure, packaging efficiency, assembly experience, cost balance, and after-sales risk. Apexnix works with partners to discuss these factors before quotation, sampling, and production coordination.", img.metalMore, `${tags(["Structure Discussion", "Packaging Efficiency", "Assembly Experience", "Cost Balance", "After-Sales Risk Reduction"], true)}<div class="actions">${cta("Discuss Your Metal Bed Frame Project", "/contact", true)}</div>`)}
-  ${section("Metal Bed Frame Supply Support", "", linkGrid([
-    ["Metal Bed Frames Collection", "Explore current metal platform, headboard, bunk, and custom structure directions.", "Explore Metal Bed Frames", "/products/metal-bed-frames"],
-    ["Production Process", "Review a typical metal bed frame production flow.", "View Production Process", "/metal-bed-frame-production-process"],
-    ["Quality Control", "Review practical quality control points for bed frame products.", "View Quality Control", "/bed-frame-quality-control"],
-    ["Flat-Pack Packaging", "Explore packaging and carton planning topics.", "View Packaging Support", "/flat-pack-bed-frame-packaging"],
-  ]), "alt")}
-  <section class="section cta-band">${imageTag(img.oem, "Metal bed frame project discussion")}<div class="container fade-in"><h2>Discuss Your Metal Bed Frame Project</h2><p>Share your target market, product direction, quantity, target price, and packaging needs. We will help you evaluate suitable metal bed frame options.</p><div class="actions">${cta("Send Bed Frame Sourcing Request", "/contact")}</div></div></section>`;
+  <section class="section alt"><div class="container">
+    <div class="split">
+      <div class="fade-in"><span class="kicker">Apexnix</span><h2>A Focused Metal Bed Frame Manufacturer</h2><p>Apexnix is built around the bed frame category. Instead of presenting an unrelated mix of furniture products, we focus on metal and bamboo bed frames, OEM development and the practical supply details that matter to B2B buyers. This focus helps us connect product direction, manufacturing, quality control and packaging within one project discussion.</p></div>
+      <div class="image-panel fade-in">${imageTag(img.metalMore, "A Focused Metal Bed Frame Manufacturer")}</div>
+    </div>
+    ${iconGrid([
+      { icon: "01", title: "Own Manufacturing Facility", body: "Apexnix operates its own bed frame factory, allowing product and production discussions to stay connected from the beginning of a project." },
+      { icon: "02", title: "25+ Years of Factory Experience", body: "Our factory has more than 25 years of bed frame manufacturing experience across structure development, production, surface finishing, assembly review and packaging." },
+      { icon: "03", title: "B2B Product and Supply Support", body: "We work with retail, wholesale, online, private-label and project requirements, with product specifications and order terms confirmed according to each program." },
+    ], "grid-3 manufacturer-feature-grid")}
+  </div></section>
+  ${section("Metal Bed Frame Manufacturing Scope", "Our manufacturing scope covers mainstream metal bed frame categories as well as custom structures. Product dimensions, height, finish, support configuration, hardware and packaging can be reviewed according to the target market and sales channel.", `<ul class="check-list"><li>Platform and heavy-duty metal bed frames</li><li>Metal bed frames with headboards and footboards</li><li>Bunk beds and dormitory bed frame solutions</li><li>Daybeds, foldable beds, universal rail frames and custom metal structures</li></ul><p>Explore the <a href="/products/metal-bed-frames/" data-link>wholesale metal bed frame range</a>.</p>`)}
+  ${section("From Product Direction to Manufacturing", "A manufacturing project begins with the commercial requirement rather than a generic product list. We review the intended market, channel, product type, structure, finish, packaging and target positioning before aligning the sample and production direction.", `${iconGrid([
+    { icon: "01", title: "Requirement and Product Review", body: "Confirm the intended market, use case, key specifications and commercial positioning." },
+    { icon: "02", title: "Sample and Specification Alignment", body: "Review the proposed structure and sample direction, then confirm the product details that will guide production." },
+    { icon: "03", title: "Production Preparation", body: "Align materials, components, surface requirements, hardware, instructions and packaging before production." },
+    { icon: "04", title: "Production and Quality Review", body: "Carry out routine factory checks during production and review the finished product and packaging before shipment coordination." },
+  ])}<p>Projects that need a new structure or platform adaptation can begin with <a href="/products/oem-custom-development/" data-link>custom bed frame development</a>.</p>`, "alt")}
+  ${section("Routine Factory Quality Control", "", `<p>Quality control is integrated into normal factory work. Depending on the product, routine checks may cover materials and components, dimensions, frame structure, welding and connections, surface finish, trial assembly, hardware, instructions, packaging and pre-shipment review.</p><p>Review the <a href="/bed-frame-quality-control/" data-link>bed frame quality control process</a>.</p>`)}
+  ${section("Support for Different B2B Channels", "", `<p>The same bed frame does not fit every channel in the same way. Retail and online programs may prioritize product presentation, compact packaging and assembly experience. Wholesale programs may focus on range planning and repeat supply. Accommodation and dormitory projects may place greater emphasis on structure, use intensity and installation requirements. Apexnix reviews these differences during product and supply planning.</p>`, "alt")}
+  <section class="section cta-band">${imageTag(img.oem, "Metal bed frame project discussion")}<div class="container fade-in"><h2>Discuss Your Metal Bed Frame Project</h2><p>Share your target market, sales channel, product direction, required specifications, packaging expectations and purchasing plan. Apexnix will review the manufacturing direction and identify the information needed for the next discussion.</p><div class="actions">${cta("Send Your Requirements", "/contact")}</div></div></section>
+  ${faqSection([
+    { question: "Is Apexnix a metal bed frame manufacturer or a trading company?", answer: "Apexnix is a B2B bed frame brand and company with its own bed frame manufacturing facility." },
+    { question: "How much manufacturing experience does the factory have?", answer: "The Apexnix factory has more than 25 years of bed frame manufacturing experience." },
+    { question: "Can Apexnix manufacture custom metal bed frames?", answer: "Yes. Apexnix can develop a new structure from the beginning or adapt an existing structure through changes to size, height, finish, configuration and packaging." },
+  ])}`;
 }
 
 function oemManufacturerPage() {
   return `${simpleHero({
-    title: "OEM Bed Frame Manufacturer for Private Label and Custom Development",
-    subtitle: "Apexnix supports OEM and custom bed frame development for partners who need products aligned with their market, channel, target price, packaging needs, and brand positioning.",
-    body: "We help discuss product direction before moving into sample confirmation and production coordination.",
+    title: "OEM Bed Frame Manufacturer for Private Label Programs",
+    subtitle: "Apexnix supports private-label, retail, online, wholesale and project customers with OEM bed frame manufacturing. Our own factory has more than 25 years of bed frame manufacturing experience and can support both new product structures and adaptations of existing platforms.",
     image: img.oem,
-    tagItems: ["Private Label", "Custom Structures", "Target-Price Planning", "Packaging and Labels"],
-    actions: cta("Send Your OEM Bed Frame RFQ", "/contact"),
+    tagItems: ["Own Bed Frame Factory", "Factory Experience", "Production Readiness", "Routine Quality & Packaging"],
+    actions: `${cta("Discuss an OEM Program", "/contact")} ${cta("View Custom Development", "/products/oem-custom-development", true)}`,
+    eyebrow: "FACTORY-BACKED OEM MANUFACTURING",
   })}
-  ${section("OEM Bed Frame Development Based on Your Market", "OEM development should start with commercial context, not only drawings. A bed frame for online sales may need compact packaging and easy assembly. A private-label retail product may need stronger appearance identity and packaging presentation. A project-use bed frame may need reinforced structure and maintenance-friendly details.", `<p>Apexnix supports development discussion around the partner's actual channel and use scenario.</p>`, "alt")}
-  ${section("What Can Be Customized", "", table([
-    ["Size", "US, UK, EU size platforms, custom dimensions, project requirements"],
-    ["Height", "14 inch, 18 inch, or custom height"],
-    ["Structure", "Platform frame, headboard, footboard, bunk, reinforced support, storage-friendly structure"],
-    ["Material Direction", "Metal, bamboo, mixed material, or product-specific discussion"],
-    ["Surface / Appearance", "Powder coating, common colors, bamboo appearance, custom finish discussion"],
-    ["Packaging", "KD / flat-pack carton, protection, instruction manual, labels, barcode, carton mark"],
-    ["Private Label", "Product label, carton label, retail label, brand presentation"],
-    ["Commercial Target", "Quantity, target price, sales channel, market positioning"],
-  ], "Custom Area", "Discussion Scope"))}
-  ${section("OEM Development Process", "", `<ol class="process">${[
-    ["Share Your Requirement", "Tell us your target market, sales channel, product concept, quantity estimate, and customization needs."],
-    ["Clarify Product Direction", "We discuss suitable bed frame type, structure, material direction, packaging logic, and commercial positioning."],
-    ["Review Existing References", "We check whether an existing platform can be adapted or whether a new development direction is needed."],
-    ["Confirm Sample Direction", "We align on structure, size, appearance, packaging, label, and key requirements before sampling."],
-    ["Sample and Adjustment", "Samples can be reviewed and adjusted based on assembly, structure, packaging, and market feedback."],
-    ["Move Toward Production", "After confirmation, we support production coordination, packaging preparation, quality control, and export communication."],
-  ].map(x => `<li class="fade-in"><div><h3>${x[0]}</h3><p>${x[1]}</p></div></li>`).join("")}</ol>`, "alt")}
-  ${section("What to Prepare for an OEM RFQ", "", `<ul class="check-list"><li>Target market and sales channel</li><li>Product type or reference design</li><li>Size and height requirements</li><li>Estimated quantity</li><li>Target price range</li><li>Packaging and private label needs</li><li>Photos, drawings, benchmark products, or project requirements</li></ul>`)}
-  ${section("OEM Development Support", "", linkGrid([
-    ["OEM / Custom Development", "Explore Apexnix custom bed frame development scope and RFQ preparation.", "Explore OEM Development", "/products/oem-custom-development"],
-    ["Flat-Pack Packaging", "Review packaging discussion for carton planning, protection, instructions, and labels.", "View Packaging Support", "/flat-pack-bed-frame-packaging"],
-    ["Quality Control", "Review practical inspection points for custom bed frame projects.", "View Quality Control", "/bed-frame-quality-control"],
+  ${section("Why Work with Apexnix as Your OEM Manufacturer?", "An OEM program needs more than a product image and a price. The manufacturer must understand how the product direction, structure, sample, production specification, quality control and packaging connect. Apexnix keeps these discussions within one factory-backed bed frame program.", iconGrid([
+    { icon: "01", title: "Own Bed Frame Factory", body: "Manufacturing discussions are connected directly to the facility responsible for bed frame production." },
+    { icon: "02", title: "25+ Years of Factory Experience", body: "The factory brings more than 25 years of practical bed frame manufacturing experience." },
+    { icon: "03", title: "Development-to-Production Support", body: "A project can begin with a new structure or an existing platform and move through sample review, specification confirmation and production preparation." },
+    { icon: "04", title: "Routine Quality and Packaging Control", body: "Quality and packaging checks are treated as part of the manufacturing process rather than separate marketing claims." },
   ]), "alt")}
-  <section class="section cta-band">${imageTag(img.oem, "OEM bed frame RFQ discussion")}<div class="container fade-in"><h2>Send Your OEM Bed Frame RFQ</h2><p>Share your product concept, market, size, packaging, label, quantity, and target-price requirements so we can discuss the right development direction.</p><div class="actions">${cta("Send Your OEM Bed Frame RFQ", "/contact")}</div></div></section>`;
+  ${section("OEM Manufacturing Scope", "Apexnix supports different levels of OEM involvement depending on the buyer's starting point and commercial objective.", `<ul class="check-list"><li>Ground-up development of a new bed frame structure</li><li>Adaptation of an existing platform by size, height, structure, finish or configuration</li><li>Hardware, instructions, labels and private-label packaging discussion</li><li>Metal bed frame, bamboo bed frame and project-specific product directions</li></ul>`)}
+  ${section("From Approved Direction to Production Readiness", `The OEM manufacturer page focuses on the transition from an agreed product direction to repeatable manufacturing. Detailed concept development is covered in the <a href="/products/oem-custom-development/" data-link>custom bed frame development process</a>.`, `<ol class="process">${[
+    ["Confirm the Product Specification", "Align dimensions, structure, finish, support configuration, hardware and other product details."],
+    ["Confirm Packaging and Label Requirements", "Review carton direction, protection, hardware organization, instructions, labels and private-label artwork requirements."],
+    ["Prepare the Manufacturing Standard", "Use the approved product and packaging direction as the basis for production preparation."],
+    ["Run Production and Routine Checks", "Carry out production with routine checks covering the relevant materials, dimensions, connections, surface, assembly, hardware and packaging."],
+    ["Coordinate Final Review and Shipment", "Review the completed product and packaging before shipment coordination according to the agreed order requirements."],
+  ].map(x => `<li class="fade-in"><div><h3>${x[0]}</h3><p>${x[1]}</p></div></li>`).join("")}</ol>`, "alt")}
+  ${section("Quality and Packaging Coordination", "", `<p>Routine factory checks may include materials and components, dimensions and frame structure, welding and connections, surface finish, trial assembly, hardware and instructions, packaging and pre-shipment review. Additional testing or inspection requirements can be discussed when a customer or target market has a specific need.</p><p>Review our approach to <a href="/bed-frame-quality-control/" data-link>bed frame quality control</a>.</p>`)}
+  <section class="section cta-band">${imageTag(img.oem, "OEM bed frame manufacturing discussion")}<div class="container fade-in"><h2>Start an OEM Manufacturing Discussion</h2><p>To begin, share the target market and channel, product category, reference images or drawings, key dimensions, expected structure, finish, packaging direction and purchasing plan. If the product has not yet been fully defined, the project can begin through the custom development process.</p><div class="actions">${cta("Discuss an OEM Program", "/contact")}</div></div></section>
+  ${faqSection([
+    { question: "Can Apexnix develop a completely new bed frame structure?", answer: "Yes. Apexnix can support a new structure from the beginning as well as adaptations based on an existing bed frame platform." },
+    { question: "Does Apexnix support private-label bed frame programs?", answer: "Yes. Private-label discussions can cover product specifications, labels, instructions and packaging requirements." },
+    { question: "How are MOQ, samples and production timing confirmed?", answer: "They are confirmed according to the product structure, specification, packaging and purchasing plan rather than published as one standard condition for every project." },
+  ])}`;
 }
 
 function qualityControlPage() {
@@ -844,10 +837,11 @@ const routeMeta = {
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Products", path: "/products" }],
   },
   "/products/metal-bed-frames": {
-    title: "Metal Bed Frame Supplier for Retail, Wholesale & Projects",
-    description: "Apexnix supplies metal platform beds, bed frames with headboards, bunk and dormitory solutions, and custom metal bed frame options for retail, wholesale, online, project, and OEM programs.",
+    title: "Wholesale Metal Bed Frames | B2B Product Range",
+    description: "Explore Apexnix metal bed frames for wholesale, retail and project supply, including platform beds, headboard frames, bunk beds and custom structures.",
     image: img.metalCard,
     priority: "0.85",
+    lastmod: "2026-07-28",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Products", path: "/products" }, { name: "Metal Bed Frames", path: "/products/metal-bed-frames" }],
   },
   "/products/bamboo-bed-frames": {
@@ -855,13 +849,15 @@ const routeMeta = {
     description: "Apexnix offers bamboo bed frame directions for natural-style retail, online, and private-label product lines, including bamboo platform beds, minimal bamboo beds, and custom bamboo bed frame discussions.",
     image: img.bambooCard,
     priority: "0.85",
+    lastmod: "2026-07-28",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Products", path: "/products" }, { name: "Bamboo Bed Frames", path: "/products/bamboo-bed-frames" }],
   },
   "/products/oem-custom-development": {
-    title: "OEM Bed Frame Manufacturer & Custom Development Support",
-    description: "Apexnix supports OEM and custom bed frame development, including size, structure, material direction, packaging, private label, target-price planning, and project-based manufacturing discussion.",
+    title: "Custom Bed Frame Development | OEM Support by Apexnix",
+    description: "Develop a custom bed frame with Apexnix, from a new structure or existing platform to sizes, finish, configuration, packaging and sample review.",
     image: img.oem,
     priority: "0.85",
+    lastmod: "2026-07-28",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Products", path: "/products" }, { name: "OEM Custom Development", path: "/products/oem-custom-development" }],
   },
   "/solutions": {
@@ -876,6 +872,7 @@ const routeMeta = {
     description: "Learn about Apexnix bed frame supply capabilities, including product development, value engineering, packaging optimization, quality control, OEM support, sample coordination, and export-ready supply support.",
     image: img.capabilitiesHero,
     priority: "0.75",
+    lastmod: "2026-07-28",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Capabilities", path: "/capabilities" }],
   },
   "/insights": {
@@ -895,7 +892,7 @@ const routeMeta = {
     image: bambooStory.ogImage,
     preloadImage: bambooStory.heroImage,
     priority: "0.82",
-    lastmod: bambooStory.modifiedAt,
+    lastmod: "2026-07-28",
     article: bambooStory,
     breadcrumb: [
       { name: "Home", path: "/" },
@@ -919,17 +916,19 @@ const routeMeta = {
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Contact Us", path: "/contact" }],
   },
   "/metal-bed-frame-manufacturer": {
-    title: "Metal Bed Frame Manufacturer for Retail, Wholesale & Project Supply",
-    description: "Apexnix supports metal bed frame manufacturing and development for retailers, wholesalers, online brands, accommodation projects, and private-label partners, covering platform beds, headboard frames, bunk solutions, packaging, and OEM discussion.",
+    title: "Metal Bed Frame Manufacturer | B2B & OEM Supply",
+    description: "Apexnix is a metal bed frame manufacturer with its own factory and 25+ years of factory experience, supporting wholesale, project and OEM programs.",
     image: img.heavy,
     priority: "0.82",
+    lastmod: "2026-07-28",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Metal Bed Frame Manufacturer", path: "/metal-bed-frame-manufacturer" }],
   },
   "/oem-bed-frame-manufacturer": {
-    title: "OEM Bed Frame Manufacturer for Private Label & Custom Development",
-    description: "Apexnix supports OEM bed frame development for private-label partners, online brands, retailers, wholesalers, and project partners, covering custom sizes, structures, materials, packaging, labels, and target-price discussion.",
+    title: "OEM Bed Frame Manufacturer | Private Label Supply",
+    description: "Work with Apexnix for OEM bed frame manufacturing, from new structures and sample development to routine factory QC, packaging and production support.",
     image: img.oem,
     priority: "0.82",
+    lastmod: "2026-07-28",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "OEM Bed Frame Manufacturer", path: "/oem-bed-frame-manufacturer" }],
   },
   "/bed-frame-quality-control": {
