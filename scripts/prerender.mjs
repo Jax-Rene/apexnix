@@ -253,6 +253,7 @@ function buildFooter(routePath) {
         <a href="/dormitory-bed-frame-supplier/" data-link>Dormitory Bed Frame Supplier</a>
         <a href="/insights/" data-link>Insights</a>
         <a href="/insights/from-bamboo-grove-to-bamboo-bed-frame/" data-link>Bamboo Bed Frame Material Story</a>
+        <a href="/insights/bed-frame-size-guide-us-uk-eu/" data-link>Global Bed Frame Size Guide</a>
       </div>
       <div class="footer-links">
         <a class="footer-heading" href="/about/" data-link>Company</a>

@@ -12,7 +12,8 @@ const WEB3FORMS_ACCESS_KEY = "596ad054-05e1-4abb-b4c5-d12debc21725";
 const THEME_KEY = "apexnix-theme";
 const A = window.location.protocol === "file:" ? new URL("assets/", scriptUrl).href : `${BASE_PATH}/assets/`;
 const insightsData = globalThis.APEXNIX_INSIGHTS || { categories: [], articles: [] };
-const bambooStory = insightsData.articles[0];
+const bambooStory = insightsData.bambooStory || insightsData.articles.find((article) => article.slug === "from-bamboo-grove-to-bamboo-bed-frame");
+const sizeGuide = insightsData.sizeGuide || insightsData.articles.find((article) => article.slug === "bed-frame-size-guide-us-uk-eu");
 const basePattern = new RegExp(`^${BASE_PATH.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=/|$)`);
 const img = {
   home1: A + "home-hero-bed-frame-supplier.jpg",
@@ -79,6 +80,8 @@ const imageDimensions = {
   "bamboo-grove-growth-story-og.webp": [1200, 630],
   "bamboo-material-from-culm-to-board.webp": [1000, 1000],
   "bamboo-bed-frame-natural-style.webp": [1200, 900],
+  "bed-frame-size-guide-hero.svg": [1600, 900],
+  "bed-frame-size-guide-hero-og.webp": [1200, 630],
 };
 
 const specMetal = [
@@ -215,23 +218,47 @@ function insightFeature({ eyebrow, title, body, linkLabel, className = "" }) {
 }
 
 function insightsPage() {
+  let selectedCategory = "all";
+  try {
+    selectedCategory = new URL(window.location.href).searchParams.get("category") || "all";
+  } catch {}
+
+  const categorySlug = (category) => category === "All"
+    ? "all"
+    : category.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   const categoryLinks = insightsData.categories.map((category) => {
-    const slug = category === "All" ? "" : category.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-    const href = slug ? `/insights/?category=${slug}` : "/insights/";
-    return `<a class="${category === "All" ? "active" : ""}" href="${href}">${category}</a>`;
+    const slug = categorySlug(category);
+    const href = slug === "all" ? "/insights/" : `/insights/?category=${slug}`;
+    return `<a class="${slug === selectedCategory ? "active" : ""}" href="${href}" ${slug === selectedCategory ? 'aria-current="page"' : ""}>${category}</a>`;
   }).join("");
+
+  const cards = insightsData.articles
+    .filter((article) => article.slug !== bambooStory.slug)
+    .filter((article) => selectedCategory === "all" || article.categorySlug === selectedCategory)
+    .map((article) => `<article class="insight-card fade-in" data-insight-category="${escapeAttr(article.categorySlug)}">
+      <a class="insight-card__media" href="/insights/${article.slug}/" data-link aria-label="Read ${escapeAttr(article.shortTitle)}">${imageTag(article.cardImage, article.cardAlt, { sizes: "(max-width: 800px) 100vw, 560px" })}</a>
+      <div class="insight-card__body"><span class="kicker">${article.category}</span><h3><a href="/insights/${article.slug}/" data-link>${article.shortTitle}</a></h3><p>${article.excerpt}</p><div class="insight-card__meta"><time datetime="${article.publishedAt}">${formatArticleDate(article.publishedAt)}</time><span>${article.readingTime}</span></div><div class="actions">${cta("Read Guide", `/insights/${article.slug}`, true)}</div></div>
+    </article>`).join("");
+
+  const selectedLabel = insightsData.categories.find((category) => categorySlug(category) === selectedCategory) || "All";
+  const showFeaturedArticle = selectedCategory === "all" || selectedCategory === bambooStory.categorySlug;
+  const showArticleLibrary = Boolean(cards) || !showFeaturedArticle;
 
   return `<section class="section insights-index-hero"><div class="container">
     <div class="insights-index-hero__copy fade-in"><span class="kicker">Apexnix Insights</span><h1>Bed Frame Insights for Better Product and Sourcing Decisions</h1><p>Practical articles on bed frame materials, structure, manufacturing, packaging, quality control, OEM development, and market-fit product planning.</p></div>
     <nav class="insights-categories" aria-label="Insight categories">${categoryLinks}</nav>
   </div></section>
-  <section class="section alt insights-featured"><div class="container">
+  ${showFeaturedArticle ? `<section class="section alt insights-featured"><div class="container">
     <div class="section-head fade-in"><span class="kicker">Featured Article</span><h2>Product &amp; Material</h2></div>
     <article class="featured-article fade-in">
       <a class="featured-article__media" href="/insights/${bambooStory.slug}/" data-link aria-label="Read ${escapeAttr(bambooStory.shortTitle)}">${imageTag(bambooStory.cardImage, bambooStory.cardAlt, { sizes: "(max-width: 800px) 100vw, 650px" })}</a>
       <div class="featured-article__body"><span class="kicker">${bambooStory.category}</span><h3><a href="/insights/${bambooStory.slug}/" data-link>${bambooStory.shortTitle}</a></h3><p>${bambooStory.excerpt}</p><div class="actions">${cta("Read Article", `/insights/${bambooStory.slug}`, true)}</div></div>
     </article>
-  </div></section>`;
+  </div></section>` : ""}
+  ${showArticleLibrary ? `<section class="section insights-library"><div class="container">
+    <div class="section-head fade-in"><span class="kicker">${selectedLabel}</span><h2>${selectedCategory === "sourcing-guides" ? "Sourcing Guides" : "Latest Guides & Articles"}</h2></div>
+    ${cards ? `<div class="insights-grid">${cards}</div>` : `<p class="insights-empty">No additional articles are available in this category yet.</p>`}
+  </div></section>` : ""}`;
 }
 
 function renderArticleSection(sectionData) {
@@ -290,6 +317,182 @@ function articlePage() {
       <aside class="article-toc" aria-label="On this page"><strong>On this page</strong>${toc}</aside>
     </div>
     <section class="section article-cta"><div class="container"><div class="article-cta__inner fade-in"><span class="kicker">Bamboo Bed Frame Development</span><h2>Exploring a Bamboo Bed Frame Product Line?</h2><p>Apexnix supports bamboo bed frame development for retail, online and private-label programs, combining bamboo frames with steel slats and market-specific product planning. Share your target market, product direction and packaging requirements to start the discussion.</p><p><a href="/products/bamboo-bed-frames/" data-link>bamboo bed frames for B2B product lines</a></p><div class="actions">${cta("Explore Bamboo Bed Frames", "/products/bamboo-bed-frames")} ${cta("Contact Apexnix", "/contact", true)}</div></div></div></section>
+  </article>`;
+}
+
+function articleDataTable({ caption, headers, rows, label }) {
+  return `<div class="article-table-wrap" role="region" aria-label="${escapeAttr(label || caption)}" tabindex="0">
+    <table class="article-data-table">
+      <caption>${caption}</caption>
+      <thead><tr>${headers.map((header) => `<th scope="col">${header}</th>`).join("")}</tr></thead>
+      <tbody>${rows.map((row) => `<tr>${row.map((cell, index) => index === 0 ? `<th scope="row">${cell}</th>` : `<td>${cell}</td>`).join("")}</tr>`).join("")}</tbody>
+    </table>
+  </div>`;
+}
+
+function sizeGuideLayerDiagram() {
+  return `<figure class="size-layer-diagram">
+    <svg viewBox="0 0 760 510" role="img" aria-labelledby="size-layer-title size-layer-desc">
+      <title id="size-layer-title">Mattress, inner fit and overall bed frame footprint</title>
+      <desc id="size-layer-desc">Three nested rectangles distinguish the nominal mattress area, the inner frame fit and the maximum overall frame footprint.</desc>
+      <defs>
+        <marker id="size-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" /></marker>
+      </defs>
+      <rect class="size-layer-diagram__overall" x="85" y="58" width="590" height="350" rx="24" />
+      <rect class="size-layer-diagram__inner" x="136" y="108" width="488" height="250" rx="16" />
+      <rect class="size-layer-diagram__mattress" x="174" y="142" width="412" height="182" rx="10" />
+      <path class="size-layer-diagram__arrow" d="M174 370H586" marker-start="url(#size-arrow)" marker-end="url(#size-arrow)" />
+      <path class="size-layer-diagram__arrow" d="M648 108V358" marker-start="url(#size-arrow)" marker-end="url(#size-arrow)" />
+      <g class="size-layer-diagram__labels">
+        <text x="380" y="240" text-anchor="middle">Nominal mattress</text>
+        <text x="380" y="94" text-anchor="middle">Inner mattress-fit dimensions</text>
+        <text x="380" y="448" text-anchor="middle">Overall bed frame footprint</text>
+      </g>
+    </svg>
+  </figure>`;
+}
+
+function sizeGuidePage() {
+  const tocItems = [
+    { id: "why-bed-size-names-do-not-travel-well", title: "Why Bed Size Names Do Not Travel Well" },
+    { id: "us-uk-and-european-mattress-size-reference", title: "US, UK and European Mattress Size Reference" },
+    { id: "closest-comparisons-are-not-exact-equivalents", title: "Closest Comparisons Are Not Exact Equivalents" },
+    { id: "mattress-size-is-not-the-same-as-bed-frame-size", title: "Mattress Size Is Not the Same as Bed Frame Size" },
+    ...sizeGuide.sizingLayers.map((item) => ({ id: item.id, title: item.title, level: 3 })),
+    { id: "why-the-finished-frame-footprint-varies", title: "Why the Finished Frame Footprint Varies" },
+    { id: "what-changes-when-a-bed-frame-changes-size", title: "What Changes When a Bed Frame Changes Size" },
+    ...sizeGuide.sizeChangeGroups.map((item) => ({ id: item.id, title: item.title, level: 3 })),
+    { id: "market-specific-considerations-for-b2b-buyers", title: "Market-Specific Considerations for B2B Buyers" },
+    ...sizeGuide.marketGroups.map((item) => ({ id: item.id, title: item.title, level: 3 })),
+    { id: "b2b-bed-frame-size-confirmation-checklist", title: "B2B Bed Frame Size Confirmation Checklist" },
+    { id: "example-of-a-clear-buyer-size-brief", title: "Example of a Clear Buyer Size Brief" },
+    { id: "how-apexnix-supports-market-specific-development", title: "How Apexnix Supports Market-Specific Development" },
+    { id: "frequently-asked-questions", title: "Frequently Asked Questions" },
+    ...sizeGuide.faqs.map((item) => ({ id: item.id, title: item.question, level: 3 })),
+    { id: "confirm-the-market-before-confirming-the-size", title: "Confirm the Market Before Confirming the Size" },
+    { id: "planning-a-bed-frame-range-for-a-specific-market", title: "Planning a Bed Frame Range for a Specific Market?" },
+    { id: "reference-note", title: "Reference Note" },
+  ];
+  const toc = `<ol>${tocItems.map((item) => `<li class="${item.level === 3 ? "toc-level-3" : ""}"><a href="#${item.id}" data-link>${item.title}</a></li>`).join("")}</ol>`;
+
+  const sizeTable = articleDataTable({
+    caption: "Common nominal mattress size references for early B2B discussion",
+    label: "US, UK and European mattress size reference table",
+    headers: ["Market", "Common label", "Nominal mattress size", "B2B interpretation"],
+    rows: sizeGuide.sizeRows,
+  });
+  const comparisonTable = articleDataTable({
+    caption: "Closest cross-market comparisons are not exact equivalents",
+    label: "Cross-market mattress size comparison table",
+    headers: ["Reference comparison", "What looks similar", "Why the buyer must still confirm"],
+    rows: sizeGuide.comparisonRows,
+  });
+  const briefTable = articleDataTable({
+    caption: "Example buyer information — not a fixed Apexnix product specification",
+    label: "Example B2B buyer size brief",
+    headers: ["Field", "Example buyer information"],
+    rows: sizeGuide.briefRows,
+  });
+
+  return `<article class="insight-article size-guide-page">
+    <header class="article-header section"><div class="container">
+      <nav class="article-breadcrumb" aria-label="Breadcrumb"><ol>
+        <li><a href="/" data-link>Home</a></li><li><a href="/insights/" data-link>Insights</a></li><li><a href="/insights/?category=sourcing-guides">Sourcing Guides</a></li><li><span aria-current="page">${sizeGuide.shortTitle}</span></li>
+      </ol></nav>
+      <div class="article-heading fade-in"><span class="kicker">${sizeGuide.category}</span><h1>${sizeGuide.title}</h1><p class="article-intro">${sizeGuide.intro}</p><div class="article-meta"><time datetime="${sizeGuide.publishedAt}">${formatArticleDate(sizeGuide.publishedAt)}</time><span>${sizeGuide.readingTime}</span><span>Reviewed by ${sizeGuide.author}</span></div></div>
+      <figure class="article-hero-media article-hero-media--technical fade-in">${imageTag(sizeGuide.heroImage, sizeGuide.heroAlt, { priority: true, sizes: "(max-width: 768px) 100vw, 1200px" })}</figure>
+    </div></header>
+    <div class="article-layout container">
+      <div class="article-content">
+        <details class="article-mobile-toc"><summary>On this page</summary>${toc}</details>
+        <section class="article-opening">${articleParagraphs(sizeGuide.opening)}<blockquote class="article-key-message"><strong>Core sizing rule</strong>${sizeGuide.keyMessage}</blockquote></section>
+
+        <section class="article-section" aria-labelledby="why-bed-size-names-do-not-travel-well"><h2 id="why-bed-size-names-do-not-travel-well">Why Bed Size Names Do Not Travel Well</h2>
+          <p>Bed and mattress terminology developed differently across markets. The United States commonly uses inch-based names such as Twin, Full, Queen and King. The United Kingdom uses names such as Single, Small Double, Double and King, with dimensions that do not match the American system. Continental European buyers often work more directly with metric dimensions, such as 90 x 200 cm or 160 x 200 cm, although local naming and commonly stocked sizes can still vary by country and retailer.</p>
+          <p>This means that a size name is a market label, not a universal engineering specification.</p>
+          <p>Even when two sizes appear close, a difference of a few centimetres can affect whether the mattress sits correctly inside the frame, whether gaps are visible around the mattress, and whether the finished product can be described accurately in a retail listing.</p>
+        </section>
+
+        <section class="article-section" aria-labelledby="us-uk-and-european-mattress-size-reference"><h2 id="us-uk-and-european-mattress-size-reference">US, UK and European Mattress Size Reference</h2>
+          <p>The dimensions below are commonly referenced nominal mattress sizes. They are useful for early product discussions, but they should not replace the approved product drawing, the buyer's market requirement or the final product specification.</p>
+          ${sizeTable}
+          <p>Additional sizes such as US Twin XL, California King, UK Super King and country-specific European dimensions may also be commercially important. They should be added to a product range only when they match the intended market and channel.</p>
+        </section>
+
+        <section class="article-section" aria-labelledby="closest-comparisons-are-not-exact-equivalents"><h2 id="closest-comparisons-are-not-exact-equivalents">Closest Comparisons Are Not Exact Equivalents</h2>
+          <p>Cross-market comparisons can be useful during an initial discussion, but the phrase closest equivalent should never be interpreted as automatically compatible.</p>
+          ${comparisonTable}
+          <p>For product development, the correct question is not 'What is the European equivalent of a US Queen?' The correct question is 'What exact mattress dimensions and retail size name does the target market require?'</p>
+        </section>
+
+        <section class="article-section" aria-labelledby="mattress-size-is-not-the-same-as-bed-frame-size"><h2 id="mattress-size-is-not-the-same-as-bed-frame-size">Mattress Size Is Not the Same as Bed Frame Size</h2>
+          <p>A mattress dimension describes the nominal sleeping surface. It does not automatically describe the finished footprint of the bed frame.</p>
+          ${sizeGuideLayerDiagram()}
+          <div class="article-groups size-layer-definitions">${sizeGuide.sizingLayers.map((item) => `<section aria-labelledby="${item.id}"><h3 id="${item.id}">${item.title}</h3><p>${item.body}</p></section>`).join("")}</div>
+          <aside class="article-note" aria-label="No universal frame-addition formula"><strong>No universal frame-addition formula</strong><p>Consumer guides sometimes estimate that a bed frame adds a few inches around a mattress. That estimate may help with room planning, but it is not precise enough for B2B product development. A platform frame, decorative headboard bed, bamboo frame, bunk bed or upholstered structure can have a very different finished footprint.</p></aside>
+        </section>
+
+        <section class="article-section" aria-labelledby="why-the-finished-frame-footprint-varies"><h2 id="why-the-finished-frame-footprint-varies">Why the Finished Frame Footprint Varies</h2>
+          <p>Two bed frames designed for the same mattress can have different overall dimensions. The difference may come from:</p>${articleBullets(sizeGuide.footprintFactors)}
+          <p>This is why a B2B specification should record both the intended mattress fit and the maximum finished product dimensions.</p>
+        </section>
+
+        <section class="article-section" aria-labelledby="what-changes-when-a-bed-frame-changes-size"><h2 id="what-changes-when-a-bed-frame-changes-size">What Changes When a Bed Frame Changes Size</h2>
+          <p>Changing a bed frame from one regional size to another is not always a simple scale adjustment. The full product system may need to be reviewed.</p>
+          <div class="article-groups">${sizeGuide.sizeChangeGroups.map((item) => `<section aria-labelledby="${item.id}"><h3 id="${item.id}">${item.title}</h3><p>${item.body}</p></section>`).join("")}</div>
+        </section>
+
+        <section class="article-section" aria-labelledby="market-specific-considerations-for-b2b-buyers"><h2 id="market-specific-considerations-for-b2b-buyers">Market-Specific Considerations for B2B Buyers</h2>
+          <div class="article-groups market-groups">${sizeGuide.marketGroups.map((item) => `<section aria-labelledby="${item.id}"><h3 id="${item.id}">${item.title}</h3><p>${item.body}</p></section>`).join("")}</div>
+        </section>
+
+        <section class="article-section size-guide-checklist" aria-labelledby="b2b-bed-frame-size-confirmation-checklist" data-size-guide-checklist>
+          <div class="checklist-print-preview-bar" aria-live="polite">
+            <div class="checklist-print-preview-copy"><strong>PDF checklist preview</strong><span data-checklist-print-status>Download the ready-to-use A4 PDF checklist below. No print dialog is required.</span></div>
+            <div class="checklist-print-preview-actions"><button class="btn alt" type="button" data-close-checklist-print>Back to Guide</button><a class="btn" href="/output/pdf/apexnix-b2b-bed-frame-size-confirmation-checklist.pdf" download="apexnix-b2b-bed-frame-size-confirmation-checklist.pdf" data-download-checklist-pdf>Download PDF Checklist</a></div>
+          </div>
+          <div class="checklist-heading"><div><span class="kicker">Printable sourcing tool</span><h2 id="b2b-bed-frame-size-confirmation-checklist">B2B Bed Frame Size Confirmation Checklist</h2></div><button class="btn alt checklist-print-button" type="button" data-open-checklist-print>View / Download PDF</button></div>
+          <p>Before requesting a quotation, sample or new product development, the buyer should provide the information currently available. Not every field needs to be final at the first discussion, but each item should be confirmed before production approval.</p>
+          <div class="checklist-print-meta"><strong>Apexnix</strong><span>Global Bed Frame Size Guide for B2B Buyers</span><span>https://www.apexnix.com/insights/bed-frame-size-guide-us-uk-eu/</span></div>
+          <ul class="size-guide-checklist__items">${sizeGuide.checklist.map((item) => `<li><span aria-hidden="true"></span>${item}</li>`).join("")}</ul>
+          <p class="checklist-disclaimer"><strong>Reference note:</strong> ${sizeGuide.disclaimer}</p>
+        </section>
+
+        <section class="article-section" aria-labelledby="example-of-a-clear-buyer-size-brief"><h2 id="example-of-a-clear-buyer-size-brief">Example of a Clear Buyer Size Brief</h2>
+          <p>A useful first brief does not need to contain a finished engineering drawing. It needs to remove the main market and sizing ambiguity.</p>
+          ${briefTable}
+          <p>This brief gives the supplier enough context to review the product direction without pretending that every technical detail has already been finalized.</p>
+        </section>
+
+        <section class="article-section" aria-labelledby="how-apexnix-supports-market-specific-development"><h2 id="how-apexnix-supports-market-specific-development">How Apexnix Supports Market-Specific Development</h2>
+          <p>Apexnix supports both ground-up development of new bed frame structures and practical adaptation of existing platforms. A market-size adaptation may include the mattress fit, overall dimensions, height, support configuration, hardware, finish, labels, instructions and packaging.</p>
+          <p>Because these elements work as one product system, feasibility should be reviewed as a complete combination rather than as a single size change.</p>
+          <p>Buyers can begin with a target market, a mattress size, a product reference or an existing design direction. The next step is to identify which specifications are already fixed and which items still require product and manufacturing review.</p>
+          <p>Review our <a href="/products/oem-custom-development/" data-link>custom bed frame development support</a>.</p>
+          <p>Explore our <a href="/products/metal-bed-frames/" data-link>metal bed frame collection</a> or <a href="/products/bamboo-bed-frames/" data-link>bamboo bed frame collection</a>.</p>
+        </section>
+
+        <section class="article-section article-faq" aria-labelledby="frequently-asked-questions"><h2 id="frequently-asked-questions">Frequently Asked Questions</h2>${sizeGuide.faqs.map((item) => `<details><summary><h3 id="${item.id}">${item.question}</h3></summary><p>${item.answer}</p></details>`).join("")}</section>
+
+        <section class="article-section" aria-labelledby="confirm-the-market-before-confirming-the-size"><h2 id="confirm-the-market-before-confirming-the-size">Confirm the Market Before Confirming the Size</h2>
+          <p>A successful bed frame program begins with a shared definition of size.</p>
+          <p>Regional names are useful for sales and communication, but exact dimensions are required for development. Mattress size, inner fit, overall frame dimensions and packaged dimensions should be treated as separate specifications.</p>
+          <p>When the target market and dimensional requirements are clear, the buyer and manufacturer can make better decisions about structure, components, packaging, labels and the final SKU range.</p>
+        </section>
+
+        <section class="article-section size-guide-inline-cta" aria-labelledby="planning-a-bed-frame-range-for-a-specific-market"><span class="kicker">Market-specific development</span><h2 id="planning-a-bed-frame-range-for-a-specific-market">Planning a Bed Frame Range for a Specific Market?</h2>
+          <p>Share the target country, mattress size and product direction currently available. Apexnix will help identify the dimensions and product details that need to be confirmed before development moves forward.</p>
+          <div class="actions">${cta("Review Custom Development Support", "/products/oem-custom-development")} ${cta("Send a Bed Frame Sizing Request", "/contact", true)}</div>
+        </section>
+
+        <section class="article-section article-reference-note" aria-labelledby="reference-note"><h2 id="reference-note">Reference Note</h2>
+          <p>${sizeGuide.disclaimer}</p>
+          <p>Industry references: International Sleep Products Association, Voluntary Dimensional Guidelines for Bedding; Better Sleep Council, Mattress Sizes; National Bed Federation, Regulations &amp; Standards.</p>
+          <p class="reference-links">Reference URLs: <a href="https://sleepproducts.org/publications/voluntary-dimensional-guidelines-for-bedding-products-components/">https://sleepproducts.org/publications/voluntary-dimensional-guidelines-for-bedding-products-components/</a> | <a href="https://bettersleep.org/mattress-sizes/">https://bettersleep.org/mattress-sizes/</a> | <a href="https://www.bedfed.org.uk/resources/regulations-standards/">https://www.bedfed.org.uk/resources/regulations-standards/</a></p>
+        </section>
+      </div>
+      <aside class="article-toc" aria-label="On this page"><strong>On this page</strong>${toc}</aside>
+    </div>
   </article>`;
 }
 
@@ -374,7 +577,7 @@ function metalPage() {
     <article class="card fade-in"><div class="card-image">${imageTag(img.heavy, "Platform and heavy-duty bed frames")}</div><div class="card-body"><h3>Platform and Heavy-Duty Bed Frames</h3><p>Practical platform structures for retail, online, wholesale and project programs, with different height, support and packaging directions available for discussion.</p></div></article>
     <article class="card fade-in"><div class="card-image">${imageTag(img.headboard, "Metal bed frames with headboards")}</div><div class="card-body"><h3>Bed Frames with Headboards</h3><p>Metal bed frames with integrated headboard or headboard-and-footboard designs for more decorative and collection-led product lines.</p></div></article>
     <article class="card fade-in"><div class="card-image">${imageTag(img.bunkDormitory, "Bunk and dormitory bed frames")}</div><div class="card-body"><h3>Bunk and Dormitory Bed Frames</h3><p>Bed frame directions for schools, staff housing, hostels, rental accommodation and other high-use environments, subject to project-specific structure and compliance requirements. Review our <a href="/dormitory-bed-frame-supplier/" data-link>dormitory bed frame solutions</a>.</p></div></article>
-    <article class="card fade-in"><div class="card-image">${imageTag(img.metalMore, "More metal bed frame directions")}</div><div class="card-body"><h3>More Metal Bed Frame Directions</h3><p>Daybeds, foldable beds, universal rail frames and other metal structures can be reviewed as standalone products or as additions to a wider bed frame collection.</p></div></article>
+    <article class="card fade-in"><div class="card-image">${imageTag(img.metalMore, "More metal bed frame directions")}</div><div class="card-body"><h3>More Metal Bed Frame Directions</h3><p>Daybeds, foldable beds, universal rail frames and other metal structures can be reviewed as standalone products or as additions to a wider bed frame collection.</p><p>Planning a regional size range? Review our <a href="/insights/bed-frame-size-guide-us-uk-eu/" data-link>US, UK and European bed frame sizing guide</a> before confirming the product specification.</p></div></article>
   </div><div class="gallery"><figure>${imageTag(img.headboard, "Headboard bed frame")}<figcaption>Modern Minimal</figcaption></figure><figure>${imageTag(img.home1, "Metal frame")}<figcaption>Clean Line</figcaption></figure><figure>${imageTag(img.heavy, "Retail bed frame")}<figcaption>Retail Friendly</figcaption></figure><figure>${imageTag(img.metalMore, "Private label direction")}<figcaption>Private Label Potential</figcaption></figure></div>`, "alt")}
   ${section("Options to Define for Each Product", "The final product specification should be confirmed around the intended market, use case and sales channel. The options below are discussion fields, not a claim that every combination applies to every model.", table(specMetal, "Specification field", "Discussion direction"))}
   ${section("Product Selection by Sales Channel", "A product range should be planned around how it will be sold and used. Apexnix reviews product direction together with the buyer's channel requirements.", iconGrid([
@@ -438,6 +641,7 @@ function oemPage() {
     <article class="card icon-card fade-in"><h3>Adapt an Existing Platform</h3><p>Use an existing Apexnix or buyer reference as a starting point and adjust selected elements such as size, height, color, finish, support configuration, hardware, labels or packaging. This route is suitable when the basic product direction is already clear.</p></article>
   </div><div class="image-panel fade-in">${imageTag(img.oemCard, "Custom bed frame development routes")}</div></div>`, "alt")}
   ${section("What Can Be Customized?", "Customization is reviewed as a connected product system. A change to size or structure may also affect support, hardware, packaging and assembly, so the final combination must be evaluated as one product rather than a list of independent options.", table(customMatrix, "Development area", "Typical discussion points"))}
+  <section class="section contextual-insight-link"><div class="container"><p>For a practical comparison of US, UK and European mattress references, see our <a href="/insights/bed-frame-size-guide-us-uk-eu/" data-link>global bed frame size guide for B2B buyers</a>.</p></div></section>
   ${section("Custom Bed Frame Development Workflow", "The workflow below is a practical framework. The exact sequence may vary according to how complete the buyer's initial information is and whether the project starts from a new or existing structure.", `<ol class="process">${[
     ["Share the Starting Information", "Share the market, channel, product direction, reference information and commercial requirements."],
     ["Review the Product System", "Review the structure, dimensions, materials, finish, support configuration and packaging implications."],
@@ -812,6 +1016,7 @@ const routes = {
   "/capabilities": capabilities,
   "/insights": insightsPage,
   "/insights/from-bamboo-grove-to-bamboo-bed-frame": articlePage,
+  "/insights/bed-frame-size-guide-us-uk-eu": sizeGuidePage,
   "/about": about,
   "/contact": contact,
   "/metal-bed-frame-manufacturer": metalManufacturerPage,
@@ -880,7 +1085,7 @@ const routeMeta = {
     description: "Explore practical insights on bed frame materials, structure, manufacturing, packaging, quality control, OEM development, and market-fit product planning.",
     image: bambooStory.cardImage,
     priority: "0.8",
-    lastmod: "2026-07-22",
+    lastmod: "2026-08-04",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Insights", path: "/insights" }],
   },
   "/insights/from-bamboo-grove-to-bamboo-bed-frame": {
@@ -899,6 +1104,24 @@ const routeMeta = {
       { name: "Insights", path: "/insights" },
       { name: "Product & Material", path: "/insights" },
       { name: bambooStory.shortTitle, path: `/insights/${bambooStory.slug}` },
+    ],
+  },
+  "/insights/bed-frame-size-guide-us-uk-eu": {
+    title: "Bed Frame Size Guide: US, UK & EU for B2B Buyers | Apexnix",
+    description: "Compare common US, UK and EU mattress sizes, understand mattress fit versus overall frame dimensions, and use a practical B2B sourcing checklist.",
+    ogTitle: "Bed Frame Size Guide: US, UK & EU for B2B Buyers | Apexnix",
+    ogDescription: "Compare common US, UK and EU mattress sizes, understand mattress fit versus overall frame dimensions, and use a practical B2B sourcing checklist.",
+    ogType: "article",
+    image: sizeGuide.ogImage,
+    preloadImage: sizeGuide.heroImage,
+    priority: "0.82",
+    lastmod: "2026-08-04",
+    article: sizeGuide,
+    breadcrumb: [
+      { name: "Home", path: "/" },
+      { name: "Insights", path: "/insights" },
+      { name: "Sourcing Guides", path: "/insights" },
+      { name: sizeGuide.shortTitle, path: `/insights/${sizeGuide.slug}` },
     ],
   },
   "/about": {
@@ -1254,6 +1477,7 @@ function render() {
   bindTabs();
   bindContactForm();
   bindLazyVideos();
+  bindChecklistPrint();
   observe();
   if (anchor) setTimeout(() => document.querySelector(anchor)?.scrollIntoView(), 50);
   else window.scrollTo({ top: 0 });
@@ -1387,6 +1611,33 @@ function bindLazyVideos() {
   }, { threshold: 0.01 });
 
   videos.forEach((video) => observer.observe(video));
+}
+function bindChecklistPrint() {
+  const openButton = document.querySelector("[data-open-checklist-print]");
+  const downloadLink = document.querySelector("[data-download-checklist-pdf]");
+  const closeButton = document.querySelector("[data-close-checklist-print]");
+  const printStatus = document.querySelector("[data-checklist-print-status]");
+  if (!openButton || !downloadLink || !closeButton || !printStatus) return;
+
+  const defaultStatus = "Download the ready-to-use A4 PDF checklist below. No print dialog is required.";
+
+  const closePreview = () => {
+    document.body.classList.remove("size-guide-print-preview-mode", "size-guide-print-mode");
+    printStatus.textContent = defaultStatus;
+    openButton.focus({ preventScroll: true });
+  };
+
+  openButton.onclick = () => {
+    document.body.classList.add("size-guide-print-preview-mode");
+    printStatus.textContent = defaultStatus;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    downloadLink.focus({ preventScroll: true });
+  };
+
+  closeButton.onclick = closePreview;
+  downloadLink.onclick = () => {
+    printStatus.textContent = "PDF download started. Check your browser's downloads if the file does not open automatically.";
+  };
 }
 function observe() {
   const io = new IntersectionObserver((entries) => {
