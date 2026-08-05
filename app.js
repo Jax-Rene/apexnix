@@ -8,7 +8,7 @@ const LOGO_FILE = "apexnix-logo-light.svg";
 const LOGO_DARK_FILE = "apexnix-logo-dark.svg";
 const AVATAR_FILE = "apexnix-avatar.svg";
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
-const WEB3FORMS_ACCESS_KEY = "596ad054-05e1-4abb-b4c5-d12debc21725";
+const WEB3FORMS_ACCESS_KEY = "db0ce5a9-1f51-4cb5-b4a3-0342193c3672";
 const THEME_KEY = "apexnix-theme";
 const A = window.location.protocol === "file:" ? new URL("assets/", scriptUrl).href : `${BASE_PATH}/assets/`;
 const insightsData = globalThis.APEXNIX_INSIGHTS || { categories: [], articles: [] };
