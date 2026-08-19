@@ -14,6 +14,7 @@ const A = window.location.protocol === "file:" ? new URL("assets/", scriptUrl).h
 const insightsData = globalThis.APEXNIX_INSIGHTS || { categories: [], articles: [] };
 const bambooStory = insightsData.bambooStory || insightsData.articles.find((article) => article.slug === "from-bamboo-grove-to-bamboo-bed-frame");
 const sizeGuide = insightsData.sizeGuide || insightsData.articles.find((article) => article.slug === "bed-frame-size-guide-us-uk-eu");
+const wholesaleGuide = insightsData.wholesaleGuide || insightsData.articles.find((article) => article.slug === "how-to-source-metal-bed-frames-wholesale");
 const basePattern = new RegExp(`^${BASE_PATH.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=/|$)`);
 const img = {
   home1: A + "home-hero-bed-frame-supplier.jpg",
@@ -82,6 +83,9 @@ const imageDimensions = {
   "bamboo-bed-frame-natural-style.webp": [1200, 900],
   "bed-frame-size-guide-hero.svg": [1600, 900],
   "bed-frame-size-guide-hero-og.webp": [1200, 630],
+  "wholesale-metal-bed-frame-sourcing-guide.webp": [1600, 900],
+  "b2b-metal-bed-frame-buyers-checklist.webp": [1672, 941],
+  "metal-bed-frame-rounded-corner-detail.webp": [1199, 1312],
 };
 
 const specMetal = [
@@ -320,10 +324,10 @@ function articlePage() {
   </article>`;
 }
 
-function articleDataTable({ caption, headers, rows, label }) {
+function articleDataTable({ caption, headers, rows, label, captionHidden = false }) {
   return `<div class="article-table-wrap" role="region" aria-label="${escapeAttr(label || caption)}" tabindex="0">
     <table class="article-data-table">
-      <caption>${caption}</caption>
+      <caption${captionHidden ? ' class="article-table-caption--visually-hidden"' : ""}>${caption}</caption>
       <thead><tr>${headers.map((header) => `<th scope="col">${header}</th>`).join("")}</tr></thead>
       <tbody>${rows.map((row) => `<tr>${row.map((cell, index) => index === 0 ? `<th scope="row">${cell}</th>` : `<td>${cell}</td>`).join("")}</tr>`).join("")}</tbody>
     </table>
@@ -470,6 +474,7 @@ function sizeGuidePage() {
           <p>Buyers can begin with a target market, a mattress size, a product reference or an existing design direction. The next step is to identify which specifications are already fixed and which items still require product and manufacturing review.</p>
           <p>Review our <a href="/products/oem-custom-development/" data-link>custom bed frame development support</a>.</p>
           <p>Explore our <a href="/products/metal-bed-frames/" data-link>metal bed frame collection</a> or <a href="/products/bamboo-bed-frames/" data-link>bamboo bed frame collection</a>.</p>
+          <p>For broader product, structure, assembly and packaging decisions, see our <a href="/insights/how-to-source-metal-bed-frames-wholesale/" data-link>metal bed frame sourcing guide for B2B buyers</a>.</p>
         </section>
 
         <section class="article-section article-faq" aria-labelledby="frequently-asked-questions"><h2 id="frequently-asked-questions">Frequently Asked Questions</h2>${sizeGuide.faqs.map((item) => `<details><summary><h3 id="${item.id}">${item.question}</h3></summary><p>${item.answer}</p></details>`).join("")}</section>
@@ -491,6 +496,58 @@ function sizeGuidePage() {
           <p class="reference-links">Reference URLs: <a href="https://sleepproducts.org/publications/voluntary-dimensional-guidelines-for-bedding-products-components/">https://sleepproducts.org/publications/voluntary-dimensional-guidelines-for-bedding-products-components/</a> | <a href="https://bettersleep.org/mattress-sizes/">https://bettersleep.org/mattress-sizes/</a> | <a href="https://www.bedfed.org.uk/resources/regulations-standards/">https://www.bedfed.org.uk/resources/regulations-standards/</a></p>
         </section>
       </div>
+      <aside class="article-toc" aria-label="On this page"><strong>On this page</strong>${toc}</aside>
+    </div>
+  </article>`;
+}
+
+function renderWholesaleGuideSection(sectionData) {
+  return `<section class="article-section" id="${sectionData.id}" aria-labelledby="${sectionData.id}-title">
+    <h2 id="${sectionData.id}-title">${sectionData.title}</h2>
+    ${articleParagraphs(sectionData.paragraphs)}
+    ${articleBullets(sectionData.bullets)}
+    ${sectionData.structureFigure ? `<figure class="article-figure wholesale-guide-structure-figure" id="frame-connection-detail">${imageTag(wholesaleGuide.structureImage, wholesaleGuide.structureAlt, { sizes: "(max-width: 720px) 100vw, 620px" })}</figure>` : ""}
+    ${sectionData.closing ? `<p>${sectionData.closing}</p>` : ""}
+  </section>`;
+}
+
+function wholesaleGuidePage() {
+  const tocItems = [
+    ...wholesaleGuide.sections.map((item) => ({ id: item.id, title: item.title })),
+    { id: "b2b-metal-bed-frame-sourcing-checklist", title: "B2B Metal Bed Frame Sourcing Checklist" },
+    { id: "wholesale-metal-bed-frame-frequently-asked-questions", title: "Frequently Asked Questions" },
+    ...wholesaleGuide.faqs.map((item, index) => ({ id: `wholesale-guide-faq-${index + 1}`, title: item.question, level: 3 })),
+    { id: "discuss-your-metal-bed-frame-sourcing-requirements", title: "Discuss Your Metal Bed Frame Sourcing Requirements" },
+  ];
+  const toc = `<ol>${tocItems.map((item) => `<li class="${item.level === 3 ? "toc-level-3" : ""}"><a href="#${item.id}" data-link>${item.title}</a></li>`).join("")}</ol>`;
+  const checklistTable = articleDataTable({
+    caption: "B2B Metal Bed Frame Sourcing Checklist",
+    captionHidden: true,
+    label: "B2B metal bed frame sourcing checklist",
+    headers: ["Review area", "Questions to confirm"],
+    rows: wholesaleGuide.checklistRows,
+  });
+
+  return `<article class="insight-article wholesale-guide-page">
+    <header class="article-header section"><div class="container">
+      <nav class="article-breadcrumb" aria-label="Breadcrumb"><ol>
+        <li><a href="/" data-link>Home</a></li><li><a href="/insights/" data-link>Insights</a></li><li><a href="/insights/?category=sourcing-guides">Sourcing Guides</a></li><li><span aria-current="page">${wholesaleGuide.shortTitle}</span></li>
+      </ol></nav>
+      <div class="article-heading fade-in"><span class="kicker">${wholesaleGuide.category}</span><h1>${wholesaleGuide.title}</h1><p class="article-intro">${wholesaleGuide.intro}</p><div class="article-meta"><time datetime="${wholesaleGuide.publishedAt}">${formatArticleDate(wholesaleGuide.publishedAt)}</time><span>${wholesaleGuide.readingTime}</span><span>By ${wholesaleGuide.author}</span></div></div>
+      <figure class="article-hero-media wholesale-guide-hero fade-in">${imageTag(wholesaleGuide.heroImage, wholesaleGuide.heroAlt, { priority: true, sizes: "(max-width: 768px) 100vw, 1200px" })}</figure>
+    </div></header>
+    <div class="article-layout container">
+      <main class="article-content">
+        <details class="article-mobile-toc"><summary>On this page</summary>${toc}</details>
+        <section class="article-opening">
+          ${articleParagraphs(wholesaleGuide.opening)}
+          <figure class="article-figure wholesale-guide-checklist-figure" id="b2b-buyers-checklist-infographic">${imageTag(wholesaleGuide.checklistImage, wholesaleGuide.checklistAlt, { sizes: "(max-width: 800px) 100vw, 900px" })}<figcaption>${wholesaleGuide.checklistCaption}</figcaption></figure>
+        </section>
+        ${wholesaleGuide.sections.map(renderWholesaleGuideSection).join("")}
+        <section class="article-section" id="b2b-metal-bed-frame-sourcing-checklist" aria-labelledby="b2b-metal-bed-frame-sourcing-checklist-title"><h2 id="b2b-metal-bed-frame-sourcing-checklist-title">B2B Metal Bed Frame Sourcing Checklist</h2>${checklistTable}</section>
+        <section class="article-section article-faq" id="wholesale-metal-bed-frame-frequently-asked-questions" aria-labelledby="wholesale-metal-bed-frame-frequently-asked-questions-title"><h2 id="wholesale-metal-bed-frame-frequently-asked-questions-title">Frequently Asked Questions</h2>${wholesaleGuide.faqs.map((item, index) => `<details><summary><h3 id="wholesale-guide-faq-${index + 1}">${item.question}</h3></summary><p>${item.answer}</p></details>`).join("")}</section>
+        <section class="article-section wholesale-guide-closing" id="discuss-your-metal-bed-frame-sourcing-requirements" aria-labelledby="discuss-your-metal-bed-frame-sourcing-requirements-title"><h2 id="discuss-your-metal-bed-frame-sourcing-requirements-title">Discuss Your Metal Bed Frame Sourcing Requirements</h2>${articleParagraphs(wholesaleGuide.closing)}</section>
+      </main>
       <aside class="article-toc" aria-label="On this page"><strong>On this page</strong>${toc}</aside>
     </div>
   </article>`;
@@ -586,7 +643,7 @@ function metalPage() {
     { icon: "03", title: "Accommodation and Project Supply", body: "Confirm environment, use intensity, dimensions, structure, installation, packaging and delivery requirements before selecting the product direction." },
     { icon: "04", title: "Private-Label Programs", body: "Use an existing platform as a starting point or move into a custom development project for a more differentiated product." },
   ]), "alt")}
-  ${section("Manufacturing and Supply Support", "", `<p>Apexnix connects the product range with its own <a href="/metal-bed-frame-manufacturer/" data-link>metal bed frame manufacturing capability</a>, routine quality control, OEM development and <a href="/flat-pack-bed-frame-packaging/" data-link>flat-pack packaging support</a>. Order terms, sampling and production arrangements are confirmed according to the selected model, specification, packaging and purchasing plan.</p>`)}
+  ${section("Manufacturing and Supply Support", "", `<p>Apexnix connects the product range with its own <a href="/metal-bed-frame-manufacturer/" data-link>metal bed frame manufacturing capability</a>, routine quality control, OEM development and <a href="/flat-pack-bed-frame-packaging/" data-link>flat-pack packaging support</a>. Order terms, sampling and production arrangements are confirmed according to the selected model, specification, packaging and purchasing plan.</p><p>Planning a wholesale program? Use our <a href="/insights/how-to-source-metal-bed-frames-wholesale/" data-link>B2B metal bed frame sourcing checklist</a> to organize product, size, assembly and packaging requirements.</p>`)}
   <section class="section cta-band">${imageTag(img.oem, "Metal bed frame product information")}<div class="container fade-in"><h2>Looking for the Right Metal Bed Frame Direction?</h2><p>Share the products you are interested in, your target market, preferred size range, channel, packaging requirements and expected purchasing plan. We will help organize the next product discussion.</p><div class="actions">${cta("Request Product Information", "/contact")}</div></div></section>
   ${faqSection([
     { question: "What types of wholesale metal bed frames does Apexnix supply?", answer: "The range includes platform beds, bed frames with headboards, bunk and dormitory beds, daybeds, foldable beds, universal rail frames and custom metal structures." },
@@ -1017,6 +1074,7 @@ const routes = {
   "/insights": insightsPage,
   "/insights/from-bamboo-grove-to-bamboo-bed-frame": articlePage,
   "/insights/bed-frame-size-guide-us-uk-eu": sizeGuidePage,
+  "/insights/how-to-source-metal-bed-frames-wholesale": wholesaleGuidePage,
   "/about": about,
   "/contact": contact,
   "/metal-bed-frame-manufacturer": metalManufacturerPage,
@@ -1083,9 +1141,9 @@ const routeMeta = {
   "/insights": {
     title: "Bed Frame Insights for Sourcing and Product Development | Apexnix",
     description: "Explore practical insights on bed frame materials, structure, manufacturing, packaging, quality control, OEM development, and market-fit product planning.",
-    image: bambooStory.cardImage,
+    image: wholesaleGuide.cardImage,
     priority: "0.8",
-    lastmod: "2026-08-04",
+    lastmod: "2026-08-19",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Insights", path: "/insights" }],
   },
   "/insights/from-bamboo-grove-to-bamboo-bed-frame": {
@@ -1122,6 +1180,24 @@ const routeMeta = {
       { name: "Insights", path: "/insights" },
       { name: "Sourcing Guides", path: "/insights" },
       { name: sizeGuide.shortTitle, path: `/insights/${sizeGuide.slug}` },
+    ],
+  },
+  "/insights/how-to-source-metal-bed-frames-wholesale": {
+    title: "How to Source Wholesale Metal Bed Frames | B2B Guide",
+    description: "Use this B2B checklist to source metal bed frames for wholesale, covering product selection, market sizing, structure, assembly, quality, packaging and OEM.",
+    ogTitle: "How to Source Wholesale Metal Bed Frames | B2B Guide",
+    ogDescription: "Use this B2B checklist to source metal bed frames for wholesale, covering product selection, market sizing, structure, assembly, quality, packaging and OEM.",
+    ogType: "article",
+    image: wholesaleGuide.ogImage,
+    preloadImage: wholesaleGuide.heroImage,
+    priority: "0.82",
+    lastmod: "2026-08-19",
+    article: wholesaleGuide,
+    breadcrumb: [
+      { name: "Home", path: "/" },
+      { name: "Insights", path: "/insights" },
+      { name: "Sourcing Guides", path: "/insights" },
+      { name: wholesaleGuide.shortTitle, path: `/insights/${wholesaleGuide.slug}` },
     ],
   },
   "/about": {
@@ -1274,7 +1350,7 @@ function schemasForPath(path = "/") {
       articleSection: meta.article.category,
       author: {
         "@type": "Organization",
-        name: "Apexnix Product Team",
+        name: meta.article.author,
         url: routeUrl("/about"),
       },
       publisher: {
@@ -1298,6 +1374,21 @@ function schemasForPath(path = "/") {
         contentUrl: assetUrl(meta.article.video.contentUrl),
         uploadDate: meta.article.video.uploadDate,
         duration: meta.article.video.duration,
+      });
+    }
+
+    if (meta.article.faqs?.length) {
+      schemas.push({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: meta.article.faqs.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer,
+          },
+        })),
       });
     }
   }
