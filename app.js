@@ -221,6 +221,28 @@ function insightFeature({ eyebrow, title, body, linkLabel, className = "" }) {
   </div></section>`;
 }
 
+function homeInsights() {
+  const featuredSlugs = [
+    "how-to-source-metal-bed-frames-wholesale",
+    "bed-frame-size-guide-us-uk-eu",
+    "from-bamboo-grove-to-bamboo-bed-frame",
+  ];
+  const ctaLabels = {
+    "how-to-source-metal-bed-frames-wholesale": "Read Guide",
+    "bed-frame-size-guide-us-uk-eu": "Read Guide",
+    "from-bamboo-grove-to-bamboo-bed-frame": "Read Article",
+  };
+  const articles = insightsData.articles
+    .filter((article) => featuredSlugs.includes(article.slug))
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  const cards = articles.map((article) => `<article class="insight-card fade-in">
+    <a class="insight-card__media" href="/insights/${article.slug}/" data-link aria-label="Read ${escapeAttr(article.shortTitle)}">${imageTag(article.heroImage, article.heroAlt, { sizes: "(max-width: 800px) 100vw, (max-width: 1080px) 50vw, 380px" })}</a>
+    <div class="insight-card__body"><span class="kicker">${article.category}</span><h3><a href="/insights/${article.slug}/" data-link>${article.shortTitle}</a></h3><p>${article.excerpt}</p><div class="insight-card__meta"><time datetime="${article.publishedAt}">${formatArticleDate(article.publishedAt)}</time><span aria-hidden="true">&middot;</span><span>${article.readingTime}</span></div><div class="actions">${cta(ctaLabels[article.slug], `/insights/${article.slug}`, true)}</div></div>
+  </article>`).join("");
+
+  return section("Latest Insights", "", `<div class="home-insights__grid">${cards}</div>`, "home-insights");
+}
+
 function insightsPage() {
   let selectedCategory = "all";
   try {
@@ -577,13 +599,7 @@ function home() {
     ["OEM Bed Frame Manufacturer", "OEM and custom development support for partners planning market-fit bed frame product lines.", "OEM Bed Frame Manufacturer", "/oem-bed-frame-manufacturer"],
     ["Quality and Packaging Support", "Review quality control and flat-pack packaging topics that affect B2B bed frame sourcing.", "View Quality Control", "/bed-frame-quality-control"],
   ]))}
-  ${insightFeature({
-    eyebrow: "Latest Insight",
-    title: "From Bamboo Grove to Bamboo Bed Frame",
-    body: "Bamboo brings more than a natural appearance. Explore how its growth pattern, engineered processing, and product positioning come together in a modern bamboo bed frame.",
-    linkLabel: "Read the Material Story",
-    className: "alt",
-  })}
+  ${homeInsights()}
   ${section("What Makes Us Different", "We combine bed frame manufacturing know-how with global business thinking, so our cooperation starts before the quotation.", iconGrid([
     { icon: "◇", title: "Value-Engineered Products", body: "We balance structure, cost, quality, packaging, and assembly for stronger product competitiveness." },
     { icon: arrowIcon("both"), title: "Channel-Fit Solutions", body: "We develop bed frame solutions based on how you sell: online, retail, wholesale, or project supply." },
