@@ -18,7 +18,7 @@ const wholesaleGuide = insightsData.wholesaleGuide || insightsData.articles.find
 const basePattern = new RegExp(`^${BASE_PATH.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=/|$)`);
 const img = {
   home1: A + "home-hero-bed-frame-supplier.jpg",
-  home2: A + "bed-frame-manufacturing-capability.jpg",
+  home2: A + "metal-bed-frame-welding-production.webp",
   statement: A + "apexnix-brand-statement-bed-frame-business.jpg",
   metalCard: A + "metal-bed-frame-card.jpg",
   bambooCard: A + "bamboo-bed-frame-card.jpg",
@@ -50,6 +50,7 @@ const img = {
 const imageDimensions = {
   "home-hero-bed-frame-supplier.jpg": [1200, 675],
   "bed-frame-manufacturing-capability.jpg": [1200, 800],
+  "metal-bed-frame-welding-production.webp": [1920, 1000],
   "apexnix-brand-statement-bed-frame-business.jpg": [1200, 675],
   "metal-bed-frame-card.jpg": [900, 1124],
   "bamboo-bed-frame-card.jpg": [900, 1026],
@@ -579,10 +580,10 @@ function home() {
   return `<section class="hero" data-carousel>
     ${[
       [img.home1, "B2B Metal & Bamboo Bed Frame Supplier", "Apexnix helps global partners develop practical, cost-efficient, and market-ready bed frame products, including metal bed frames, bamboo bed frames, and OEM/custom bed frame solutions.", ["25+ Years Bed Frame Manufacturing Know-How", "Metal & Bamboo Bed Frame Product Directions", "Flat-Pack and Easy-Assembly Support", "OEM / Custom Development Discussion", "Packaging, Quality and Export Coordination"], cta("Explore Bed Frame Products", "/products") + cta("Send Bed Frame Sourcing Request", "/contact", true)],
-      [img.home2, "Focused Manufacturing Know-How", "With long-term focus on bed frame structure, packaging, assembly, and quality control, we build products that balance strength, cost efficiency, and reliable supply.", [], cta("View Manufacturing and Quality Control Capabilities", "/capabilities")],
+      [img.home2, "Focused Manufacturing Know-How", "With long-term focus on bed frame structure, packaging, assembly, and quality control, we build products that balance strength, cost efficiency, and reliable supply.", [], cta("View Manufacturing and Quality Control Capabilities", "/capabilities"), "Metal bed frame component welding during factory production"],
       [img.oem, "Beyond Products, We Help You Build the Right Bed Frame Line", "We work with partners to understand their market, channel, product positioning, packaging needs, and long-term supply plan.", [], cta("Discuss Your Bed Frame Project", "/contact")],
-    ].map((s, i) => `<div class="hero-bg ${i === 0 ? "active" : ""}">${imageTag(s[0], s[1], { priority: i === 0 })}</div>
-      <div class="hero-content slide-copy ${i === 0 ? "active" : ""}" ${i ? "hidden" : ""}>
+    ].map((s, i) => `<div class="hero-bg ${i === 0 ? "active" : ""}${i === 1 ? " hero-bg--welding" : ""}">${imageTag(s[0], s[5] || s[1], { priority: i === 0 })}</div>
+      <div class="hero-content slide-copy ${i === 0 ? "active" : ""}${i === 1 ? " hero-content--welding" : ""}" ${i ? "hidden" : ""}>
         <span class="kicker">Focused B2B Bed Frame Supplier</span>${i === 0 ? `<h1>${s[1]}</h1>` : `<p class="hero-slide-title">${s[1]}</p>`}<p>${s[2]}</p>${tags(s[3])}<div class="hero-actions">${s[4]}</div>
       </div>`).join("")}
     <div class="hero-arrows"><button class="icon-button" data-prev aria-label="Previous slide">${arrowIcon("left")}</button><button class="icon-button" data-next aria-label="Next slide">${arrowIcon()}</button></div>
