@@ -343,6 +343,12 @@ p { margin: 0; color: var(--muted); }
 }
 .hero-content--welding { max-width: min(45vw, 650px); }
 .hero-content--welding .hero-slide-title { margin-bottom: 14px; }
+.capabilities-factory-hero .hero-content,
+.flat-pack-factory-hero .hero-content { max-width: min(45vw, 650px); }
+.capabilities-factory-hero .hero-bg::after,
+.flat-pack-factory-hero .hero-bg::after {
+  background: linear-gradient(90deg, rgba(13,16,19,.18), rgba(13,16,19,.06) 50%, rgba(13,16,19,0));
+}
 .hero-content p { color: rgba(255,255,255,.82); max-width: 760px; font-size: 20px; }
 .hero-content .kicker { color: #ead6ad; }
 .hero-actions, .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
@@ -421,6 +427,16 @@ p { margin: 0; color: var(--muted); }
 }
 .image-panel.soft { box-shadow: none; border: 1px solid var(--line); }
 .image-panel.soft { height: 310px; }
+.capabilities-packaging .image-panel {
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 1600 / 950;
+}
+.flat-pack-early .image-panel {
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 1200 / 870;
+}
 .grid-3, .grid-4, .grid-2 { display: grid; gap: 22px; }
 .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -1290,6 +1306,8 @@ body.size-guide-print-preview-mode .checklist-print-button { display: none; }
   .mini-features { grid-template-columns: 1fr 1fr; }
   .hero { min-height: 680px; }
   .hero-content--welding { max-width: 58vw; }
+  .capabilities-factory-hero .hero-content,
+  .flat-pack-factory-hero .hero-content { max-width: 56vw; }
 }
 @media (max-width: 800px) {
   .featured-article,
@@ -1349,6 +1367,14 @@ body.size-guide-print-preview-mode .checklist-print-button { display: none; }
     background: linear-gradient(90deg, rgba(13,16,19,.52), rgba(13,16,19,.18) 58%, rgba(13,16,19,.04));
   }
   .hero-content--welding { padding-bottom: 148px; }
+  .capabilities-factory-hero .hero-bg img,
+  .flat-pack-factory-hero .hero-bg img { object-position: 72% center; }
+  .capabilities-factory-hero .hero-bg::after,
+  .flat-pack-factory-hero .hero-bg::after {
+    background: linear-gradient(90deg, rgba(13,16,19,.78), rgba(13,16,19,.52) 68%, rgba(13,16,19,.24));
+  }
+  .capabilities-factory-hero .hero-content,
+  .flat-pack-factory-hero .hero-content { max-width: 390px; }
   .hero-dots, .hero-arrows { left: 20px; right: auto; }
   .image-panel { min-height: 310px; }
   .image-panel { height: 310px; }

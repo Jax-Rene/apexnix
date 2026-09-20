@@ -42,6 +42,10 @@ const img = {
   contactHero: A + "contact-apexnix-bed-frame-project.jpg",
   ourStory: A + "apexnix-bed-frame-supplier-story.jpg",
   capabilitiesHero: A + "bed-frame-supply-capabilities-hero.jpg",
+  capabilitiesFactoryHero: A + "metal-bed-frame-component-grinding-factory.webp",
+  capabilitiesPackaging: A + "metal-bed-frame-carton-packaging-factory.webp",
+  flatPackFactoryHero: A + "flat-pack-bed-frame-carton-packing-factory.png",
+  flatPackBundling: A + "flat-pack-bed-frame-bundling-process.webp",
   valueEngineering: A + "value-engineering-bed-frame.jpg",
   oemSupport: A + "oem-custom-support-bed-frame.jpg",
   qualityControl: A + "quality-control-bed-frame-manufacturing.jpg",
@@ -74,6 +78,10 @@ const imageDimensions = {
   "contact-apexnix-bed-frame-project.jpg": [1200, 800],
   "apexnix-bed-frame-supplier-story.jpg": [1100, 825],
   "bed-frame-supply-capabilities-hero.jpg": [1200, 800],
+  "metal-bed-frame-component-grinding-factory.webp": [1920, 900],
+  "metal-bed-frame-carton-packaging-factory.webp": [1600, 950],
+  "flat-pack-bed-frame-carton-packing-factory.png": [1672, 941],
+  "flat-pack-bed-frame-bundling-process.webp": [1200, 870],
   "value-engineering-bed-frame.jpg": [700, 631],
   "oem-custom-support-bed-frame.jpg": [1100, 825],
   "quality-control-bed-frame-manufacturing.jpg": [950, 950],
@@ -161,9 +169,9 @@ function tags(items, light = false) {
 function table(rows, h1 = "Specification Item", h2 = "Available Options") {
   return `<div class="table-wrap"><table><thead><tr><th>${h1}</th><th>${h2}</th></tr></thead><tbody>${rows.map((r) => `<tr><td data-label="${h1}">${r[0]}</td><td data-label="${h2}">${r[1]}</td></tr>`).join("")}</tbody></table></div>`;
 }
-function simpleHero({ title, subtitle, body = "", image, tagItems = [], actions = "", eyebrow = "Apexnix" }) {
-  return `<section class="hero short">
-    <div class="hero-bg active">${imageTag(image, title, { priority: true })}</div>
+function simpleHero({ title, subtitle, body = "", image, imageAlt = title, tagItems = [], actions = "", eyebrow = "Apexnix", className = "" }) {
+  return `<section class="hero short${className ? ` ${className}` : ""}">
+    <div class="hero-bg active">${imageTag(image, imageAlt, { priority: true })}</div>
     <div class="hero-content fade-in">
       <span class="kicker">${eyebrow}</span>
       <h1>${title}</h1>
@@ -191,10 +199,10 @@ function section(title, intro, body, cls = "", id = "") {
 function faqSection(items = []) {
   return section("Frequently Asked Questions", "", `<div class="article-faq">${items.map((item) => `<details><summary>${item.question}</summary><p>${item.answer}</p></details>`).join("")}</div>`, "alt");
 }
-function twoCol(title, subtitle, body, image, extra = "", reverse = false, cls = "", id = "") {
+function twoCol(title, subtitle, body, image, extra = "", reverse = false, cls = "", id = "", imageAlt = title) {
   return `<section class="section ${cls}" ${id ? `id="${id}"` : ""}><div class="container split ${reverse ? "reverse" : ""}">
     <div class="fade-in"><span class="kicker">Apexnix</span><h2>${title}</h2><p><strong>${subtitle}</strong></p><p>${body}</p>${extra}</div>
-    <div class="image-panel fade-in">${imageTag(image, title)}</div>
+    <div class="image-panel fade-in">${imageTag(image, imageAlt)}</div>
   </div></section>`;
 }
 
@@ -806,7 +814,7 @@ function capabilities() {
   const caps = [
     ["Product Development", img.oemCard, "We support bed frame development from product idea to practical structure discussion. This includes size, material, frame structure, support legs, headboard / footboard options, surface finish, and usage scenario."],
     ["Value Engineering", img.valueEngineering, "We help balance strength, material use, cost, packaging size, assembly experience, and market competitiveness."],
-    ["Packaging Optimization", img.ecommerce, "Carton size, protection, hardware organization, instruction manuals, loading efficiency, and shipping requirements can directly affect cost and customer experience."],
+    ["Packaging Optimization", img.capabilitiesPackaging, "Carton size, protection, hardware organization, instruction manuals, loading efficiency, and shipping requirements can directly affect cost and customer experience.", "Worker handling a metal bed frame carton on a factory roller conveyor", "capabilities-packaging"],
     ["Quality Control", img.qualityControl, "Quality control is part of our product discussion and production coordination. Depending on the product type and project requirements, inspection points may include material check, dimension review, welding and structure check, surface finish inspection, trial assembly, hardware check, packaging inspection, and pre-shipment review."],
     ["OEM / Custom Support", img.oemSupport, "Customization can include size, color, structure, headboard style, packaging, instruction manual, carton mark and private label presentation."],
     ["Export Support", img.exportSupport, "We support export-ready packaging, carton marks, product labels, loading discussion, documentation coordination, and order communication."],
@@ -814,10 +822,12 @@ function capabilities() {
   return `${simpleHero({
     title: "Bed Frame Manufacturing and Supply Capabilities",
     subtitle: "Apexnix focuses on the practical capabilities that matter in B2B bed frame sourcing: product development, cost and structure balance, packaging optimization, quality control, sample coordination, OEM support, and export communication.",
-    image: img.capabilitiesHero,
+    image: img.capabilitiesFactoryHero,
+    imageAlt: "Worker grinding metal bed frame components during factory production",
+    className: "capabilities-factory-hero",
     actions: cta("Discuss Your Bed Frame Requirements", "/contact"),
   })}
-  <section class="section"><div class="container"><div class="section-head fade-in"><span class="kicker">Apexnix</span><h2>Core Bed Frame Manufacturing and Supply Capabilities</h2><p>Our capabilities cover the practical steps required to turn a bed frame direction into a market-ready B2B product, including product development, value engineering, packaging, quality control, OEM support and supply coordination.</p></div><ol class="process">${caps.map((x) => `<li class="fade-in"><div class="split"><div><h3>${x[0]}</h3><p>${x[2]}</p></div><div class="image-panel soft">${imageTag(x[1], x[0])}</div></div></li>`).join("")}</ol></div></section>
+  <section class="section"><div class="container"><div class="section-head fade-in"><span class="kicker">Apexnix</span><h2>Core Bed Frame Manufacturing and Supply Capabilities</h2><p>Our capabilities cover the practical steps required to turn a bed frame direction into a market-ready B2B product, including product development, value engineering, packaging, quality control, OEM support and supply coordination.</p></div><ol class="process">${caps.map((x) => `<li class="fade-in${x[4] ? ` ${x[4]}` : ""}"><div class="split"><div><h3>${x[0]}</h3><p>${x[2]}</p></div><div class="image-panel soft">${imageTag(x[1], x[3] || x[0])}</div></div></li>`).join("")}</ol></div></section>
   ${section("Supply Details That Shape the Final Product", "Manufacturing flow, inspection points, packaging, and OEM development decisions all affect how a bed frame performs in real sales channels.", linkGrid([
     ["Metal Bed Frame Production Process", "Understand the typical production flow for metal bed frame products.", "View Production Process", "/metal-bed-frame-production-process"],
     ["Bed Frame Quality Control", "Review quality control points that may apply during sampling, production, packaging, and shipment.", "View Quality Control", "/bed-frame-quality-control"],
@@ -1031,7 +1041,9 @@ function flatPackPackagingPage() {
     title: "Flat-Pack Bed Frame Packaging Solutions",
     subtitle: "For B2B bed frame products, packaging is part of product competitiveness.",
     body: "Flat-pack and KD packaging can affect shipping cost, warehouse handling, assembly experience, customer satisfaction, and after-sales risk. Apexnix supports packaging discussion based on product structure, sales channel, and target market.",
-    image: img.ecommerce,
+    image: img.flatPackFactoryHero,
+    imageAlt: "Worker handling a flat-pack bed frame carton on a factory packing line",
+    className: "flat-pack-factory-hero",
     tagItems: ["KD Packaging", "Carton Planning", "Instruction Manual", "Private-Label Packaging"],
     actions: cta("Discuss Flat-Pack Packaging", "/contact"),
   })}
@@ -1043,7 +1055,7 @@ function flatPackPackagingPage() {
     { icon: "03", title: "Project Supply", body: "Focus on bulk handling, installation efficiency, maintenance needs, and replacement part organization." },
     { icon: "04", title: "Private Label", body: "Focus on carton mark, barcode label, product label, instruction manual, and brand presentation." },
   ]), "alt")}
-  ${twoCol("Packaging Should Be Discussed Early", "", "Packaging should not be left until the end of development. Structure, part size, hardware quantity, carton dimensions, and instruction design are connected. Discussing packaging early helps partners evaluate cost, logistics, customer experience, and product positioning more realistically.", img.oemCard)}
+  ${twoCol("Packaging Should Be Discussed Early", "", "Packaging should not be left until the end of development. Structure, part size, hardware quantity, carton dimensions, and instruction design are connected. Discussing packaging early helps partners evaluate cost, logistics, customer experience, and product positioning more realistically.", img.flatPackBundling, "", false, "flat-pack-early", "", "Worker positioning bundled bed frame components during packaging")}
   ${section("Packaging and Supply Support", "", linkGrid([
     ["OEM Bed Frame Manufacturer", "Review custom development support connected with packaging, labels, and target-price planning.", "View OEM Manufacturer Page", "/oem-bed-frame-manufacturer"],
     ["Capabilities", "Review packaging optimization and broader supply capabilities.", "View Capabilities", "/capabilities"],
