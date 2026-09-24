@@ -50,6 +50,16 @@ const img = {
   oemSupport: A + "oem-custom-support-bed-frame.jpg",
   qualityControl: A + "quality-control-bed-frame-manufacturing.jpg",
   exportSupport: A + "export-support-bed-frame-supply.jpg",
+  productionHero: A + "metal-bed-frame-production-process-hero.webp",
+  productionLaserCutting: A + "metal-bed-frame-laser-tube-cutting-clean.webp",
+  productionHoleProcessing: A + "metal-bed-frame-hole-processing.webp",
+  productionTubeEndForming: A + "metal-bed-frame-tube-end-forming.webp",
+  productionWelding: A + "metal-bed-frame-welding-structural-assembly.webp",
+  productionGrinding: A + "metal-bed-frame-grinding-deburring.webp",
+  productionCoating: A + "metal-bed-frame-components-coating-line.webp",
+  productionHardware: A + "metal-bed-frame-hardware-installation.webp",
+  productionPacking: A + "metal-bed-frame-protective-carton-packing.webp",
+  productionPalletizing: A + "metal-bed-frame-robotic-carton-palletizing.webp",
 };
 const imageDimensions = {
   "home-hero-bed-frame-supplier.jpg": [1200, 675],
@@ -88,6 +98,16 @@ const imageDimensions = {
   "oem-custom-support-bed-frame.jpg": [1100, 825],
   "quality-control-bed-frame-manufacturing.jpg": [950, 950],
   "export-support-bed-frame-supply.jpg": [950, 950],
+  "metal-bed-frame-production-process-hero.webp": [1916, 821],
+  "metal-bed-frame-laser-tube-cutting-clean.webp": [693, 1180],
+  "metal-bed-frame-hole-processing.webp": [1760, 1450],
+  "metal-bed-frame-tube-end-forming.webp": [1800, 1337],
+  "metal-bed-frame-welding-structural-assembly.webp": [2000, 1108],
+  "metal-bed-frame-grinding-deburring.webp": [1600, 1428],
+  "metal-bed-frame-components-coating-line.webp": [1800, 1486],
+  "metal-bed-frame-hardware-installation.webp": [1800, 1519],
+  "metal-bed-frame-protective-carton-packing.webp": [1800, 1468],
+  "metal-bed-frame-robotic-carton-palletizing.webp": [941, 1672],
   "bamboo-grove-growth-story-hero.webp": [1600, 900],
   "bamboo-grove-growth-story-og.webp": [1200, 630],
   "bamboo-material-from-culm-to-board.webp": [1000, 1000],
@@ -1006,36 +1026,153 @@ function qualityControlPage() {
 }
 
 function productionProcessPage() {
+  const steps = [
+    {
+      number: "01",
+      id: "requirements-materials",
+      title: "Requirement Review and Material Preparation",
+      body: "Production starts with a review of the product type, size, structure, surface finish, packaging needs and target market. Steel tubes, plates, hardware, fasteners and coating materials are prepared and checked against the agreed specifications.",
+      why: "Confirming specifications early provides a consistent reference for component processing, assembly and packing.",
+    },
+    {
+      number: "02",
+      id: "laser-tube-cutting",
+      title: "Laser Tube Cutting and Processing",
+      body: "Steel tubes are laser-cut and processed according to product drawings to create the required lengths and connection features. Separate hole-processing operations are used where the component design requires them.",
+      why: "Consistent component dimensions support fit during forming, welding and assembly.",
+      image: img.productionLaserCutting,
+      alt: "Laser cutting equipment processing steel tubing for bed frame components",
+      caption: "Steel tube processing with laser cutting equipment.",
+      mediaClass: "production-step__media--portrait production-step__media--laser",
+    },
+    {
+      number: "03",
+      id: "punching-stamping",
+      title: "Punching and Stamping",
+      body: "Components are positioned in dedicated equipment to produce assembly holes and connection points. Press equipment and dies are used for the shapes or local forming features required by the design.",
+      why: "Hole locations and formed features need to match the parts they connect to during assembly.",
+      image: img.productionHoleProcessing,
+      alt: "Steel tube positioned in equipment for assembly hole processing",
+      caption: "Positioning and hole processing for steel components.",
+    },
+    {
+      number: "04",
+      id: "tube-end-forming",
+      title: "Tube End Forming Where Required",
+      body: "Some designs require specially formed tube ends. Where needed, tube ends are induction-heated and mechanically formed to create the profiles specified for the component. This operation is used for selected designs, not every bed frame SKU.",
+      why: "The tube-end profile must suit the intended connection or appearance of the component.",
+      image: img.productionTubeEndForming,
+      alt: "Heated tube end at an induction heating workstation",
+      caption: "Induction heating for selected tube-end designs and examples of formed tube ends.",
+    },
+    {
+      number: "05",
+      id: "welding-assembly",
+      title: "Welding and Structural Assembly",
+      body: "Steel tubes, brackets and other structural components are positioned before welding. Manual and robotic welding are used according to the component and production requirements to create subassemblies for the bed frame.",
+      why: "Fixture positioning helps keep connection points aligned across repeated components. Welding and connection areas are reviewed as part of routine quality control.",
+      image: img.productionWelding,
+      alt: "Robotic welding head working on clamped metal components",
+      caption: "Positioning, robotic welding and manual welding of metal components.",
+      mediaClass: "production-step__media--wide",
+    },
+    {
+      number: "06",
+      id: "grinding-deburring",
+      title: "Grinding and Deburring",
+      body: "Formed and welded components are ground and deburred to remove sharp edges, welding residues and local surface irregularities before finishing.",
+      why: "Edge and surface preparation supports safer handling and a more even base for the subsequent finish.",
+      image: img.productionGrinding,
+      alt: "Worker grinding a metal tube component with an angle grinder",
+      caption: "Grinding and deburring of a formed metal component.",
+      mediaClass: "production-step__media--grinding",
+    },
+    {
+      number: "07",
+      id: "powder-coating",
+      title: "Surface Treatment and Powder Coating",
+      body: "Metal components are prepared for finishing, electrostatically powder coated and heat-cured according to the product requirements. The selected finish provides the specified colour and a protective surface.",
+      why: "Surface coverage and appearance need to remain consistent across the components supplied for a product.",
+      image: img.productionCoating,
+      alt: "Metal bed frame components suspended on a coating production line",
+      caption: "Components suspended on the coating line and coated components prepared for assembly.",
+    },
+    {
+      number: "08",
+      id: "component-trial-assembly",
+      title: "Component Assembly and Trial Assembly",
+      body: "Coated components are fitted with brackets, joints, fasteners and other required hardware. Mechanical fastening methods are selected to suit the component design.",
+      subheading: "Trial assembly and functional checks",
+      detail: "Key components are trial-assembled before packing to review hole alignment, connection fit, structural stability and accessory completeness.",
+      why: "Checking component fit and accessory completeness helps identify assembly issues before packing.",
+      image: img.productionHardware,
+      alt: "Worker using equipment to fasten hardware to a bed frame component",
+      caption: "Assembly of coated components.",
+    },
+    {
+      number: "09",
+      id: "carton-packing",
+      title: "Packing Preparation and Carton Packing",
+      body: "Finished components are grouped by product configuration and prepared with the required accessories. Parts are arranged with protective materials in the appropriate cartons before sealing. Bundling and separation are used where needed to keep components organised and limit contact during handling.",
+      why: "Packing preparation needs to address component completeness, surface protection and the agreed carton configuration.",
+      extra: `<p class="production-step__link"><a href="/flat-pack-bed-frame-packaging/" data-link>Explore our flat-pack packaging approach ${arrowIcon()}</a></p>`,
+      image: img.productionPacking,
+      alt: "Worker applying adhesive during bed frame carton packing",
+      caption: "Arranging components and protective materials in a carton and applying adhesive during carton packing.",
+    },
+    {
+      number: "10",
+      id: "palletizing-shipment",
+      title: "Palletizing and Shipment Preparation",
+      body: "After carton packing and sealing, packed goods are organised for storage and shipment preparation. Robotic equipment handles and stacks cartons in the operations shown. Carton marks and shipment requirements are reviewed against the order.",
+      why: "Orderly carton handling supports the organisation of finished goods before dispatch.",
+      image: img.productionPalletizing,
+      alt: "Robotic equipment handling packed cartons at the factory",
+      caption: "Robotic handling of packed cartons.",
+      mediaClass: "production-step__media--portrait production-step__media--palletizing",
+    },
+  ];
+
+  const stepMarkup = steps.map((step, index) => `<article class="production-step${step.image ? "" : " production-step--text-only"}${index % 2 === 0 ? " production-step--reverse" : ""}" id="${step.id}">
+    <div class="production-step__copy fade-in">
+      <span class="production-step__number">Step ${step.number}</span>
+      <h3>${step.title}</h3>
+      <p>${step.body}</p>
+${step.subheading ? `<h4>${step.subheading}</h4>` : ""}
+${step.detail ? `<p>${step.detail}</p>` : ""}
+      <div class="production-step__why"><h4>Why it matters</h4><p>${step.why}</p></div>
+${step.extra || ""}
+    </div>
+${step.image ? `<figure class="production-step__media ${step.mediaClass || ""} fade-in">${imageTag(step.image, step.alt, { sizes: "(max-width: 800px) calc(100vw - 40px), 620px" })}<figcaption>${step.caption}</figcaption></figure>` : ""}
+  </article>`).join("");
+
   return `${simpleHero({
     title: "Metal Bed Frame Production Process",
     subtitle: "A clear production process helps partners understand how metal bed frames move from product requirements to finished goods.",
     body: "Apexnix focuses on practical production coordination for metal bed frame products, with attention to structure, surface finish, packaging, assembly, and quality control.",
-    image: img.metalMore,
+    image: img.productionHero,
+    imageAlt: "Metal bed frame production from welding and coating to carton packing",
+    className: "production-process-hero",
     tagItems: ["Typical Process", "Production Coordination", "Surface Finish", "Packaging Preparation"],
     actions: cta("Discuss Your Production Requirement", "/contact"),
   })}
-  ${section("Typical Metal Bed Frame Manufacturing Flow", "", `<ol class="process">${[
-    ["Requirement Review", "Confirm product type, size, structure, material direction, surface finish, packaging needs, quantity, and target market."],
-    ["Material Preparation", "Prepare steel tubes, slats, brackets, hardware, and related components based on product specification."],
-    ["Tube Cutting and Processing", "Cut tubes and components according to required dimensions and structure design."],
-    ["Punching, Drilling, or Bending", "Process holes, connection points, bends, and structure-related details as needed."],
-    ["Welding and Frame Assembly", "Weld or assemble key structural parts and review important connection areas."],
-    ["Grinding and Surface Preparation", "Prepare the surface before coating to support better appearance and finish consistency."],
-    ["Powder Coating / Surface Treatment", "Apply surface finish based on product color and appearance requirements."],
-    ["Trial Assembly and Quality Review", "Check fitting, dimensions, structure, hardware, and assembly logic before packaging."],
-    ["Packaging Preparation", "Organize parts, hardware, instructions, labels, protection materials, and carton packing."],
-    ["Pre-Shipment and Loading Coordination", "Review packaging, order details, shipping marks, and shipment-related requirements."],
-  ].map(x => `<li class="fade-in"><div><h3>${x[0]}</h3><p>${x[1]}</p></div></li>`).join("")}</ol>`, "alt")}
-  ${twoCol("Production Details That Affect Product Competitiveness", "", "For B2B bed frame partners, production is closely connected with cost, packaging, assembly, and after-sales performance. A small structure change may affect material use, carton size, shipping efficiency, installation experience, and final product positioning. That is why Apexnix supports product discussion from both manufacturing and commercial perspectives.", img.valueEngineering)}
-  ${section("Connected Quality Control Points", "", `<ul class="check-list"><li>Dimension consistency</li><li>Welding and connection review</li><li>Surface appearance inspection</li><li>Hardware completeness</li><li>Trial assembly</li><li>Packaging protection</li><li>Label and carton mark check</li></ul>`, "alt")}
-  ${twoCol("From Production to B2B Supply", "", "Beyond manufacturing, B2B partners often need support with product line planning, sample confirmation, packaging discussion, private-label requirements, order coordination, and export communication. Apexnix supports these discussions to help partners build more practical bed frame supply programs.", img.exportSupport)}
-  ${section("Production Support for Metal Bed Frame Programs", "", linkGrid([
-    ["Metal Bed Frame Manufacturer", "Review metal bed frame manufacturing and development support for B2B channels.", "View Manufacturer Page", "/metal-bed-frame-manufacturer"],
-    ["Quality Control", "Review practical quality control points connected with production and shipment.", "View Quality Control", "/bed-frame-quality-control"],
-    ["Flat-Pack Packaging", "Explore packaging preparation, carton planning, and instruction topics.", "View Packaging Support", "/flat-pack-bed-frame-packaging"],
-    ["Capabilities", "Review broader supply capabilities and coordination support.", "View Capabilities", "/capabilities"],
-  ]), "alt")}
-  <section class="section cta-band">${imageTag(img.metalMore, "Metal bed frame production discussion")}<div class="container fade-in"><h2>Discuss Your Metal Bed Frame Production Requirement</h2><p>Share your product type, structure, quantity, target market, and packaging needs so we can discuss a practical production direction.</p><div class="actions">${cta("Discuss Your Metal Bed Frame Production Requirement", "/contact")}</div></div></section>`;
+  <section class="section alt production-overview"><div class="container"><div class="section-head fade-in"><span class="kicker">Apexnix</span><h2>How Our Metal Bed Frames Are Made</h2><p>The sequence below outlines key stages in a typical metal bed frame program. Specific operations, checks and their order depend on the product design. Tube-end forming and robotic operations are used where required; they do not apply to every component or SKU.</p></div><nav class="production-overview__anchors" aria-label="Production process steps">${steps.map((step) => `<a href="#${step.id}"><span>${step.number}</span>${step.title}</a>`).join("")}</nav></div></section>
+  <section class="section production-flow" aria-label="Metal bed frame production stages"><div class="container">${stepMarkup}</div></section>
+  <section class="section alt production-quality"><div class="container"><div class="section-head fade-in"><span class="kicker">Apexnix</span><h2>Quality Checks Across the Process</h2><p>Quality review is connected with several production stages. Routine checks focus on the agreed product specifications and the practical requirements for assembly, appearance and packing.</p></div><div class="production-quality__grid">
+    <article class="fade-in"><h3>Dimensions and connection points</h3><p>Review relevant component dimensions and hole positions against the product requirements.</p></article>
+    <article class="fade-in"><h3>Welding and structural connections</h3><p>Review weld areas and important connections during production.</p></article>
+    <article class="fade-in"><h3>Surface appearance</h3><p>Check coating coverage and visible surface condition.</p></article>
+    <article class="fade-in"><h3>Assembly fit and hardware</h3><p>Review trial assembly, connection fit and the completeness of required hardware.</p></article>
+    <article class="fade-in"><h3>Packing and carton marks</h3><p>Review protective materials, component grouping and carton identification.</p></article>
+  </div><div class="actions">${cta("View Our Quality Control Approach", "/bed-frame-quality-control", true)}</div></div></section>
+  ${section("Connect Production Details with Your Product Requirements", "Changes to size, connection design, finish or packing can affect how a bed frame is made and assembled. Share your target market, product direction and packaging needs so these points can be discussed together during development.", "", "production-requirements")}
+  <section class="section alt"><div class="container"><div class="section-head fade-in"><span class="kicker">Apexnix</span><h2>Explore Related Products and Manufacturing Support</h2></div><div class="production-related-grid">${[
+    ["Metal Bed Frames", "Explore metal bed frame product directions for B2B supply.", "View Metal Bed Frames", "/products/metal-bed-frames"],
+    ["Metal Bed Frame Manufacturing", "Learn about our manufacturing and development support for bed frame programs.", "View Manufacturing Support", "/metal-bed-frame-manufacturer"],
+    ["OEM and Custom Development", "Discuss a new design or changes to an existing structure, finish or packing configuration.", "Explore OEM Development", "/products/oem-custom-development"],
+    ["Flat-Pack Packaging", "Review component protection, carton planning and assembly instruction considerations.", "View Packaging Support", "/flat-pack-bed-frame-packaging"],
+  ].map((item) => `<article class="card icon-card link-card fade-in"><h3>${item[0]}</h3><p>${item[1]}</p><div class="actions">${cta(item[2], item[3], true)}</div></article>`).join("")}</div></div></section>
+  <section class="section production-final-cta"><div class="container fade-in"><h2>Discuss Your Metal Bed Frame Project</h2><p>Tell us your product type, target market, sizes, structure and packaging requirements. Our team can review the relevant production steps and discuss the next stage of your project.</p><div class="actions">${cta("Send Your Project Requirements", "/contact")}</div></div></section>`;
 }
 
 function flatPackPackagingPage() {
@@ -1270,8 +1407,10 @@ const routeMeta = {
   },
   "/metal-bed-frame-production-process": {
     title: "Metal Bed Frame Production Process | Apexnix",
-    description: "Learn the typical metal bed frame production process, including material preparation, tube cutting, punching, bending, welding, grinding, surface treatment, trial assembly, packaging, and shipment coordination.",
-    image: img.metalMore,
+    description: "Explore metal bed frame production at Apexnix, with real factory photos of tube processing, welding, coating, component assembly and packing.",
+    ogTitle: "Metal Bed Frame Production Process | Apexnix",
+    ogDescription: "See real factory operations behind Apexnix metal bed frame production, from tube processing to packing.",
+    image: img.productionHero,
     priority: "0.78",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Metal Bed Frame Production Process", path: "/metal-bed-frame-production-process" }],
   },
