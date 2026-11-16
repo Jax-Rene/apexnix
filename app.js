@@ -12,6 +12,107 @@ const WEB3FORMS_ACCESS_KEY = "db0ce5a9-1f51-4cb5-b4a3-0342193c3672";
 const THEME_KEY = "apexnix-theme";
 const A = window.location.protocol === "file:" ? new URL("assets/", scriptUrl).href : `${BASE_PATH}/assets/`;
 const insightsData = globalThis.APEXNIX_INSIGHTS || { categories: [], articles: [] };
+const usStockData = globalThis.APEXNIX_US_STOCK || { hub: {}, products: [], imageDimensions: {}, imageAlts: {} };
+["zyh", "zyw"].forEach((id) => {
+  const bambooUsStockProduct = usStockData.products.find((product) => product.id === id);
+  if (bambooUsStockProduct) bambooUsStockProduct.height = "14 inch";
+});
+const zyhUsStockProduct = usStockData.products.find((product) => product.id === "zyh");
+if (zyhUsStockProduct) {
+  zyhUsStockProduct.hero = "/images/us-stock/zyh/zyh-warm-japandi-bedroom.webp";
+  zyhUsStockProduct.hero_alt = "ZYH bamboo bed frame in a warm Japandi-style bedroom";
+  if (zyhUsStockProduct.features?.[3]) {
+    zyhUsStockProduct.features[3][2] = "/images/us-stock/zyh/zyh-center-support.webp";
+    zyhUsStockProduct.features[3][3] = "ZYH center support structure detail";
+  }
+}
+const sbsUsStockProduct = usStockData.products.find((product) => product.id === "sbs");
+if (sbsUsStockProduct) {
+  sbsUsStockProduct.height = "5 inch / 9 inch";
+  if (sbsUsStockProduct.features?.[1]) {
+    sbsUsStockProduct.features[1][2] = "/images/us-stock/sbs/sbs-two-height-directions-hd.webp";
+    sbsUsStockProduct.features[1][3] = "SBS five-inch and nine-inch mattress foundation height comparison";
+  }
+  if (sbsUsStockProduct.features?.[3]) {
+    sbsUsStockProduct.features[3][2] = "/images/us-stock/sbs/sbs-universal-bed-setup-clean.jpg";
+    sbsUsStockProduct.features[3][3] = "SBS mattress foundation used in a bright bedroom setup";
+  }
+  if (sbsUsStockProduct.features?.[4]) {
+    sbsUsStockProduct.features[4][2] = "/images/us-stock/sbs/sbs-compact-supply.webp";
+    sbsUsStockProduct.features[4][3] = "SBS compact knock-down supply format";
+  }
+}
+const rhf32cUsStockProduct = usStockData.products.find((product) => product.id === "rhf32c-a");
+if (rhf32cUsStockProduct) {
+  rhf32cUsStockProduct.height = "18 inch";
+  if (rhf32cUsStockProduct.features?.[2]) {
+    rhf32cUsStockProduct.features[2][2] = "/images/us-stock/rhf32c-a/rhf32c-a-under-bed-storage.webp";
+    rhf32cUsStockProduct.features[2][3] = "RHF32C-A metal bed showing practical under-bed storage";
+  }
+  if (rhf32cUsStockProduct.features?.[4]) {
+    rhf32cUsStockProduct.features[4][2] = "/images/us-stock/rhf32c-a/rhf32c-a-simplified-assembly.webp";
+    rhf32cUsStockProduct.features[4][3] = "RHF32C-A simplified bed frame assembly detail";
+  }
+}
+const rhfUsStockProduct = usStockData.products.find((product) => product.id === "rhf");
+if (rhfUsStockProduct) {
+  rhfUsStockProduct.height = "14 inch";
+  rhfUsStockProduct.h1 = "RHF Classical Metal Bed Frame";
+  const rhfFeatureImages = [
+    ["/images/us-stock/rhf/rhf-classical-style.webp", "RHF classical-style metal bed in a bedroom"],
+    ["/images/us-stock/rhf/rhf-platform-support.webp", "RHF reinforced platform support structure"],
+    ["/images/us-stock/rhf/rhf-under-bed-storage.webp", "RHF metal bed showing useful under-bed storage clearance"],
+    ["/images/us-stock/rhf/rhf-floor-contact.webp", "RHF rounded floor-contact protection detail"],
+    ["/images/us-stock/rhf/rhf-flat-pack-friendly.webp", "RHF flat-pack carton handling"],
+  ];
+  rhfFeatureImages.forEach(([src, alt], index) => {
+    if (!rhfUsStockProduct.features?.[index]) return;
+    rhfUsStockProduct.features[index][2] = src;
+    rhfUsStockProduct.features[index][3] = alt;
+  });
+  if (rhfUsStockProduct.features?.[0]) rhfUsStockProduct.features[0][0] = "Classical Style";
+  if (rhfUsStockProduct.faq?.[0]) rhfUsStockProduct.faq[0][1] = "RHF is positioned as a classical-style decorative metal bed with rounded headboard and footboard lines.";
+}
+const w400UsStockProduct = usStockData.products.find((product) => product.id === "w400");
+if (w400UsStockProduct) {
+  w400UsStockProduct.height = "14 inch";
+  w400UsStockProduct.hero = "/images/us-stock/w400/w400-product-card.webp";
+  w400UsStockProduct.hero_alt = "W400 metal platform bed frame with wood slats";
+  if (w400UsStockProduct.features?.[0]) {
+    w400UsStockProduct.features[0][2] = "/images/us-stock/w400/w400-steel-wood-support.webp";
+    w400UsStockProduct.features[0][3] = "W400 steel frame and wood slat support detail";
+  }
+  if (w400UsStockProduct.features?.[1]) {
+    w400UsStockProduct.features[1][2] = "/images/us-stock/w400/w400-center-support-structure.webp";
+    w400UsStockProduct.features[1][3] = "W400 reinforced center support structure details";
+  }
+  if (w400UsStockProduct.features?.[2]) {
+    w400UsStockProduct.features[2][2] = "/images/us-stock/w400/w400-under-bed-storage-room.webp";
+    w400UsStockProduct.features[2][3] = "W400 platform bed showing practical under-bed storage";
+  }
+  if (w400UsStockProduct.features?.[3]) {
+    w400UsStockProduct.features[3][2] = "/images/us-stock/w400/w400-floor-friendly-contact.webp";
+    w400UsStockProduct.features[3][3] = "W400 floor-friendly contact and cushioning details";
+  }
+  if (w400UsStockProduct.features?.[4]) {
+    w400UsStockProduct.features[4][2] = "/images/us-stock/w400/w400-easy-assembly.webp";
+    w400UsStockProduct.features[4][3] = "W400 easy assembly connection detail";
+  }
+}
+const hb35UsStockProduct = usStockData.products.find((product) => product.id === "hb35");
+if (hb35UsStockProduct) {
+  hb35UsStockProduct.height = "14 inch / 18 inch";
+  hb35UsStockProduct.hero = "/images/us-stock/hb35/hb35-product-card.webp";
+  hb35UsStockProduct.hero_alt = "HB35 metal platform bed frame";
+  if (hb35UsStockProduct.features?.[1]) {
+    hb35UsStockProduct.features[1][2] = "/images/us-stock/hb35/hb35-reinforced-center-support-detail.webp";
+    hb35UsStockProduct.features[1][3] = "HB35 reinforced center support detail";
+  }
+  if (hb35UsStockProduct.features?.[4]) {
+    hb35UsStockProduct.features[4][2] = "/images/us-stock/hb35/hb35-flat-pack-friendly.webp";
+    hb35UsStockProduct.features[4][3] = "HB35 flat-pack carton handling";
+  }
+}
 const bambooStory = insightsData.bambooStory || insightsData.articles.find((article) => article.slug === "from-bamboo-grove-to-bamboo-bed-frame");
 const sizeGuide = insightsData.sizeGuide || insightsData.articles.find((article) => article.slug === "bed-frame-size-guide-us-uk-eu");
 const wholesaleGuide = insightsData.wholesaleGuide || insightsData.articles.find((article) => article.slug === "how-to-source-metal-bed-frames-wholesale");
@@ -117,7 +218,32 @@ const imageDimensions = {
   "wholesale-metal-bed-frame-sourcing-guide.webp": [1600, 900],
   "b2b-metal-bed-frame-buyers-checklist.webp": [1672, 941],
   "metal-bed-frame-rounded-corner-detail.webp": [1199, 1312],
+  "rhf-classical-style.webp": [970, 600],
+  "rhf-platform-support.webp": [616, 441],
+  "rhf-under-bed-storage.webp": [573, 573],
+  "rhf-floor-contact.webp": [786, 507],
+  "rhf-flat-pack-friendly.webp": [411, 465],
+  "rhf32c-a-simplified-assembly.webp": [658, 582],
+  "rhf32c-a-under-bed-storage.webp": [573, 573],
+  "sbs-two-height-directions.webp": [610, 445],
+  "sbs-two-height-directions-hd.webp": [702, 675],
+  "sbs-universal-bed-setup-clean.jpg": [1385, 1136],
+  "sbs-compact-supply.webp": [310, 240],
+  "zyh-warm-japandi-bedroom.webp": [1122, 1402],
+  "zyh-center-support.webp": [414, 379],
+  "hb35-flat-pack-friendly.webp": [411, 465],
+  "hb35-reinforced-center-support-detail.webp": [616, 441],
+  "hb35-product-card.webp": [823, 959],
+  "w400-product-card.webp": [499, 853],
+  "w400-steel-wood-support.webp": [432, 262],
+  "w400-center-support-structure.webp": [651, 619],
+  "w400-under-bed-storage-room.webp": [573, 573],
+  "w400-floor-friendly-contact.webp": [643, 619],
+  "w400-easy-assembly.webp": [658, 582],
+  "us-stock-local-stock-warehouse.webp": [1536, 1024],
+  "zyh-hub-bedroom-landscape.jpg": [1586, 992],
 };
+Object.assign(imageDimensions, usStockData.imageDimensions || {});
 
 const specMetal = [
   ["Market size", "Market-specific size direction worldwide; exact dimensions confirmed by product"],
@@ -184,6 +310,10 @@ function imageTag(src, alt, options = {}) {
   const fetchPriority = priority ? ` fetchpriority="high"` : "";
   const sizes = options.sizes ? ` sizes="${escapeAttr(options.sizes)}"` : "";
   return `<img src="${escapeAttr(src)}" alt="${escapeAttr(alt)}"${dimensions} loading="${loading}" decoding="async"${fetchPriority}${sizes} />`;
+}
+function imageAspectStyle(src) {
+  const [width, height] = imageDimensions[fileNameFromSrc(src)] || [];
+  return width && height ? ` style="--media-aspect: ${width} / ${height}; --media-image: url('${src}')"` : "";
 }
 function tags(items, light = false) {
   return `<ul class="tag-list ${light ? "light-tags" : ""}">${items.map((x) => `<li>${x}</li>`).join("")}</ul>`;
@@ -1231,6 +1361,88 @@ function dormitorySupplierPage() {
   <section class="section cta-band">${imageTag(img.bunkDormitory, "Dormitory bed frame sourcing discussion")}<div class="container fade-in"><h2>Discuss Dormitory Bed Frame Requirements</h2><p>Share your project type, bed type, size, location, quantity, packaging needs, and installation expectations.</p><div class="actions">${cta("Discuss Dormitory Bed Frame Requirements", "/contact")}</div></div></section>`;
 }
 
+const usStockHubFaq = [
+  ["Are all Apexnix bed frames stocked in the U.S.?", "No. The U.S. stock program covers selected models, sizes and configurations. Current inventory is confirmed before quotation."],
+  ["What order quantities are supported?", "The program is designed for flexible commercial purchasing, including smaller B2B replenishment and project orders. Final quantity acceptance depends on the selected SKU and current stock."],
+  ["How is U.S. domestic freight calculated?", "Freight is quoted separately according to order quantity, carton configuration and delivery ZIP code."],
+  ["Can I buy from local stock first and place larger orders later?", "Yes. Buyers can use local stock to test products, replenish quickly or cover urgent needs, then discuss larger factory-direct programs as demand grows."],
+  ["Can U.S. stock products be customized?", "Local inventory follows existing specifications. Customized size, finish, structure, labels or packaging should be discussed as a separate OEM / custom program."],
+  ["How is after-sales support handled?", "Apexnix reviews after-sales cases according to the specific issue and can coordinate appropriate solutions such as parts support, replacement or return handling when applicable."],
+];
+
+const usStockHubCardImages = {
+  hb35: "/images/us-stock/hb35/hb35-hub-card.webp",
+  w400: "/images/us-stock/w400/w400-hub-card.webp",
+  zyh: "/images/us-stock/zyh/zyh-hub-bedroom-landscape.jpg",
+};
+
+function usStockBreadcrumb(items = []) {
+  return `<nav class="us-stock-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/" data-link>Home</a></li><li><a href="/us-stock/" data-link>U.S. Stock</a></li>${items.map((item) => `<li aria-current="page">${item}</li>`).join("")}</ol></nav>`;
+}
+
+function usStockHubPage() {
+  const hub = usStockData.hub;
+  const products = usStockData.products || [];
+  const values = [
+    ["U.S. Local Inventory", "Selected models and sizes are available for domestic fulfillment."],
+    ["Flexible B2B Purchasing", "Start with practical commercial quantities without committing to a full-container program."],
+    ["Faster Replenishment", "Respond to market demand without waiting through another long overseas supply cycle."],
+    ["Manufacturer-Direct Support", "Work directly with Apexnix for product selection, quotation, after-sales coordination and future supply planning."],
+  ];
+  const steps = [
+    ["01", "Select Product", "Choose the series, size and quantity."],
+    ["02", "Confirm Stock", "Apexnix confirms current U.S. inventory."],
+    ["03", "Quote Domestic Freight", "Freight is calculated according to order quantity, carton configuration and delivery ZIP code."],
+    ["04", "Confirm Order & Payment", "PI and payment terms are confirmed."],
+    ["05", "U.S. Dispatch", "The warehouse releases the order for domestic delivery."],
+  ];
+  const scenarios = [
+    ["Furniture & Mattress Retailers", "Local replenishment, product testing and practical commercial purchasing."],
+    ["Distributors & Regional Dealers", "Local availability for smaller programs, with a path to repeat and larger-volume supply."],
+    ["E-commerce Brands", "Market-ready products, flat-pack handling and faster replenishment for online channels."],
+    ["Hotels, Motels & Property Operators", "Room replacement, furnished rental, accommodation and phased project requirements."],
+  ];
+  return `<div class="us-stock-page">
+    <section class="us-stock-hero">
+      <div class="container">${usStockBreadcrumb()}
+        <div class="us-stock-hero__grid">
+          <div class="us-stock-hero__copy fade-in"><span class="kicker">${hub.eyebrow}</span><h1>${hub.h1}</h1><p class="us-stock-hero__sub">${hub.sub}</p><p>${hub.intro}</p><div class="actions">${cta("View U.S. Stock Products", "#us-stock-products")}${cta("Request a U.S. Stock Quote", "/contact", true)}</div></div>
+          <figure class="us-stock-hero__media fade-in">${imageTag("/images/us-stock/home/us-stock-local-stock-warehouse.webp", "Apexnix U.S. local stock bed frames and packed cartons in a warehouse", { priority: true, sizes: "(max-width: 900px) 100vw, 58vw" })}</figure>
+        </div>
+      </div>
+    </section>
+    <section class="us-stock-value-strip"><div class="container"><div class="us-stock-value-grid">${values.map(([title, body]) => `<article><h2>${title}</h2><p>${body}</p></article>`).join("")}</div></div></section>
+    ${section("How the U.S. Stock Model Works", "A clear five-step route from product selection to domestic dispatch.", `<div class="us-stock-process"><ol>${steps.map(([number, title, body]) => `<li class="fade-in"><span>${number}</span><h3>${title}</h3><p>${body}</p></li>`).join("")}</ol><figure class="us-stock-process__visual fade-in">${imageTag("/images/us-stock/home/us-stock-domestic-fulfillment-concept.webp", usStockData.imageAlts["/images/us-stock/home/us-stock-domestic-fulfillment-concept.webp"], { sizes: "(max-width: 900px) 100vw, 55vw" })}</figure></div><p class="us-stock-supporting">Start with local stock when speed and flexibility matter. As demand grows, larger factory-direct or customized programs can be discussed separately.</p>`, "alt")}
+    ${section("U.S. Stock Product Collection", "Seven selected product directions for B2B purchasing and replenishment.", `<div class="us-stock-product-grid">${products.map((product) => `<article class="us-stock-product-card us-stock-product-card-${product.id} fade-in"><a class="us-stock-product-card__image" href="${product.url}" data-link>${imageTag(usStockHubCardImages[product.id] || product.hero, product.hero_alt, { sizes: "(max-width: 700px) 100vw, 32vw" })}</a><div><span class="kicker">${product.category}</span><h3><a href="${product.url}" data-link>${product.name} — ${product.category}</a></h3><p>${product.sub}</p><a class="text-link" href="${product.url}" data-link>Explore ${product.name} ${arrowIcon()}</a></div></article>`).join("")}</div>`, "", "us-stock-products")}
+    ${section("From Manufacturing to Packed Product", "The U.S. stock program is backed by practical bed frame manufacturing and packaging capability. Real production image shows how components move from processing to welding, surface finishing, assembly preparation and flat-pack packing.", `<div class="us-stock-manufacturing"><div class="us-stock-manufacturing__copy"><ul class="check-list"><li>Tube cutting and forming</li><li>Hole processing</li><li>Welding and structural assembly</li><li>Grinding and surface preparation</li><li>Surface coating</li><li>Hardware installation</li><li>Flat-pack bundling</li><li>Protective carton packing and pallet preparation</li></ul><a class="text-link" href="/metal-bed-frame-production-process/" data-link>View our production process ${arrowIcon()}</a></div><div class="us-stock-manufacturing__gallery"><figure class="fade-in">${imageTag("/images/us-stock/factory/metal-bed-frame-welding-structural-assembly.webp", "Metal bed frame welding and structural assembly", { sizes: "(max-width: 700px) 100vw, 62vw" })}</figure></div></div>`)}
+    ${section("Built for Different B2B Buying Scenarios", "", `<div class="grid-4 us-stock-scenarios">${scenarios.map(([title, body]) => `<article class="card icon-card fade-in"><h3>${title}</h3><p>${body}</p></article>`).join("")}</div>`, "alt")}
+    ${section("Start with U.S. Stock. Grow with Long-Term Supply.", "Local stock is designed to help buyers move faster with selected standard products. For larger-volume programs, repeat purchasing or differentiated products, Apexnix can also support factory-direct supply, private-label packaging and OEM / custom development.", `<div class="us-stock-beyond"><ul class="check-list"><li>Larger-volume factory-direct supply</li><li>Repeat-order planning</li><li>OEM / custom product development</li><li>Private-label packaging discussion</li><li>Long-term B2B supply programs</li></ul><div><p>Tell us the model, quantity and delivery ZIP code to receive a tailored U.S. stock quotation.</p>${cta("Request a U.S. Stock Quote", "/contact")}</div></div>`)}
+    ${faqSection(usStockHubFaq.map(([question, answer]) => ({ question, answer })))}
+    <section class="section cta-band us-stock-cta"><div class="container fade-in"><span class="kicker">U.S. STOCK PROGRAM</span><h2>Discuss Your U.S. Stock Requirement</h2><p>Share the product series, size, quantity and delivery ZIP code. Current inventory and domestic freight will be confirmed before quotation.</p><div class="actions">${cta("Request Stock & Freight Quote", "/contact")}</div></div></section>
+  </div>`;
+}
+
+function usStockProductPage(product) {
+  const featureImages = product.features.filter((feature) => feature[2]);
+  const thumbnails = featureImages.slice(0, 4);
+  const commonBullets = ["Selected U.S. stock availability", "Flexible B2B purchasing", "Domestic freight quoted by quantity and ZIP code"];
+  return `<div class="us-stock-page us-stock-product-page us-stock-product-${product.id}">
+    <section class="us-stock-product-hero"><div class="container">${usStockBreadcrumb([product.name])}<div class="us-stock-product-hero__grid">
+      <div class="us-stock-product-gallery fade-in"><figure class="us-stock-product-gallery__main"${imageAspectStyle(product.hero)}>${imageTag(product.hero, product.hero_alt, { priority: true, sizes: "(max-width: 900px) 100vw, 54vw" })}</figure><div class="us-stock-product-gallery__thumbs">${thumbnails.map((feature) => `<figure>${imageTag(feature[2], feature[3], { sizes: "(max-width: 700px) 25vw, 130px" })}</figure>`).join("")}</div></div>
+      <div class="us-stock-product-hero__copy fade-in"><span class="kicker">${product.eyebrow}</span><h1>${product.h1}</h1><p class="us-stock-hero__sub">${product.sub}</p><dl class="us-stock-quick-facts"><div><dt>Available U.S. Sizes</dt><dd>${product.sizes}</dd></div><div><dt>Height</dt><dd>${product.height}</dd></div><div><dt>Finish</dt><dd>${product.finish}</dd></div></dl><ul class="check-list compact">${commonBullets.map((item) => `<li>${item}</li>`).join("")}</ul><div class="actions">${cta("Check U.S. Stock & Get Quote", "/contact")}${cta("Contact Apexnix", "/contact", true)}</div></div>
+    </div></div></section>
+    ${section("Key Product Features", "A clear view of the product structure, handling details and market-facing design direction.", `<div class="us-stock-feature-grid">${product.features.map(([title, body, image, alt]) => `<article class="us-stock-feature-card fade-in">${image ? `<figure${imageAspectStyle(image)}>${imageTag(image, alt, { sizes: "(max-width: 700px) 100vw, 30vw" })}</figure>` : `<div class="us-stock-feature-card__number" aria-hidden="true">${String(product.features.findIndex((item) => item[0] === title) + 1).padStart(2, "0")}</div>`}<div><h3>${title}</h3><p>${body}</p></div></article>`).join("")}</div>`, "alt")}
+    ${section("Buyer Fit / Use Scenarios", `${product.name} is positioned for B2B buyers who need a clear product direction, practical local availability and a path to repeat supply.`, `<div class="grid-4 us-stock-scenarios">${product.apps.map((item) => `<article class="card icon-card fade-in"><h3>${item}</h3></article>`).join("")}</div>`)}
+    <section class="section alt"><div class="container split us-stock-logistics"><div class="fade-in"><span class="kicker">Flat-Pack & Domestic Logistics</span><h2>Designed for Practical Storage, Handling and Replenishment</h2><p>The knock-down product structure is suited to flat-pack carton handling, helping B2B buyers manage storage, domestic delivery and repeat replenishment more practically. Carton and freight details should be confirmed according to the selected SKU and quantity.</p></div><div class="us-stock-logistics__images fade-in"><figure>${imageTag("/images/us-stock/factory/factory-flat-pack-bundling.webp", "Flat-pack bed frame component bundling process", { sizes: "(max-width: 900px) 100vw, 26vw" })}</figure><figure>${imageTag("/images/us-stock/factory/factory-protective-carton-packing.webp", "Protective carton packing for bed frame shipment", { sizes: "(max-width: 900px) 100vw, 26vw" })}</figure></div></div></section>
+    ${section("Factory-Backed Supply Beyond Local Inventory", "U.S. local stock supports faster access to selected standard products. For repeat purchasing, larger-volume programs or differentiated requirements, Apexnix can also review factory-direct supply, packaging adjustments and OEM / custom development.", `<div class="us-stock-beyond"><ul class="check-list"><li>Product specification discussion</li><li>Size / height / finish review for non-stock programs</li><li>Packaging and label discussion</li><li>Sample development for custom programs</li><li>Repeat-order and larger-volume supply planning</li></ul><div><a class="text-link" href="/metal-bed-frame-production-process/" data-link>View manufacturing process ${arrowIcon()}</a><br><a class="text-link" href="/products/oem-custom-development/" data-link>Explore OEM / custom development ${arrowIcon()}</a></div></div>`)}
+    ${section("Check Current U.S. Stock Before Ordering", "Inventory changes with ongoing sales and replenishment. Contact Apexnix with the required model, size, quantity and delivery ZIP code. We will confirm current availability and quote domestic freight before issuing the PI.", `<div class="actions">${cta("Check Stock & Request Quote", "/contact")}</div>`, "us-stock-check")}
+    ${faqSection(product.faq.map(([question, answer]) => ({ question, answer })))}
+    <section class="section cta-band us-stock-cta"><div class="container fade-in"><span class="kicker">${product.name}</span><h2>Request Current U.S. Stock Availability</h2><p>Tell us the required size, quantity and delivery ZIP code for a current-stock and domestic-freight quotation.</p><div class="actions">${cta("Request a Quote", "/contact")}${cta("Back to U.S. Stock", "/us-stock", true)}</div></div></section>
+  </div>`;
+}
+
+const usStockProductRoutes = Object.fromEntries((usStockData.products || []).map((product) => [product.url.replace(/\/$/, ""), () => usStockProductPage(product)]));
+
 const routes = {
   "/": home,
   "/products": products,
@@ -1251,6 +1463,8 @@ const routes = {
   "/metal-bed-frame-production-process": productionProcessPage,
   "/flat-pack-bed-frame-packaging": flatPackPackagingPage,
   "/dormitory-bed-frame-supplier": dormitorySupplierPage,
+  "/us-stock": usStockHubPage,
+  ...usStockProductRoutes,
 };
 const routeMeta = {
   "/": {
@@ -1429,6 +1643,42 @@ const routeMeta = {
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Dormitory Bed Frame Supplier", path: "/dormitory-bed-frame-supplier" }],
   },
 };
+
+routeMeta["/us-stock"] = {
+  title: usStockData.hub.title,
+  description: usStockData.hub.meta,
+  image: "/images/us-stock/home/us-stock-local-stock-warehouse.webp",
+  preloadImage: "/images/us-stock/home/us-stock-local-stock-warehouse.webp",
+  priority: "0.9",
+  lastmod: "2026-11-12",
+  breadcrumb: [{ name: "Home", path: "/" }, { name: "U.S. Stock", path: "/us-stock" }],
+  faqs: usStockHubFaq.map(([question, answer]) => ({ question, answer })),
+};
+
+(usStockData.products || []).forEach((product) => {
+  const path = product.url.replace(/\/$/, "");
+  routeMeta[path] = {
+    title: product.title,
+    description: product.meta,
+    image: product.hero,
+    preloadImage: product.hero,
+    priority: "0.8",
+    lastmod: "2026-11-12",
+    breadcrumb: [
+      { name: "Home", path: "/" },
+      { name: "U.S. Stock", path: "/us-stock" },
+      { name: product.name, path },
+    ],
+    faqs: product.faq.map(([question, answer]) => ({ question, answer })),
+    productGroup: {
+      name: product.h1,
+      category: product.category,
+      image: product.hero,
+      sizes: product.sizes.split(" / "),
+    },
+  };
+});
+
 const indexableRoutes = Object.keys(routeMeta);
 
 function routePath(path = "/") {
@@ -1561,6 +1811,41 @@ function schemasForPath(path = "/") {
         })),
       });
     }
+  }
+
+  if (!meta.article && meta.faqs?.length) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: meta.faqs.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer,
+        },
+      })),
+    });
+  }
+
+  if (meta.productGroup) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "ProductGroup",
+      name: meta.productGroup.name,
+      description: meta.description,
+      category: meta.productGroup.category,
+      url: routeUrl(path),
+      image: assetUrl(meta.productGroup.image),
+      variesBy: "https://schema.org/size",
+      hasVariant: meta.productGroup.sizes.map((size) => ({
+        "@type": "Product",
+        name: `${meta.productGroup.name} — ${size}`,
+        size,
+        url: routeUrl(path),
+        image: assetUrl(meta.productGroup.image),
+      })),
+    });
   }
 
   return schemas;

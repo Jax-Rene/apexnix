@@ -27,6 +27,8 @@ const appPath = path.join(rootDir, "app.js");
 const appSource = fs.readFileSync(appPath, "utf8");
 const insightsPath = path.join(rootDir, "content", "insights.js");
 const insightsSource = fs.readFileSync(insightsPath, "utf8");
+const usStockPath = path.join(rootDir, "content", "us-stock.js");
+const usStockSource = fs.readFileSync(usStockPath, "utf8");
 const stylePath = path.join(rootDir, "styles.css");
 const runtimeMarker = "\nfunction getRouteFromLocation()";
 const runtimeIndex = appSource.indexOf(runtimeMarker);
@@ -36,6 +38,7 @@ if (runtimeIndex === -1) {
 }
 
 const browserFreeSource = `${insightsSource}
+${usStockSource}
 ${appSource.slice(0, runtimeIndex)}
 globalThis.__apexnix = {
   SITE_URL,
@@ -78,6 +81,7 @@ vm.runInContext(browserFreeSource, context, { filename: "app.js" });
 const site = context.__apexnix;
 const appVersion = hashFile(appPath);
 const insightsVersion = hashFile(insightsPath);
+const usStockVersion = hashFile(usStockPath);
 const styleVersion = hashFile(stylePath);
 
 function hashFile(filePath) {
@@ -205,6 +209,7 @@ function buildHeader(routePath) {
             <a href="/products/#product-comparison" data-link>Product Comparison</a>
           </div>
         </div>
+        <a href="/us-stock/" data-link>U.S. Stock</a>
         <a href="/solutions/" data-link>Solutions</a>
         <a href="/capabilities/" data-link>Capabilities</a>
         <a href="/insights/" data-link>Insights</a>
@@ -250,6 +255,7 @@ function buildFooter(routePath) {
         <a href="/bed-frame-quality-control/" data-link>Bed Frame Quality Control</a>
         <a href="/metal-bed-frame-production-process/" data-link>Metal Bed Frame Production Process</a>
         <a href="/flat-pack-bed-frame-packaging/" data-link>Flat-Pack Packaging</a>
+        <a href="/us-stock/" data-link>U.S. Stock Bed Frames</a>
         <a href="/dormitory-bed-frame-supplier/" data-link>Dormitory Bed Frame Supplier</a>
         <a href="/insights/" data-link>Insights</a>
         <a href="/insights/from-bamboo-grove-to-bamboo-bed-frame/" data-link>Bamboo Bed Frame Material Story</a>
@@ -258,6 +264,7 @@ function buildFooter(routePath) {
       <div class="footer-links">
         <a class="footer-heading" href="/about/" data-link>Company</a>
         <a href="/products/" data-link>Products</a>
+        <a href="/us-stock/" data-link>U.S. Stock</a>
         <a href="/solutions/" data-link>Solutions</a>
         <a href="/capabilities/" data-link>Capabilities</a>
         <a href="/insights/" data-link>Insights</a>
@@ -281,6 +288,7 @@ ${buildHeader(routePath)}
     <main id="app">${body}</main>
 ${buildFooter(routePath)}
     <script src="${prefix}content/insights.js?v=${insightsVersion}" defer></script>
+    <script src="${prefix}content/us-stock.js?v=${usStockVersion}" defer></script>
     <script src="${prefix}app.js?v=${appVersion}" defer></script>
   </body>
 </html>
