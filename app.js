@@ -1670,12 +1670,6 @@ routeMeta["/us-stock"] = {
       { name: product.name, path },
     ],
     faqs: product.faq.map(([question, answer]) => ({ question, answer })),
-    productGroup: {
-      name: product.h1,
-      category: product.category,
-      image: product.hero,
-      sizes: product.sizes.split(" / "),
-    },
   };
 });
 
@@ -1828,25 +1822,10 @@ function schemasForPath(path = "/") {
     });
   }
 
-  if (meta.productGroup) {
-    schemas.push({
-      "@context": "https://schema.org",
-      "@type": "ProductGroup",
-      name: meta.productGroup.name,
-      description: meta.description,
-      category: meta.productGroup.category,
-      url: routeUrl(path),
-      image: assetUrl(meta.productGroup.image),
-      variesBy: "https://schema.org/size",
-      hasVariant: meta.productGroup.sizes.map((size) => ({
-        "@type": "Product",
-        name: `${meta.productGroup.name} — ${size}`,
-        size,
-        url: routeUrl(path),
-        image: assetUrl(meta.productGroup.image),
-      })),
-    });
-  }
+  // These U.S. stock pages use B2B quote-based purchasing without a public
+  // price or on-page customer reviews. Product/ProductGroup rich-result markup
+  // would therefore be incomplete under Google's product snippet rules.
+  // Keep the accurate WebPage, BreadcrumbList and FAQPage markup above instead.
 
   return schemas;
 }
