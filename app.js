@@ -10,6 +10,8 @@ const AVATAR_FILE = "apexnix-avatar.svg";
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 const WEB3FORMS_ACCESS_KEY = "db0ce5a9-1f51-4cb5-b4a3-0342193c3672";
 const THEME_KEY = "apexnix-theme";
+const ATTRIBUTION_KEY = "apexnix-manufacturer-attribution";
+const ATTRIBUTION_PARAMS = ["gclid", "gbraid", "wbraid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
 const A = window.location.protocol === "file:" ? new URL("assets/", scriptUrl).href : `${BASE_PATH}/assets/`;
 const insightsData = globalThis.APEXNIX_INSIGHTS || { categories: [], articles: [] };
 const usStockData = globalThis.APEXNIX_US_STOCK || { hub: {}, products: [], imageDimensions: {}, imageAlts: {} };
@@ -161,6 +163,11 @@ const img = {
   productionHardware: A + "metal-bed-frame-hardware-installation.webp",
   productionPacking: A + "metal-bed-frame-protective-carton-packing.webp",
   productionPalletizing: A + "metal-bed-frame-robotic-carton-palletizing.webp",
+  factoryDirectDecorativeBed: A + "decorative-metal-bed-bedroom.webp",
+  factoryDirectDaybed: A + "daybed-indoor-scene.webp",
+  factoryDirectBambooBed: A + "zyw-bamboo-bed-frame-card.webp",
+  factoryDirectWarehouseBed: A + "metal-bed-frame-clean-warehouse-horizontal.webp",
+  factoryDirectAssemblyCloseup: A + "assembly-closeup-square.webp",
 };
 const imageDimensions = {
   "home-hero-bed-frame-supplier.jpg": [1200, 675],
@@ -209,6 +216,11 @@ const imageDimensions = {
   "metal-bed-frame-hardware-installation.webp": [1800, 1519],
   "metal-bed-frame-protective-carton-packing.webp": [1800, 1468],
   "metal-bed-frame-robotic-carton-palletizing.webp": [941, 1672],
+  "decorative-metal-bed-bedroom.webp": [885, 985],
+  "daybed-indoor-scene.webp": [828, 621],
+  "zyw-bamboo-bed-frame-card.webp": [1500, 1500],
+  "metal-bed-frame-clean-warehouse-horizontal.webp": [1536, 1024],
+  "assembly-closeup-square.webp": [941, 941],
   "bamboo-grove-growth-story-hero.webp": [1600, 900],
   "bamboo-grove-growth-story-og.webp": [1200, 630],
   "bamboo-material-from-culm-to-board.webp": [1000, 1000],
@@ -287,6 +299,9 @@ function canonicalInternalHref(href = "/") {
 
 function cta(label = "Send Request", href = "/contact", alt = false) {
   return `<a class="btn ${alt ? "alt" : ""}" href="${canonicalInternalHref(href)}" data-link>${label} ${arrowIcon()}</a>`;
+}
+function landingCta(label, location, alt = false) {
+  return `<a class="btn ${alt ? "alt" : ""}" href="/contact/#contact-form" data-link data-manufacturer-cta="${escapeAttr(location)}">${label}</a>`;
 }
 function arrowIcon(direction = "right") {
   if (direction === "both") return `<span class="soft-arrow soft-arrow-both" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 12h16"></path><path d="m8 6-6 6 6 6"></path><path d="m16 6 6 6-6 6"></path></svg></span>`;
@@ -1024,7 +1039,7 @@ function contact() {
   <section class="section"><div class="container contact-layout">
     <aside class="contact-card fade-in"><h2>Apexnix Co.,Ltd.</h2><p>No.88 Anling 2nd Road , Huli District, Xiamen, China</p><br><a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></aside>
     <div class="fade-in"><div class="section-head"><span class="kicker">Send Request</span><h2>Get In Touch About Your Needs</h2><p>To help us understand your needs better, please share your market, sales channel, target price, quantity, and product requirements. The more details you provide, the faster we can understand your project and recommend a suitable product direction.</p></div>
-      <form data-contact-form action="${WEB3FORMS_ENDPOINT}" method="post">
+      <form id="contact-form" data-contact-form action="${WEB3FORMS_ENDPOINT}" method="post">
         <input type="hidden" name="access_key" value="${WEB3FORMS_ACCESS_KEY}" />
         <input type="hidden" name="subject" value="Apexnix Bed Frame Request" />
         <input type="hidden" name="from_name" value="Apexnix Website" />
@@ -1085,7 +1100,7 @@ function metalManufacturerPage() {
   ])}<p>Projects that need a new structure or platform adaptation can begin with <a href="/products/oem-custom-development/" data-link>custom bed frame development</a>.</p>`, "alt")}
   ${section("Routine Factory Quality Control", "", `<p>Quality control is integrated into normal factory work. Depending on the product, routine checks may cover materials and components, dimensions, frame structure, welding and connections, surface finish, trial assembly, hardware, instructions, packaging and pre-shipment review.</p><p>Review the <a href="/bed-frame-quality-control/" data-link>bed frame quality control process</a>.</p>`)}
   ${section("Support for Different B2B Channels", "", `<p>The same bed frame does not fit every channel in the same way. Retail and online programs may prioritize product presentation, compact packaging and assembly experience. Wholesale programs may focus on range planning and repeat supply. Accommodation and dormitory projects may place greater emphasis on structure, use intensity and installation requirements. Apexnix reviews these differences during product and supply planning.</p>`, "alt")}
-  <section class="section cta-band">${imageTag(img.oem, "Metal bed frame project discussion")}<div class="container fade-in"><h2>Discuss Your Metal Bed Frame Project</h2><p>Share your target market, sales channel, product direction, required specifications, packaging expectations and purchasing plan. Apexnix will review the manufacturing direction and identify the information needed for the next discussion.</p><div class="actions">${cta("Send Your Requirements", "/contact")}</div></div></section>
+  <section class="section cta-band">${imageTag(img.oem, "Metal bed frame project discussion")}<div class="container fade-in"><h2>Discuss Your Metal Bed Frame Project</h2><p>Share your target market, sales channel, product direction, required specifications, packaging expectations and purchasing plan. Apexnix will review the manufacturing direction and identify the information needed for the next discussion.</p><p><a class="text-link" href="/factory-direct-bed-frames/" data-link>Review our factory-direct products, manufacturing and OEM support</a></p><div class="actions">${cta("Send Your Requirements", "/contact")}</div></div></section>
   ${faqSection([
     { question: "Is Apexnix a metal bed frame manufacturer or a trading company?", answer: "Apexnix is a B2B bed frame brand and company with its own bed frame manufacturing facility." },
     { question: "How much manufacturing experience does the factory have?", answer: "The Apexnix factory has more than 25 years of bed frame manufacturing experience." },
@@ -1361,6 +1376,108 @@ function dormitorySupplierPage() {
   <section class="section cta-band">${imageTag(img.bunkDormitory, "Dormitory bed frame sourcing discussion")}<div class="container fade-in"><h2>Discuss Dormitory Bed Frame Requirements</h2><p>Share your project type, bed type, size, location, quantity, packaging needs, and installation expectations.</p><div class="actions">${cta("Discuss Dormitory Bed Frame Requirements", "/contact")}</div></div></section>`;
 }
 
+const factoryDirectFaq = [
+  ["Is Apexnix a manufacturer or a trading company?", "Apexnix is a bed frame manufacturer in China with more than 25 years of metal bed manufacturing experience. You can review real production stages on our metal bed frame production process page."],
+  ["What types of bed frames can Apexnix supply?", "Apexnix supplies metal platform beds, headboard and footboard metal beds, bunk beds, daybeds, selected bamboo bed frames and defined OEM / custom products."],
+  ["Can an existing model be modified for my market?", "Yes. Depending on the selected structure and requirements, dimensions, height, finish, selected structural details, hardware configuration, labels and packaging can be reviewed."],
+  ["Can Apexnix develop a new bed frame from a reference or drawing?", "A new product direction can be discussed from a reference product, drawing or requirement brief. Feasibility, specifications, sample planning and commercial requirements are reviewed before confirmation."],
+  ["How is MOQ determined?", "MOQ is confirmed according to the product model, specifications, finish, packaging and order mix. Share the target product and estimated quantity so the appropriate quotation basis can be reviewed."],
+  ["Can different bed frame models be combined in one order?", "A combination of models can be reviewed according to product selection, packaging configuration and loading requirements. Final feasibility is confirmed case by case."],
+  ["Can Apexnix support flat-pack packaging?", "Yes. Flat-pack structure, component arrangement, hardware organization, protective packing, carton requirements and labels can be discussed according to the product and distribution route."],
+  ["What information should I send for a quotation?", "Please send the target product or reference image, required sizes and specifications, estimated quantity, destination country or port, and any OEM or packaging requirements. Apexnix will use this information to review product fit, the appropriate development route and the quotation basis."],
+];
+
+function factoryDirectLandingPage() {
+  const productDirections = [
+    ["Metal Platform Bed Frames", "Steel platform structures for furniture retail, mattress distribution, rental and replenishment channels.", img.heavy, "Black metal platform bed frame with a complete support structure"],
+    ["Headboard & Footboard Metal Beds", "Decorative metal bed options with different profiles, finishes and positioning for market-facing collections.", img.factoryDirectDecorativeBed, "Decorative metal bed with headboard and footboard in a styled bedroom"],
+    ["Daybeds", "Practical multi-use daybeds, available for residential setup, hospitality accommodation and large project procurement.", img.factoryDirectDaybed, "Black metal daybed in a bright indoor bedroom setting"],
+    ["Bamboo Bed Frames", "Natural-material bed frame options for furniture collections requiring a warmer and more distinctive visual identity.", img.factoryDirectBambooBed, "Natural bamboo bed frame in a warm bedroom setting"],
+    ["OEM / Custom Development", "Structure, dimensions, finish, configuration, branding and packaging can be reviewed from a defined product brief.", img.factoryDirectAssemblyCloseup, "Worker assembling a metal bed frame component"],
+  ];
+  const manufacturingImages = [
+    [img.productionWelding, "Metal bed frame welding and structural assembly", "Welding and structural assembly"],
+    [img.productionGrinding, "Worker grinding metal bed frame components", "Grinding and surface preparation"],
+    [img.productionCoating, "Coated metal bed frame components in the factory", "Surface coating and component preparation"],
+    [img.productionPacking, "Flat-pack bed frame components prepared for protective carton packing", "Flat-pack packing"],
+  ];
+  const commercialProjects = [
+    ["8 YEARS", "ENTERPRISE-SCALE OEM", "Major E-Commerce Bed Frame Supply", "Long-term OEM bed frame supply for a major e-commerce channel, supporting repeat orders, stable product specifications and scheduled bulk delivery.", "REPEAT ORDERS · HIGH-VOLUME SUPPLY · E-COMMERCE CHANNEL"],
+    ["MULTI-YEAR ODM", "ENTERPRISE-SCALE DEVELOPMENT", "International Bedding Brand Development", "Joint development and structural optimization for an international bedding brand, moving bed frame products from design input and engineering development to scalable manufacturing.", "JOINT DEVELOPMENT · STRUCTURE OPTIMIZATION · VOLUME PRODUCTION"],
+    ["MULTIPLE PROCUREMENT CYCLES", "PROJECT-SCALE SUPPLY", "Institutional Bunk Bed Supply", "Customized bunk bed supply for institutional procurement, adapting dimensions, materials and structures to project requirements while supporting large-volume delivery.", "PROJECT CUSTOMIZATION · BULK PRODUCTION · INSTITUTIONAL SUPPLY"],
+  ];
+  const processSteps = [
+    ["Share Your Sourcing Brief", "Send the target product, reference image or specifications together with the intended market and estimated quantity."],
+    ["Review the Suitable Product Route", "Apexnix reviews whether an existing structure, product adaptation or new development direction is more suitable."],
+    ["Align Specifications and Packaging", "Confirm the relevant dimensions, configuration, finish, hardware, labels and packaging requirements."],
+    ["Receive a Quotation and Sample Plan", "A quotation and, where required, a sample approach are prepared from the confirmed product scope and quantity."],
+    ["Confirm Product Details", "Review the relevant sample, specifications, packaging details and order requirements before bulk production."],
+    ["Production, Packing and Shipment Planning", "Confirmed products move through the relevant manufacturing and packing stages, followed by shipment coordination."],
+  ];
+
+  return `<div class="factory-direct-page" id="top">
+    <section class="factory-direct-hero">
+      <div class="container">
+        <nav class="factory-direct-breadcrumb" aria-label="Breadcrumb"><a href="/" data-link>Home</a><span aria-hidden="true">/</span><span aria-current="page">China Metal Bed Frame Manufacturer</span></nav>
+        <div class="factory-direct-hero__grid">
+          <div class="factory-direct-hero__copy fade-in">
+            <span class="kicker">METAL BED FRAMES · BAMBOO BED FRAMES · OEM/ODM · BULK SUPPLY</span>
+            <h1>China Metal Bed Frame Manufacturer</h1>
+            <p class="factory-direct-hero__lead">Apexnix is a metal bed frame manufacturer in China, supplying metal bed frames and bamboo bed frames for wholesale, OEM/ODM and high-volume commercial sourcing. Adapt structures, finishes and flat-pack packaging to your market and distribution requirements.</p>
+            <div class="actions">${landingCta("REQUEST A PRODUCT & QUOTATION REVIEW", "hero")}<a class="btn alt" href="#product-range" data-link>EXPLORE PRODUCTS &amp; MANUFACTURING</a></div>
+            <p class="factory-direct-hero__buyer">For importers, distributors, retail chains, mattress companies, private-label brands and project buyers.</p>
+          </div>
+          <div class="factory-direct-hero__media fade-in">
+            <figure class="factory-direct-hero__factory">${imageTag(img.productionHero, "Metal bed frame manufacturing at the Apexnix factory in China", { priority: true, sizes: "(max-width: 900px) 100vw, 52vw" })}</figure>
+            <figure class="factory-direct-hero__product">${imageTag(img.heavy, "Complete black metal platform bed frame", { priority: true, sizes: "(max-width: 900px) 42vw, 240px" })}</figure>
+          </div>
+        </div>
+        <div class="factory-direct-trust-block">
+          <p class="factory-direct-trust-label">PROVEN MANUFACTURING SCALE</p>
+          <ul class="factory-direct-trust" aria-label="Apexnix manufacturing proof"><li><strong class="factory-direct-trust__primary">25+</strong><span class="factory-direct-trust__secondary">YEARS</span><span class="factory-direct-trust__support">Focused Bed Frame Manufacturing</span></li><li><strong class="factory-direct-trust__primary">120,000+</strong><span class="factory-direct-trust__secondary">BED FRAMES / MONTH</span><span class="factory-direct-trust__support">Scalable Production Capacity</span></li><li><strong class="factory-direct-trust__primary">120</strong><span class="factory-direct-trust__secondary">CONTAINERS / MONTH</span><span class="factory-direct-trust__support">Proven High-Volume Export Operations</span></li><li><strong class="factory-direct-trust__primary">BED FRAME</strong><span class="factory-direct-trust__secondary">SPECIALIST</span><span class="factory-direct-trust__support">Metal &amp; Bamboo Bed Frames</span></li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section factory-direct-products" id="product-range"><div class="container">
+      <div class="section-head fade-in"><span class="kicker">PRODUCT RANGE</span><h2>Bed Frame Categories for Wholesale and OEM Sourcing</h2><p>Choose from established Apexnix structures or use a suitable model as the starting point for market-specific specifications, finishes and packaging. Final details are confirmed according to the selected model and order requirements.</p></div>
+      <div class="factory-direct-product-grid">${productDirections.map(([title, body, image, alt]) => `<article class="factory-direct-product-card fade-in"><figure>${imageTag(image, alt, { sizes: "(max-width: 700px) 100vw, (max-width: 1080px) 50vw, 230px" })}</figure><div><h3>${title}</h3><p>${body}</p></div></article>`).join("")}</div>
+      <a class="factory-direct-text-link" href="#manufacturing" data-link>VIEW REAL MANUFACTURING</a>
+    </div></section>
+
+    <section class="section alt factory-direct-manufacturing" id="manufacturing"><div class="container">
+      <div class="section-head fade-in"><span class="kicker">REAL MANUFACTURING EVIDENCE</span><h2>See How Apexnix Manufactures Metal Bed Frames</h2><p>A sourcing decision needs more than a factory claim. Apexnix supports the core in-house stages required to turn metal components into finished, packed bed frames, including tube processing, welding, surface preparation, coating, assembly preparation and flat-pack packing. For the selected product, you can review relevant structure and dimensions, finish requirements, hardware and component organization, packaging configuration and a model-based loading estimate before order confirmation.</p></div>
+      <div class="factory-direct-manufacturing__grid">${manufacturingImages.map(([src, alt, caption], index) => `<figure class="fade-in${index === 0 ? " factory-direct-manufacturing__main" : ""}">${imageTag(src, alt, { sizes: index === 0 ? "(max-width: 800px) 100vw, 64vw" : "(max-width: 800px) 100vw, 30vw" })}<figcaption>${caption}</figcaption></figure>`).join("")}</div>
+      <ul class="factory-direct-process-labels"><li>Tube Cutting and Forming</li><li>Hole Processing</li><li>Welding and Structural Assembly</li><li>Grinding and Surface Preparation</li><li>Surface Coating</li><li>Assembly Preparation</li><li>Flat-Pack Packing</li></ul>
+      <div class="factory-direct-manufacturing__actions"><a class="factory-direct-text-link" href="/metal-bed-frame-production-process/" data-link target="_blank" rel="noopener" data-evidence-link>VIEW THE METAL BED FRAME PRODUCTION PROCESS</a>${landingCta("REQUEST A PRODUCT REVIEW", "manufacturing")}</div>
+    </div></section>
+
+    <section class="section factory-direct-oem" id="oem-development"><div class="container">
+      <div class="section-head fade-in"><span class="kicker">OEM / ODM DEVELOPMENT</span><h2>Adapt an Existing Structure or Develop a New Direction</h2><p>You can begin with an established Apexnix structure or share a more differentiated product brief. The suitable route depends on the target market, required specifications, estimated volume and development scope.</p></div>
+      <div class="factory-direct-oem__layout"><div class="factory-direct-oem__routes">
+        <article class="factory-direct-route fade-in"><span>01</span><h3>Adapt an Existing Structure</h3><p>Review dimensions, height, finish, selected structural details, hardware configuration, labels or packaging around an existing product platform.</p></article>
+        <article class="factory-direct-route fade-in"><span>02</span><h3>Develop a New Product Direction</h3><p>Share a reference product, drawing or requirement brief for feasibility review, sample planning and specification confirmation.</p></article>
+      </div><figure class="factory-direct-oem__media fade-in">${imageTag(img.factoryDirectWarehouseBed, "Complete black metal bed frame in a clean warehouse", { sizes: "(max-width: 900px) 100vw, 44vw" })}</figure></div>
+      <ol class="factory-direct-development-steps" aria-label="OEM development steps"><li>Requirement Review</li><li>Feasibility Discussion</li><li>Specification Alignment</li><li>Sample Development</li><li>Confirmation</li><li>Bulk Order Planning</li></ol>
+    </div></section>
+
+    <section class="section alt factory-direct-packaging" id="packaging"><div class="container split">
+      <div class="fade-in"><span class="kicker">FLAT-PACK &amp; EXPORT PACKAGING</span><h2>Packaging Reviewed for Handling, Storage and Distribution</h2><p>A bed frame must arrive with its components organized and protected for the intended distribution route. Apexnix can review component arrangement, hardware organization, protective materials, carton structure, labels and packing requirements according to the selected product and order requirements.</p><ul class="check-list"><li>Knock-Down Product Structures</li><li>Component and Hardware Organization</li><li>Protective Packing</li><li>Carton and Label Discussion</li><li>Loading Calculation by Model and Packaging Configuration</li></ul><p class="factory-direct-clarification">Packaging and loading estimates are reviewed by model, size and packaging configuration rather than presented as one general figure.</p></div>
+      <div class="factory-direct-packaging__media fade-in"><figure class="factory-direct-packaging__photo factory-direct-packaging__photo--single">${imageTag(img.productionPacking, "Bed frame carton packing and sealing process", { sizes: "(max-width: 800px) 100vw, 48vw" })}</figure></div>
+    </div></section>
+
+    <section class="section factory-direct-buyers" id="buyers"><div class="container"><div class="section-head fade-in"><span class="kicker">PROVEN AT COMMERCIAL SCALE</span><h2>Bed Frame Supply Experience Built Through Real Commercial Demand</h2><p>From high-volume e-commerce supply to international brand development and institutional procurement, Apexnix has built its manufacturing experience through demanding commercial orders.</p></div><div class="factory-direct-project-grid">${commercialProjects.map(([scale, secondary, title, body, tags], index) => `<article class="factory-direct-project-card fade-in"><span class="factory-direct-project-card__number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span><div class="factory-direct-project-card__scale"><strong>${scale}</strong><span>${secondary}</span></div><h3>${title}</h3><p>${body}</p><p class="factory-direct-project-card__tags">${tags}</p></article>`).join("")}</div><p class="factory-direct-project-fit">Supporting importers, distributors, retail chains, mattress companies, private-label brands and project buyers.</p></div></section>
+
+    <section class="section alt factory-direct-procurement" id="procurement-process"><div class="container"><div class="section-head fade-in"><span class="kicker">PROCUREMENT PROCESS</span><h2>A Clear Path from Requirement to Production</h2></div><ol class="factory-direct-timeline">${processSteps.map(([title, body], index) => `<li class="fade-in"><span>${String(index + 1).padStart(2, "0")}</span><div><h3>${title}</h3><p>${body}</p></div></li>`).join("")}</ol></div></section>
+
+    <section class="section factory-direct-prepare" id="prepare-request"><div class="container factory-direct-prepare__inner"><div class="fade-in"><span class="kicker">PREPARE YOUR REQUEST</span><h2>Send the Information Needed for a Relevant Quotation</h2><p>Clear sourcing information helps us assess product fit, customization scope, packaging requirements and the correct quotation basis. Please include:</p><ul class="factory-direct-request-list"><li>Target product or reference image</li><li>Required sizes and specifications</li><li>Estimated order quantity</li><li>Destination country or port</li><li>OEM, branding or packaging requirements</li></ul></div><div class="factory-direct-next fade-in"><h3>What happens next</h3><p>Apexnix will review whether an existing structure, product adaptation or new development route is appropriate, then confirm the information needed for a relevant quotation and sample discussion. Final feasibility, MOQ and commercial terms depend on the selected product and requirements.</p>${landingCta("REQUEST A PRODUCT & QUOTATION REVIEW", "prepare_request")}</div></div></section>
+
+    <section class="section alt factory-direct-faq" id="faq"><div class="container"><div class="section-head fade-in"><span class="kicker">FREQUENTLY ASKED QUESTIONS</span><h2>What to Know Before Requesting a Quotation</h2></div><div class="article-faq">${factoryDirectFaq.map(([question, answer]) => `<details><summary>${question}</summary><p>${answer}</p></details>`).join("")}</div></div></section>
+
+    <section class="factory-direct-final"><div class="container fade-in"><span class="kicker">READY TO DISCUSS YOUR REQUIREMENTS</span><h2>Request a Product and Quotation Review</h2><p>Share your target product, specifications or reference image, estimated quantity and destination. Apexnix will review product fit, customization scope and packaging requirements before preparing the appropriate quotation.</p>${landingCta("REQUEST A PRODUCT & QUOTATION REVIEW", "final_cta")}</div></section>
+  </div>`;
+}
+
 const usStockHubFaq = [
   ["Are all Apexnix bed frames stocked in the U.S.?", "No. The U.S. stock program covers selected models, sizes and configurations. Current inventory is confirmed before quotation."],
   ["What order quantities are supported?", "The program is designed for flexible commercial purchasing, including smaller B2B replenishment and project orders. Final quantity acceptance depends on the selected SKU and current stock."],
@@ -1416,7 +1533,7 @@ function usStockHubPage() {
     ${section("U.S. Stock Product Collection", "Seven selected product directions for B2B purchasing and replenishment.", `<div class="us-stock-product-grid">${products.map((product) => `<article class="us-stock-product-card us-stock-product-card-${product.id} fade-in"><a class="us-stock-product-card__image" href="${product.url}" data-link>${imageTag(usStockHubCardImages[product.id] || product.hero, product.hero_alt, { sizes: "(max-width: 700px) 100vw, 32vw" })}</a><div><span class="kicker">${product.category}</span><h3><a href="${product.url}" data-link>${product.name} — ${product.category}</a></h3><p>${product.sub}</p><a class="text-link" href="${product.url}" data-link>Explore ${product.name} ${arrowIcon()}</a></div></article>`).join("")}</div>`, "", "us-stock-products")}
     ${section("From Manufacturing to Packed Product", "The U.S. stock program is backed by practical bed frame manufacturing and packaging capability. Real production image shows how components move from processing to welding, surface finishing, assembly preparation and flat-pack packing.", `<div class="us-stock-manufacturing"><div class="us-stock-manufacturing__copy"><ul class="check-list"><li>Tube cutting and forming</li><li>Hole processing</li><li>Welding and structural assembly</li><li>Grinding and surface preparation</li><li>Surface coating</li><li>Hardware installation</li><li>Flat-pack bundling</li><li>Protective carton packing and pallet preparation</li></ul><a class="text-link" href="/metal-bed-frame-production-process/" data-link>View our production process ${arrowIcon()}</a></div><div class="us-stock-manufacturing__gallery"><figure class="fade-in">${imageTag("/images/us-stock/factory/metal-bed-frame-welding-structural-assembly.webp", "Metal bed frame welding and structural assembly", { sizes: "(max-width: 700px) 100vw, 62vw" })}</figure></div></div>`)}
     ${section("Built for Different B2B Buying Scenarios", "", `<div class="grid-4 us-stock-scenarios">${scenarios.map(([title, body]) => `<article class="card icon-card fade-in"><h3>${title}</h3><p>${body}</p></article>`).join("")}</div>`, "alt")}
-    ${section("Start with U.S. Stock. Grow with Long-Term Supply.", "Local stock is designed to help buyers move faster with selected standard products. For larger-volume programs, repeat purchasing or differentiated products, Apexnix can also support factory-direct supply, private-label packaging and OEM / custom development.", `<div class="us-stock-beyond"><ul class="check-list"><li>Larger-volume factory-direct supply</li><li>Repeat-order planning</li><li>OEM / custom product development</li><li>Private-label packaging discussion</li><li>Long-term B2B supply programs</li></ul><div><p>Tell us the model, quantity and delivery ZIP code to receive a tailored U.S. stock quotation.</p>${cta("Request a U.S. Stock Quote", "/contact")}</div></div>`)}
+    ${section("Start with U.S. Stock. Grow with Long-Term Supply.", "Local stock is designed to help buyers move faster with selected standard products. For larger-volume programs, repeat purchasing or differentiated products, Apexnix can also support factory-direct supply, private-label packaging and OEM / custom development.", `<div class="us-stock-beyond"><ul class="check-list"><li>Larger-volume factory-direct supply</li><li>Repeat-order planning</li><li>OEM / custom product development</li><li>Private-label packaging discussion</li><li>Long-term B2B supply programs</li></ul><div><p>Tell us the model, quantity and delivery ZIP code to receive a tailored U.S. stock quotation.</p><p><a class="text-link" href="/factory-direct-bed-frames/" data-link>Explore factory-direct products and OEM support</a></p>${cta("Request a U.S. Stock Quote", "/contact")}</div></div>`)}
     ${faqSection(usStockHubFaq.map(([question, answer]) => ({ question, answer })))}
     <section class="section cta-band us-stock-cta"><div class="container fade-in"><span class="kicker">U.S. STOCK PROGRAM</span><h2>Discuss Your U.S. Stock Requirement</h2><p>Share the product series, size, quantity and delivery ZIP code. Current inventory and domestic freight will be confirmed before quotation.</p><div class="actions">${cta("Request Stock & Freight Quote", "/contact")}</div></div></section>
   </div>`;
@@ -1463,6 +1580,7 @@ const routes = {
   "/metal-bed-frame-production-process": productionProcessPage,
   "/flat-pack-bed-frame-packaging": flatPackPackagingPage,
   "/dormitory-bed-frame-supplier": dormitorySupplierPage,
+  "/factory-direct-bed-frames": factoryDirectLandingPage,
   "/us-stock": usStockHubPage,
   ...usStockProductRoutes,
 };
@@ -1642,6 +1760,16 @@ const routeMeta = {
     priority: "0.78",
     breadcrumb: [{ name: "Home", path: "/" }, { name: "Dormitory Bed Frame Supplier", path: "/dormitory-bed-frame-supplier" }],
   },
+  "/factory-direct-bed-frames": {
+    title: "China Metal Bed Frame Manufacturer | Apexnix",
+    description: "Apexnix is a metal bed frame manufacturer in China. We supply metal bed frames and bamboo bed frames with OEM/ODM and flat-pack packaging support.",
+    ogDescription: "Apexnix supplies metal bed frames and bamboo bed frames for wholesale, OEM/ODM and high-volume commercial sourcing.",
+    image: img.productionHero,
+    preloadImage: img.productionHero,
+    robots: "noindex, follow",
+    breadcrumb: [{ name: "Home", path: "/" }, { name: "China Metal Bed Frame Manufacturer", path: "/factory-direct-bed-frames" }],
+    faqs: factoryDirectFaq.map(([question, answer]) => ({ question, answer })),
+  },
 };
 
 routeMeta["/us-stock"] = {
@@ -1673,7 +1801,8 @@ routeMeta["/us-stock"] = {
   };
 });
 
-const indexableRoutes = Object.keys(routeMeta);
+const prerenderRoutes = Object.keys(routeMeta);
+const indexableRoutes = prerenderRoutes.filter((path) => routeMeta[path].robots !== "noindex, follow");
 
 function routePath(path = "/") {
   return path === "/" ? "/" : `${path.replace(/\/$/, "")}/`;
@@ -1751,6 +1880,16 @@ function schemasForPath(path = "/") {
       })),
     },
   ];
+
+  if (path === "/factory-direct-bed-frames") {
+    const webPage = schemas.find((schema) => schema["@type"] === "WebPage");
+    if (webPage) {
+      delete webPage.isPartOf;
+      delete webPage.about;
+    }
+    const webSiteIndex = schemas.findIndex((schema) => schema["@type"] === "WebSite");
+    if (webSiteIndex >= 0) schemas.splice(webSiteIndex, 1);
+  }
 
   if (meta.article) {
     schemas.push({
@@ -1871,7 +2010,7 @@ function updateDocumentMeta(path = "/") {
   const socialDescription = meta.ogDescription || meta.description;
   document.title = meta.title;
   ensureMetaName("description").setAttribute("content", meta.description);
-  ensureMetaName("robots").setAttribute("content", "index, follow");
+  ensureMetaName("robots").setAttribute("content", meta.robots || "index, follow");
   ensureLinkRel("canonical").setAttribute("href", canonical);
   ensureMetaProperty("og:site_name").setAttribute("content", SITE_NAME);
   ensureMetaProperty("og:type").setAttribute("content", meta.ogType || "website");
@@ -1992,8 +2131,68 @@ function bindThemeToggle() {
   });
 }
 
+function readManufacturerAttribution() {
+  try {
+    return JSON.parse(sessionStorage.getItem(ATTRIBUTION_KEY) || "{}") || {};
+  } catch {
+    return {};
+  }
+}
+
+function writeManufacturerAttribution(detail = {}) {
+  try {
+    sessionStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(detail));
+  } catch {}
+}
+
+function captureManufacturerAttribution(path) {
+  if (path !== "/factory-direct-bed-frames") return;
+  const detail = { ...readManufacturerAttribution(), landing_page: "/factory-direct-bed-frames/" };
+  try {
+    const params = new URL(window.location.href).searchParams;
+    ATTRIBUTION_PARAMS.forEach((key) => {
+      const value = params.get(key);
+      if (value) detail[key] = value;
+    });
+  } catch {}
+  writeManufacturerAttribution(detail);
+}
+
+function emitSiteEvent(name, detail = {}) {
+  window.dispatchEvent(new CustomEvent(`apexnix:${name}`, { detail }));
+  if (typeof window.gtag === "function") window.gtag("event", name, detail);
+}
+
+function bindManufacturerTracking() {
+  if (document.documentElement.dataset.manufacturerTrackingBound) return;
+  document.documentElement.dataset.manufacturerTrackingBound = "true";
+  document.addEventListener("click", (event) => {
+    const cta = event.target.closest("[data-manufacturer-cta]");
+    if (cta) {
+      const detail = {
+        ...readManufacturerAttribution(),
+        landing_page: "/factory-direct-bed-frames/",
+        cta_location: cta.dataset.manufacturerCta,
+        link_text: cta.textContent.trim(),
+      };
+      writeManufacturerAttribution(detail);
+      emitSiteEvent("manufacturer_contact_click", detail);
+      return;
+    }
+    const evidenceLink = event.target.closest("[data-evidence-link]");
+    if (evidenceLink) {
+      emitSiteEvent("evidence_link_click", {
+        ...readManufacturerAttribution(),
+        landing_page: "/factory-direct-bed-frames/",
+        link_text: evidenceLink.textContent.trim(),
+      });
+    }
+  });
+}
+
 function render() {
   const { path, anchor } = getRouteFromLocation();
+  captureManufacturerAttribution(path);
   updateDocumentMeta(path);
   document.querySelector("#app").innerHTML = (routes[path] || home)();
   document.querySelector(".main-nav").classList.remove("open");
@@ -2001,9 +2200,13 @@ function render() {
   bindCarousel();
   bindTabs();
   bindContactForm();
+  bindManufacturerTracking();
   bindLazyVideos();
   bindChecklistPrint();
   observe();
+  if (path === "/contact" && Object.keys(readManufacturerAttribution()).length) {
+    emitSiteEvent("manufacturer_contact_arrival", readManufacturerAttribution());
+  }
   if (anchor) setTimeout(() => document.querySelector(anchor)?.scrollIntoView(), 50);
   else window.scrollTo({ top: 0 });
 }
@@ -2076,6 +2279,10 @@ function bindContactForm() {
     data.set("access_key", WEB3FORMS_ACCESS_KEY);
     data.set("subject", subject);
     data.set("from_name", "Apexnix Website");
+    const attribution = readManufacturerAttribution();
+    Object.entries(attribution).forEach(([key, value]) => {
+      if (value) data.set(`ad_${key}`, value);
+    });
 
     if (status) {
       status.hidden = false;
@@ -2097,6 +2304,7 @@ function bindContactForm() {
       if (!response.ok || result.success === false) throw new Error(result.message || "Form submission failed");
       form.reset();
       if (status) status.textContent = "Thank you. Your request has been sent successfully.";
+      if (Object.keys(attribution).length) emitSiteEvent("manufacturer_contact_submit", attribution);
     } catch (error) {
       if (status) {
         status.classList.add("error");

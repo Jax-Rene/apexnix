@@ -49,6 +49,7 @@ globalThis.__apexnix = {
   AVATAR_FILE,
   routes,
   routeMeta,
+  prerenderRoutes,
   indexableRoutes,
   imageDimensions,
   routeUrl,
@@ -146,7 +147,7 @@ function buildHead(routePath) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escapeHtml(meta.title)}</title>
     <meta name="description" content="${escapeHtml(meta.description)}" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="${meta.robots || "index, follow"}" />
     <link rel="canonical" href="${canonical}" />
     <meta property="og:site_name" content="${escapeHtml(site.SITE_NAME)}" />
     <meta property="og:type" content="${meta.ogType || "website"}" />
@@ -300,7 +301,7 @@ function outputPath(routePath) {
   return path.join(rootDir, routePath.replace(/^\//, ""), "index.html");
 }
 
-for (const routePath of site.indexableRoutes) {
+for (const routePath of site.prerenderRoutes) {
   const target = outputPath(routePath);
   fs.mkdirSync(path.dirname(target), { recursive: true });
   fs.writeFileSync(target, buildPage(routePath));
