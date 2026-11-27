@@ -2467,9 +2467,9 @@ body.size-guide-print-preview-mode .checklist-print-button { display: none; }
 .factory-direct-manufacturing__grid {
   display: grid;
   width: 100%;
-  max-width: 1120px;
-  grid-template-columns: minmax(0, 1.75fr) minmax(260px, .75fr);
-  grid-template-rows: repeat(3, 1fr);
+  max-width: 1000px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto auto;
   gap: 12px;
   margin-inline: auto;
   min-height: 0;
@@ -2482,13 +2482,17 @@ body.size-guide-print-preview-mode .checklist-print-button { display: none; }
   background: #dfe3e5;
 }
 .factory-direct-manufacturing__main {
-  grid-row: 1 / 4;
+  grid-column: 1 / 4;
+  grid-row: auto;
   aspect-ratio: 2000 / 1108;
   background: var(--surface);
 }
-.factory-direct-manufacturing__main img {
+.factory-direct-manufacturing__grid img {
   object-fit: contain;
   object-position: center;
+}
+.factory-direct-manufacturing__grid figure:not(.factory-direct-manufacturing__main) {
+  aspect-ratio: 4 / 3;
 }
 .factory-direct-manufacturing__grid figcaption {
   position: absolute;
@@ -2786,6 +2790,7 @@ body.size-guide-print-preview-mode .checklist-print-button { display: none; }
   .factory-direct-manufacturing__main {
     grid-column: 1 / 4;
     grid-row: auto;
+    aspect-ratio: 2000 / 1108;
   }
   .factory-direct-manufacturing__grid figure:not(.factory-direct-manufacturing__main) {
     aspect-ratio: 4 / 3;
